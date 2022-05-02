@@ -1,0 +1,12 @@
+gfortran -Ofast -I /usr/lib64/gfortran/modules/ -lnetcdf -lnetcdff -c test.f90
+gfortran -o test test.o -Ofast -L /usr/lib64/gfortran/modules/ -lnetcdf -lnetcdf
+
+
+Für Fedora
+gfortran -Ofast -I /usr/lib64/gfortran/modules/ -lnetcdf -lnetcdff -c test.f90
+gfortran -o test test.o -Ofast -L/usr/lib64 -lnetcdf -I /usr/lib64/gfortran/modules/-lnetcdf -lnetcdff
+
+
+Für Windows mit cygwin
+gfortran -Ofast -I /usr/include/ -lnetcdf -lnetcdff -c test.f90
+gfortran -o test test.o -Ofast -L/usr/include/ -lnetcdf -I /usr/include/-lnetcdf -lnetcdff
