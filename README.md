@@ -1,5 +1,10 @@
 # schadstoffausbreitung
-Ncview unter windows
-http://meteora.ucsd.edu/~pierce/ncview_win.html
 
-zusätzlich noch wget und make
+
+Ncview unter windows
+Benötigte Pakete
+xorg-server
+xinit
+xorg-docs
+xlaunch
+ncview
