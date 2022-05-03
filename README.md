@@ -1,10 +1,10 @@
 # schadstoffausbreitung
 
 
-Ncview unter windows
+## Ncview unter windows
 Benötigte Pakete
-xorg-server
-xinit
-xorg-docs
-xlaunch
-ncview
+- xorg-server
+- xinit
+- xorg-docs
+- xlaunch
+- ncview
