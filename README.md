@@ -2,9 +2,11 @@
 
 
 ## Ncview unter windows
-Benötigte Pakete
+### Benötigte Pakete
 - xorg-server
 - xinit
 - xorg-docs
 - xlaunch
 - ncview
+### Befehl
+xlaunch && ncview test_result.nc
