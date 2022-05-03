@@ -23,8 +23,9 @@ PROGRAM ubung1
     nx = 10000
     ny = 500
     nz = 200
-    dx = 5.0
-    dy = 5.0
+    dx = 10.0
+    dy = 10.0
+    dz = 10.0
     Pi = 3.1415927
     !Randbedingungen
     Q= 1.944e+12 !540 kg/h also 5.4e+8mg/h und so 150000 
@@ -47,7 +48,7 @@ PROGRAM ubung1
         DO k = 0, nz
        	  dey = fg*i**fk
        	  dez =gg*i**gk
-          c(i,j,k) =(Q/(2* Pi*dey*dez*ubalken))*EXP((-(j+yq)**2)/(2*dey**2)) *(EXP((-(k-h)**2)/(2*dez**2)) &
+          c(i,j,k) =(Q/(2* Pi*dey*dez*ubalken))*EXP((-(j-yq)**2)/(2*dey**2)) *(EXP((-(k-h)**2)/(2*dez**2)) &
            +EXP((-(k+h)**2)/(2*dez**2)))
         ENDDO
        ENDDO
@@ -110,6 +111,7 @@ PROGRAM ubung1
        nc_stat = NF90_DEF_DIM( id_set, 'y', ny+1, id_dim_y )
        nc_stat = NF90_DEF_VAR( id_set, 'y', NF90_DOUBLE, id_dim_y, id_var_y )
        nc_stat = NF90_PUT_ATT( id_set, id_var_y, 'units', 'meters' )
+       
        
 
 !

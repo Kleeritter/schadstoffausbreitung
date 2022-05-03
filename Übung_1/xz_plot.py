@@ -8,6 +8,7 @@ import numpy as np
 from numpy import ma
 from matplotlib import colors, ticker, cm
 from netCDF4 import Dataset
+#import gc # Garbage Collector
 
 
 filename = "ubung1.nc"
@@ -31,7 +32,7 @@ def nc_read_from_file_2d_all(filename, varname):
       sys.exit(1)
    
    nc_file = Dataset(filename, "r", format="NETCDF4")
-   tmp_array = np.array(nc_file.variables[varname][:,:], dtype=type(nc_file.variables[varname]))
+   tmp_array = np.array(nc_file.variables[varname][:], dtype=type(nc_file.variables[varname]))
 
    return tmp_array
 
@@ -44,7 +45,7 @@ def nc_read_from_file_1d_all(filename, varname):
    try:
       f = open(filename)
       f.close()
-#      print("Load: " + filename + ".")
+      print("Load: " + filename + ".")
    except FileNotFoundError:
       print("Error: " + filename + ". No such file. Aborting...")
       sys.exit(1)
@@ -62,13 +63,13 @@ conc = nc_read_from_file_2d_all(filename, variable)
 conc = np.where(conc == -9999.0,np.nan,conc)
 
 x = nc_read_from_file_1d_all(filename, "x")
-z = nc_read_from_file_1d_all(filename, "y")
-
+y = nc_read_from_file_1d_all(filename, "y")
+print(conc)
 
 print("plotting....")
 plt.figure()
 fig, ax = plt.subplots()
-CS = ax.contour(x, z, conc, levels, colors='k' )
+CS = ax.contour(x, y, conc, levels, colors='k' )
 # alternatively plot 10 levels
 #CS = ax.contour(x, z, conc, 10, colors='k' )
 ax.clabel(CS, fontsize=9, inline=1)

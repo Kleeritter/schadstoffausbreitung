@@ -6,3 +6,8 @@ gfortran -o ubung1 ubung1.o -Ofast -L/usr/lib64 -lnetcdf -I /usr/lib64/gfortran/
 
 gfortran -Ofast -I /usr/lib64/gfortran/modules/ -lnetcdf -lnetcdff -c ubunger.f90
 gfortran -o ubunger ubunger.o -Ofast -L/usr/lib64 -lnetcdf -I /usr/lib64/gfortran/modules/-lnetcdf -lnetcdff
+
+
+Windows
+gfortran -Ofast -I /usr/include/ -lnetcdf -lnetcdff -c test.f90
+gfortran -o neu neu.o -Ofast -L/usr/include/ -lnetcdf -I /usr/include/-lnetcdf -lnetcdff
