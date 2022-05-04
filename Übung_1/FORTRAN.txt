@@ -9,5 +9,5 @@ gfortran -o ubunger ubunger.o -Ofast -L/usr/lib64 -lnetcdf -I /usr/lib64/gfortra
 
 
 Windows
-gfortran -Ofast -I /usr/include/ -lnetcdf -lnetcdff -c test.f90
+gfortran -Ofast -I /usr/include/ -lnetcdf -lnetcdff -c neu.f90
 gfortran -o neu neu.o -Ofast -L/usr/include/ -lnetcdf -I /usr/include/-lnetcdf -lnetcdff

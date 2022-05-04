@@ -13,8 +13,8 @@ PROGRAM ubung1
 
     IMPLICIT NONE
 
-    INTEGER :: nx, ny, nz, i, j,k, z, schritt, ubalken,zq,xq,yq,h
-    REAL    :: fg,fk,gg,gk,dy,dx,dey,dez,Pi,Q,dz
+    INTEGER :: nx, ny, nz, i, j,k, z, schritt, ubalken,zq,xq,yq,h,dx,dy,dz
+    REAL    :: fg,fk,gg,gk,dey,dez,Pi,Q
 
 
     REAL, DIMENSION(:,:,:), ALLOCATABLE  :: c
@@ -46,10 +46,10 @@ PROGRAM ubung1
     DO i = 0, nx
        DO j = 0, ny
         DO k = 0, nz
-       	  dey = fg*i**fk
-       	  dez =gg*i**gk
-          c(i,j,k) =(Q/(2* Pi*dey*dez*ubalken))*EXP((-(j-yq)**2)/(2*dey**2)) *(EXP((-(k-h)**2)/(2*dez**2)) &
-           +EXP((-(k+h)**2)/(2*dez**2)))
+       	  dey = fg*((dx*i)**fk)
+       	  dez =gg*((dx*i)**gk)
+          c(i,j,k) =(Q/(2* Pi*dey*dez*ubalken))*EXP((-((j*dy)-yq)**2)/(2*dey**2)) *(EXP((-((k*dz)-h)**2)/(2*dez**2)) &
+           +EXP((-((k*dz)+h)**2)/(2*dez**2)))
         ENDDO
        ENDDO
     ENDDO
@@ -130,7 +130,7 @@ PROGRAM ubung1
 !--    Write data for x and z axis
        ALLOCATE( netcdf_data(0:nx) )
        DO  i = 0, nx
-          netcdf_data(i) = i * dx
+          netcdf_data(i) = i*dx
        ENDDO
 
        nc_stat = NF90_PUT_VAR( id_set, id_var_x, netcdf_data, &
@@ -139,7 +139,7 @@ PROGRAM ubung1
 
        ALLOCATE( netcdf_data(0:ny) )
        DO  i = 0, ny
-          netcdf_data(i) = i * dy
+          netcdf_data(i) = i*dy
        ENDDO
 
        nc_stat = NF90_PUT_VAR( id_set, id_var_y, netcdf_data, &
@@ -147,7 +147,7 @@ PROGRAM ubung1
        DEALLOCATE( netcdf_data)
        !Z
        ALLOCATE( netcdf_data(0:nz) )
-       DO  i = 0, nz
+       DO  i = 0, nz,dz
           netcdf_data(i) = i * dz
        ENDDO
 
