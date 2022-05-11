@@ -13,9 +13,9 @@ from netCDF4 import Dataset
 
 filename = "ubung1.nc"
 fileout = "output_file.png"
-units = "kg/s"
+units = "mg/m^3"
 variable = "c"
-levels = [0.05, 0.1, 0.15, 0.20, 0.25]
+levels = [0.03, 0.05, 0.10, 0.15, 0.20,0.3, 0.4, 0.45]
 
 def nc_read_from_file_2d_all(filename, varname):
 
@@ -32,8 +32,10 @@ def nc_read_from_file_2d_all(filename, varname):
       sys.exit(1)
    
    nc_file = Dataset(filename, "r", format="NETCDF4")
-   tmp_array = np.array(nc_file.variables[varname][:], dtype=type(nc_file.variables[varname]))
-
+   tmp_array = np.array(nc_file.variables[varname][:,:,:], dtype=type(nc_file.variables[varname]))
+   print(np.nanmax(tmp_array))
+   print(np.where(tmp_array==np.nanmax(tmp_array)))
+   print(tmp_array[10,25,1])
    return tmp_array
 
 def nc_read_from_file_1d_all(filename, varname):
@@ -63,15 +65,15 @@ conc = nc_read_from_file_2d_all(filename, variable)
 conc = np.where(conc == -9999.0,np.nan,conc)
 
 x = nc_read_from_file_1d_all(filename, "x")
-y = nc_read_from_file_1d_all(filename, "y")
-print(conc)
+z = nc_read_from_file_1d_all(filename, "z")
+print(len(x))
 
 print("plotting....")
 plt.figure()
 fig, ax = plt.subplots()
-CS = ax.contour(x, y, conc, levels, colors='k' )
+#CS = ax.tricontour(x,y,conc, levels,colors='k')#ax.contour(x, y, conc, levels, colors='k' )
 # alternatively plot 10 levels
-#CS = ax.contour(x, z, conc, 10, colors='k' )
+CS = ax.contour(x, z, conc, levels, colors='k' )
 ax.clabel(CS, fontsize=9, inline=1)
 plt.title('Concentration (' + units + ')')
 plt.xlabel('x (m)')

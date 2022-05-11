@@ -54,7 +54,11 @@ PROGRAM ubung1
        ENDDO
     ENDDO
     
-
+print*,MAXVAL(c)
+print*,MAXLOC(c)
+print*,(c(2,26,11))
+print*,(c(2,26,11))
+print*,(FINDLOC(c,826.542053))
 
 !-- Initialize the NetCDF file
     CALL netcdfout( 'open' )
