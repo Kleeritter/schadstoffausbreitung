@@ -10,3 +10,7 @@
 - ncview
 ### Befehl
 xlaunch && ncview test_result.nc
+
+
+## Alternative Software Panoply
+Braucht Java9
