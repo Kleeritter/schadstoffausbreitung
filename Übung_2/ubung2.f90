@@ -70,8 +70,8 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END GASDEV
-END subroutine gas
+END function GASDEV
+END subroutine
 subroutine berechnen
 FUNCTION position()
     REAL: rl
@@ -83,7 +83,7 @@ FUNCTION position()
     zi= zi + wi*dt
     print*,xi
     return
-END position
+END function position
 END SUBROUTINE
 END PROGRAM
 
