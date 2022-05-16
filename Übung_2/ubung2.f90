@@ -1,23 +1,5 @@
 ! Programmierpraktikum zur Schadstoffausbreitung in Stadtgebieten
 ! Übugung 2
-
-module berechnen
-contains
-    subroutine position()
-          REAL:: rl,dt,tl
-    INTEGER:: ui,sigu,sigw,zi,wi,xi
-    ui=1
-    rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT((1 - rl**2))*sigu* CALL ragas()
-    xi= xi + ui*dt
-    wi= rl*wi + SQRT((1 - rl**2))*sigw* CALL ragas()
-    zi= zi + wi*dt
-    print*,xi
-    return
-    end subroutine position
-end module berechnen
-
-
 module gas
     implicit none
     contains
@@ -48,10 +30,29 @@ module gas
         end subroutine ragas
 end module gas
 
-PROGRAM ubung2
+module berechnen
+contains
+    subroutine position()
+          REAL:: rl,dt,tl
+    INTEGER:: ui,sigu,sigw,zi,wi,xi
+    ui=1
+    rl= EXP(- dt/tl)
+    ui= rl*ui + SQRT((1 - rl**2))*sigu* CALL ragas()
+    xi= xi + ui*dt
+    wi= rl*wi + SQRT((1 - rl**2))*sigw* CALL ragas()
+    zi= zi + wi*dt
+    print*,xi
+    return
+    end subroutine position
+end module berechnen
 
+
+
+
+PROGRAM ubung2
+   use gas
     use berechnen
-    use gas
+
     IMPLICIT NONE
 
     INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq, counter,xgrenz
