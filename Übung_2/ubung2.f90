@@ -2,7 +2,8 @@
 ! Übugung 2
  
 PROGRAM ubung2
-
+    use gas
+    use berechnen
 
     IMPLICIT NONE
 
@@ -40,6 +41,11 @@ DO WHILE (counter <= n)
     counter=counter +1
 END DO
 
+
+
+END PROGRAM
+
+module gas
 FUNCTION GASDEV()
       REAL gasdev
       INTEGER iset
@@ -64,11 +70,12 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END function
-
+END function GASDEV
+END module gas
+module berechnen
 FUNCTION position()
-    REAL:: rl
-    INTEGER::
+    REAL: rl
+    INTEGER:
     rl= EXP(- dt/tl)
     ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
     xi= xi + ui*dt
@@ -76,9 +83,7 @@ FUNCTION position()
     zi= zi + wi*dt
     print*,xi
     return
-END function
+END function position
+END module berechnen
 
-
-
-END PROGRAM
 
