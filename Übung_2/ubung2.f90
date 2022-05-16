@@ -1,6 +1,20 @@
 ! Programmierpraktikum zur Schadstoffausbreitung in Stadtgebieten
 ! Übugung 2
 
+module berechnen
+FUNCTION position()
+    REAL:: rl
+    INTEGER:: dt,tl,ui,sigu,sigw,zi,wi,xi
+    rl= EXP(- dt/tl)
+    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
+    xi= xi + ui*dt
+    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
+    zi= zi + wi*dt
+    print*,xi
+    return
+END function position
+END module berechnen
+
 module gas
 FUNCTION GASDEV()
       REAL gasdev
@@ -29,19 +43,6 @@ FUNCTION GASDEV()
 END function GASDEV
 END module gas
 
-module berechnen
-FUNCTION position()
-    REAL: rl
-    INTEGER:
-    rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
-    xi= xi + ui*dt
-    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
-    zi= zi + wi*dt
-    print*,xi
-    return
-END function position
-END module berechnen
 PROGRAM ubung2
     use gas
     use berechnen
