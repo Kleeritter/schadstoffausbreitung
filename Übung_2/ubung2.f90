@@ -2,8 +2,9 @@
 ! Übugung 2
 
 module berechnen
-FUNCTION position()
-    REAL:: rl
+contains
+    subroutine position()
+          REAL:: rl
     INTEGER:: dt,tl,ui,sigu,sigw,zi,wi,xi
     rl= EXP(- dt/tl)
     ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
@@ -12,12 +13,14 @@ FUNCTION position()
     zi= zi + wi*dt
     print*,xi
     return
-END function position
-END module berechnen
+    end subroutine position
+end module berechnen
+
 
 module gas
-FUNCTION GASDEV()
-      REAL gasdev
+    contains
+    subroutine GASDEV()
+         REAL gasdev
       INTEGER iset
       REAL fac,gset,rsq,v1,v2,ran1,zv1,zv2
       SAVE iset,gset
@@ -40,8 +43,8 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END function GASDEV
-END module gas
+        end subroutine GASDEV
+end module gas
 
 PROGRAM ubung2
     use gas
