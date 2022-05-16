@@ -56,7 +56,7 @@ PROGRAM ubung2
     IMPLICIT NONE
 
     INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq, counter,xgrenz
-    REAL    ::sigw,xi,zi
+    REAL    ::sigw,xi,zi,wi
 
 
     REAL, DIMENSION(:,:,:), ALLOCATABLE  :: c
