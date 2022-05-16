@@ -1,14 +1,13 @@
 ! Programmierpraktikum zur Schadstoffausbreitung in Stadtgebieten
 ! Übugung 2
  
-PROGRAM ubung1
+PROGRAM ubung2
 
-    USE netcdf
 
     IMPLICIT NONE
 
-    INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq
-    REAL    ::sigw
+    INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq, counter,xgrenz
+    REAL    ::sigw,xi,zi
 
 
     REAL, DIMENSION(:,:,:), ALLOCATABLE  :: c
@@ -23,13 +22,28 @@ PROGRAM ubung1
   wbalken = 0 !m/s
   zq = 45 !m
   xq = 2000 !m
+  counter=0
+  xgrenz= 3000 !m
 
-Call GASDEV()
+DO WHILE (counter <= n)
+    xi=xq
+    zi=zq
+    DO WHILE(xi<= xgrenz)
+    if (zi<0) THEN
+    call position()
+    zi=-zi
+    wi= -wi
+    ELSE
+    call position()
+    end if
+    END DO
+    counter=counter +1
+END DO
 
-END PROGRAM ubung1
+END PROGRAM ubung2
 
 
- CONTAINS
+CONTAINS
 
 subroutine gasdev
 FUNCTION GASDEV()
@@ -57,6 +71,17 @@ FUNCTION GASDEV()
       endif
       return
 END
-end subroutine gasdev
-
- END PROGRAM
+END subroutine gasdev
+subroutine berechnen
+FUNCTION position()
+    REAL: rl
+    INTEGER:
+    rl= EXP(- dt/tl)
+    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
+    xi= xi + ui*dt
+    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
+    zi= zi + wi*dt
+    print*,xi
+    return
+END SUBROUTINE
+END PROGRAM
