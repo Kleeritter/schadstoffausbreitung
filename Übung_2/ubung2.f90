@@ -40,12 +40,6 @@ DO WHILE (counter <= n)
     counter=counter +1
 END DO
 CONTAINS
-
-
-
-
-
-subroutine gas
 FUNCTION GASDEV()
       REAL gasdev
       INTEGER iset
@@ -70,12 +64,11 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END function GASDEV
-END subroutine
-subroutine berechnen
-FUNCTION position()
-    REAL: rl
-    INTEGER:
+END
+
+    FUNCTION position()
+    REAL:: rl
+    INTEGER::
     rl= EXP(- dt/tl)
     ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
     xi= xi + ui*dt
@@ -84,6 +77,14 @@ FUNCTION position()
     print*,xi
     return
 END function position
+
+
+
+subroutine gas
+
+END subroutine
+subroutine berechnen
+
 END SUBROUTINE
 END PROGRAM
 
