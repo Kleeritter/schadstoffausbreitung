@@ -1,4 +1,5 @@
-!-- The function gasdev() returns a normality pseudorandom value 
+module gas
+!-- The function gasdev() returns a normality pseudorandom value
 FUNCTION GASDEV()
       REAL gasdev
       INTEGER iset
@@ -24,3 +25,4 @@ FUNCTION GASDEV()
       endif
       return
 END 
+END module gas
