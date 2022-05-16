@@ -7,9 +7,9 @@ contains
           REAL:: rl,dt,tl
     INTEGER:: ui,sigu,sigw,zi,wi,xi
     rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT(1 - rl**2)*sigu* CALL ragas()
+    ui= rl*ui + SQRT((1 - rl**2))*sigu* CALL ragas()
     xi= xi + ui*dt
-    wi= rl*wi + SQRT(1 - rl**2)*sigw* CALL ragas()
+    wi= rl*wi + SQRT((1 - rl**2))*sigw* CALL ragas()
     zi= zi + wi*dt
     print*,xi
     return
