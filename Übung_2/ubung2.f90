@@ -39,7 +39,7 @@ DO WHILE (counter <= n)
     END DO
     counter=counter +1
 END DO
-CONTAINS
+
 FUNCTION GASDEV()
       REAL gasdev
       INTEGER iset
@@ -64,9 +64,9 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END
+END function
 
-    FUNCTION position()
+FUNCTION position()
     REAL:: rl
     INTEGER::
     rl= EXP(- dt/tl)
@@ -76,15 +76,9 @@ END
     zi= zi + wi*dt
     print*,xi
     return
-END function position
+END function
 
 
 
-subroutine gas
-
-END subroutine
-subroutine berechnen
-
-END SUBROUTINE
 END PROGRAM
 
