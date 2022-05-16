@@ -24,5 +24,5 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END 
+END function gasdev
 END module gas
