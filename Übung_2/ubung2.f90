@@ -6,6 +6,7 @@ contains
     subroutine position()
           REAL:: rl,dt,tl
     INTEGER:: ui,sigu,sigw,zi,wi,xi
+    ui=1
     rl= EXP(- dt/tl)
     ui= rl*ui + SQRT((1 - rl**2))*sigu* CALL ragas()
     xi= xi + ui*dt
