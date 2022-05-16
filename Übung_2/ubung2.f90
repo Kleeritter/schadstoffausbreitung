@@ -70,20 +70,20 @@ FUNCTION GASDEV()
         iset=0
       endif
       return
-END
+END GASDEV
 END subroutine gas
-        CONTAINS
 subroutine berechnen
 FUNCTION position()
     REAL: rl
     INTEGER:
     rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GAS()
+    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
     xi= xi + ui*dt
-    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GAS()
+    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
     zi= zi + wi*dt
     print*,xi
     return
+END position
 END SUBROUTINE
 END PROGRAM
 
