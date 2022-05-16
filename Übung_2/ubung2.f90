@@ -4,12 +4,12 @@
 module berechnen
 contains
     subroutine position()
-          REAL:: rl
-    INTEGER:: dt,tl,ui,sigu,sigw,zi,wi,xi
+          REAL:: rl,dt,tl
+    INTEGER:: ui,sigu,sigw,zi,wi,xi
     rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
+    ui= rl*ui + SQRT(1 - rl**2)*sigu* CALL ragas()
     xi= xi + ui*dt
-    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
+    wi= rl*wi + SQRT(1 - rl**2)*sigw* CALL ragas()
     zi= zi + wi*dt
     print*,xi
     return
@@ -18,8 +18,9 @@ end module berechnen
 
 
 module gas
+    implicit none
     contains
-    subroutine GASDEV()
+    subroutine ragas()
          REAL gasdev
       INTEGER iset
       REAL fac,gset,rsq,v1,v2,ran1,zv1,zv2
@@ -43,13 +44,13 @@ module gas
         iset=0
       endif
       return
-        end subroutine GASDEV
+        end subroutine ragas
 end module gas
 
 PROGRAM ubung2
-    use gas
-    use berechnen
 
+    use berechnen
+    use gas
     IMPLICIT NONE
 
     INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq, counter,xgrenz
