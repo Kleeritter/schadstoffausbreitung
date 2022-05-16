@@ -39,11 +39,11 @@ DO WHILE (counter <= n)
     END DO
     counter=counter +1
 END DO
-
-END PROGRAM ubung2
-
-
 CONTAINS
+
+
+
+
 
 subroutine gasdev
 FUNCTION GASDEV()
@@ -85,3 +85,4 @@ FUNCTION position()
     return
 END SUBROUTINE
 END PROGRAM
+END PROGRAM ubung2
