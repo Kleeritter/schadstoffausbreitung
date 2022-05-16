@@ -45,7 +45,7 @@ CONTAINS
 
 
 
-subroutine gasdev
+subroutine gas
 FUNCTION GASDEV()
       REAL gasdev
       INTEGER iset
@@ -71,15 +71,15 @@ FUNCTION GASDEV()
       endif
       return
 END
-END subroutine gasdev
+END subroutine gas
 subroutine berechnen
 FUNCTION position()
     REAL: rl
     INTEGER:
     rl= EXP(- dt/tl)
-    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GASDEV()
+    ui= rl*ui + SQRT(1- rl**2)*sigu* CALL GAS()
     xi= xi + ui*dt
-    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GASDEV()
+    wi= rl*wi + SQRT(1- rl**2)*sigw* CALL GAS()
     zi= zi + wi*dt
     print*,xi
     return
