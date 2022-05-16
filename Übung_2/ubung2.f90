@@ -29,23 +29,21 @@ module gas
       return
         end subroutine ragas
         subroutine position()
+                REAL, DIMENSION(:), ALLOCATABLE  :: ges
+    REAL, DIMENSION(:,:), ALLOCATABLE  :: posi
           REAL:: rl,dt,tl,gasdev
-    INTEGER:: ui,sigu,sigw,zi,wi,xi
+    INTEGER:: ui,sigu,sigw,zi,wi,xi,count
     rl= EXP(- dt/tl)
     CALL ragas()
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
+    posi(count,count)=(xi,zi)
     print*,xi
     return
     end subroutine position
 end module gas
-
-module berechnen
-contains
-
-end module berechnen
 
 
 
@@ -60,8 +58,8 @@ PROGRAM ubung2
     REAL    ::sigw,xi,zi,wi
 
 
-    REAL, DIMENSION(:,:,:), ALLOCATABLE  :: c
-    
+    REAL, DIMENSION(:), ALLOCATABLE  :: ges
+    REAL, DIMENSION(:,:), ALLOCATABLE  :: posi
     !Modellparameter
   n= 1000 !Anzahl Partikel
   tl = 100  !s Zeit
@@ -87,6 +85,7 @@ DO WHILE (counter <= n)
     call position()
     end if
     END DO
+    ges(counter)=posi(counter,counter)
     counter=counter +1
 END DO
 
