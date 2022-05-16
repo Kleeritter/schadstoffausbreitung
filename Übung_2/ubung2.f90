@@ -33,13 +33,13 @@ end module gas
 module berechnen
 contains
     subroutine position()
-          REAL:: rl,dt,tl,a
+          REAL:: rl,dt,tl,gasdev
     INTEGER:: ui,sigu,sigw,zi,wi,xi
     rl= EXP(- dt/tl)
-    a= CALL ragas()
-    ui= rl*ui + SQRT((1 - rl**2))*sigu* a
+    CALL ragas()
+    ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
-    wi= rl*wi + SQRT((1 - rl**2))*sigw* a
+    wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
     print*,xi
     return
