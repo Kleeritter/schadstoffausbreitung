@@ -72,6 +72,7 @@ FUNCTION GASDEV()
       return
 END
 END subroutine gas
+        CONTAINS
 subroutine berechnen
 FUNCTION position()
     REAL: rl
@@ -85,4 +86,4 @@ FUNCTION position()
     return
 END SUBROUTINE
 END PROGRAM
-END PROGRAM ubung2
+
