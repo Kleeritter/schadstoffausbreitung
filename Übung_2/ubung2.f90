@@ -28,14 +28,9 @@ module gas
       endif
       return
         end subroutine ragas
-end module gas
-
-module berechnen
-contains
-    subroutine position()
+        subroutine position()
           REAL:: rl,dt,tl
     INTEGER:: ui,sigu,sigw,zi,wi,xi
-    ui=1
     rl= EXP(- dt/tl)
     ui= rl*ui + SQRT((1 - rl**2))*sigu* CALL ragas()
     xi= xi + ui*dt
@@ -44,7 +39,9 @@ contains
     print*,xi
     return
     end subroutine position
-end module berechnen
+end module gas
+
+
 
 
 
