@@ -2,9 +2,10 @@
 ! Übugung 2
 module gas
     implicit none
+    REAL gasdev
     contains
     subroutine ragas()
-         REAL gasdev
+         !REAL gasdev
       INTEGER iset
       REAL fac,gset,rsq,v1,v2,ran1,zv1,zv2
       SAVE iset,gset
@@ -36,7 +37,7 @@ module gas
           REAL:: rl,dt,tl,gasdev,xi,zi,sigw
     INTEGER:: ui,sigu,wi,count
     rl= EXP(- dt/tl)
-    gasdev= CALL ragas()
+    CALL ragas()
     print*,gasdev
     print*,xi
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
