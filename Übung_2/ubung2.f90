@@ -36,6 +36,7 @@ module gas
     INTEGER:: ui,sigu,sigw,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
+    print*,gasdev
     print*,xi
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
