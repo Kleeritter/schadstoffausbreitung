@@ -29,18 +29,22 @@ module gas
       return
         end subroutine ragas
         subroutine position()
-    REAL, DIMENSION(:,:), ALLOCATABLE  :: posi
-          REAL:: rl,dt,tl,gasdev
-    INTEGER:: ui,sigu,sigw,zi,wi,xi,count
+
+    REAL, DIMENSION(:), ALLOCATABLE  :: posi
+    REAL, DIMENSION(:,:), ALLOCATABLE :: transporter
+          REAL:: rl,dt,tl,gasdev,xi,zi
+    INTEGER:: ui,sigu,sigw,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
-    posi =[posi,[xi,zi]]
+    transporter=[xi,zi]
+    posi =[posi,transporter]
     print*,xi
     return
+            DEALLOCATE(transporter)
     end subroutine position
 end module gas
 
@@ -84,6 +88,7 @@ DO WHILE (counter <= n)
     end if
     END DO
     ges=[ges,posi]
+    DEALLOCATE( posi)
     counter=counter +1
 END DO
 
