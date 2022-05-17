@@ -32,14 +32,15 @@ module gas
 
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
-          REAL:: rl,dt,tl,gasdev,xi,zi
-    INTEGER:: ui,sigu,sigw,wi,count
+          REAL:: rl,dt,tl,gasdev,xi,zi,sigw
+    INTEGER:: ui,sigu,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
     print*,gasdev
     print*,xi
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
+    print*,xi
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
     transporter=[xi,zi]
