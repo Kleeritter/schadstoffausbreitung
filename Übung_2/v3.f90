@@ -1,5 +1,6 @@
 ! Programmierpraktikum zur Schadstoffausbreitung in Stadtgebieten
 ! Übugung 2
+
 PROGRAM ubung2
 
     IMPLICIT NONE
@@ -30,11 +31,11 @@ DO WHILE (counter <= n)
 
     DO WHILE(xi<= xgrenz)
     if (zi<0) THEN
-    call position()
+    position()
     zi=-zi
     wi= -wi
     ELSE
-    call position()
+        position()
     end if
     END DO
     ges=[ges,posi]
@@ -44,6 +45,7 @@ END DO
 open(1, file = 'data1.dat', status = 'new')
 write(1,*)ges
 close(1)
+
  contains
     subroutine ragas()
          !REAL gasdev
@@ -71,11 +73,15 @@ close(1)
          print *, gasdev
       return
         end subroutine ragas
-        subroutine position()
+
+END PROGRAM
+
+
+        function position()
 
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
-          REAL:: rl,dt,tl,xi,zi,sigw
+          REAL:: rl,dt,tl,xi,zi,sigw,a
     INTEGER:: ui,sigu,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
@@ -94,8 +100,4 @@ close(1)
     DEALLOCATE(transporter)
     return
 
-    end subroutine position
-END PROGRAM
-
-
-
+    end function position
