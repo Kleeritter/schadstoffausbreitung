@@ -90,7 +90,6 @@ close(1)
     transporter=[xi,zi]
         print*,transporter
     posi =[posi,transporter]
-    print*,posi
     DEALLOCATE(transporter)
     return
 
