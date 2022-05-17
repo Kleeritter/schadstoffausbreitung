@@ -26,11 +26,12 @@ module gas
         gasdev=gset
         iset=0
       endif
+         print *, gasdev
       return
         end subroutine ragas
         subroutine position()
 
-    REAL, DIMENSION(:), ALLOCATABLE  :: posi
+    !REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
           REAL:: rl,dt,tl,gasdev,xi,zi,sigw
     INTEGER:: ui,sigu,wi,count
