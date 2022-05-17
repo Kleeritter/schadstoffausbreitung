@@ -47,6 +47,7 @@ module gas
     transporter=[xi,zi]
         print*,transporter
     posi =[posi,transporter]
+    print*,posi
     DEALLOCATE(transporter)
     return
 
