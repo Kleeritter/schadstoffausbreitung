@@ -91,8 +91,9 @@ DO WHILE (counter <= n)
     DEALLOCATE( posi)
     counter=counter +1
 END DO
-
-
+open(1, file = 'data1.dat', status = 'new')
+write(1,*)ges
+close(1)
 
 END PROGRAM
 
