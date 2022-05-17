@@ -12,7 +12,8 @@ PROGRAM ubung2
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     !Modellparameter
   n= 1000 !Anzahl Partikel
-
+    ubalken = 5 !m/s
+    wbalken = 0 !m/s
   zq = 45 !m
   xq = 2000 !m
   counter=0
@@ -21,15 +22,17 @@ PROGRAM ubung2
 DO WHILE (counter <= n)
     xi=xq
     zi=zq
+    ui=ubalken
+    wi=wbalken
     print*,xi
 
     DO WHILE(xi<= xgrenz)
     if (zi<0) THEN
-    call position(xi,zi,posi)
+    call position(xi,zi,posi,ui,wi)
     zi=-zi
     wi= -wi
     ELSE
-    call position(xi,zi,posi)
+    call position(xi,zi,posi,ui,wi)
     end if
     END DO
     ges=[ges,posi]
@@ -63,10 +66,9 @@ close(1)
         gasdev=gset
         iset=0
       endif
-         print *, gasdev
       return
         end subroutine ragas
-        subroutine position(xi,zi,posi)
+        subroutine position(xi,zi,posi,ui,wi)
 
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
@@ -76,12 +78,9 @@ close(1)
      dt = 4 !s Zeitschritt
     sigu= 0 !m/s
     sigw= 0.39 !m/s
-    ubalken = 5 !m/s
-    wbalken = 0 !m/s
+
     rl= EXP(- dt/tl)
     CALL ragas()
-    print*,gasdev
-    print*,sigu
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
     print*,xi
