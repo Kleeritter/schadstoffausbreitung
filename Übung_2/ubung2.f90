@@ -36,13 +36,13 @@ module gas
     INTEGER:: ui,sigu,sigw,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
+    print*,xi
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
     transporter=[xi,zi]
     posi =[posi,transporter]
-    print*,xi
     return
             DEALLOCATE(transporter)
     end subroutine position
