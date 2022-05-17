@@ -31,7 +31,7 @@ module gas
         subroutine position()
 
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
-    REAL, DIMENSION(:,:), ALLOCATABLE :: transporter
+    REAL, DIMENSION(:), ALLOCATABLE :: transporter
           REAL:: rl,dt,tl,gasdev,xi,zi
     INTEGER:: ui,sigu,sigw,wi,count
     rl= EXP(- dt/tl)
