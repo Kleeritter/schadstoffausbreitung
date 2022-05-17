@@ -39,7 +39,7 @@ module gas
     xi= xi + ui*dt
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
-    posi(count,count)=(xi,zi)
+    posi =[posi,(xi,zi)]
     print*,xi
     return
     end subroutine position
@@ -50,7 +50,6 @@ end module gas
 
 PROGRAM ubung2
    use gas
-    use berechnen
 
     IMPLICIT NONE
 
@@ -85,7 +84,7 @@ DO WHILE (counter <= n)
     call position()
     end if
     END DO
-    ges(counter)=posi(counter,counter)
+    ges=[ges,posi]
     counter=counter +1
 END DO
 
