@@ -9,7 +9,7 @@ PROGRAM ubung2
 
 
     REAL, DIMENSION(:), ALLOCATABLE  :: ges
-    REAL, DIMENSION(:,:), ALLOCATABLE  :: posi
+    REAL, DIMENSION(:), ALLOCATABLE  :: posi
     !Modellparameter
   n= 1000 !Anzahl Partikel
 
