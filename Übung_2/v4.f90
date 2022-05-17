@@ -69,7 +69,7 @@ close(1)
       return
         end subroutine ragas
         subroutine position(xi,zi,posi,ui,wi)
-
+    IMPLICIT NONE
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
     REAL:: rl,dt,tl,xi,zi,sigw,wi,ui
