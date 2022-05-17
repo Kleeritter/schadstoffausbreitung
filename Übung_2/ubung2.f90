@@ -39,7 +39,7 @@ module gas
     rl= EXP(- dt/tl)
     CALL ragas()
     print*,gasdev
-    print*,xi
+    print*,sigu
     ui= rl*ui + SQRT((1 - rl**2))*sigu* gasdev
     xi= xi + ui*dt
     print*,xi
