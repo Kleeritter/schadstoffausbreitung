@@ -45,8 +45,9 @@ module gas
     zi= zi + wi*dt
     transporter=[xi,zi]
     posi =[posi,transporter]
+    DEALLOCATE(transporter)
     return
-            DEALLOCATE(transporter)
+
     end subroutine position
 end module gas
 
