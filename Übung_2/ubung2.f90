@@ -43,7 +43,9 @@ module gas
     print*,xi
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
+    print*,zi
     transporter=[xi,zi]
+        print*,transporter
     posi =[posi,transporter]
     DEALLOCATE(transporter)
     return
