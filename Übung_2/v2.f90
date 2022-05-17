@@ -73,10 +73,10 @@ close(1)
         end subroutine ragas
         subroutine position()
 
-    REAL, DIMENSION(:), ALLOCATABLE  :: posi
+    REAL,intent(inout), DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
-          REAL:: rl,dt,tl,xi,zi,sigw
-    INTEGER:: ui,sigu,wi,count
+    REAL,intent(inout):: rl,dt,tl,xi,zi,sigw
+    INTEGER,intent(inout):: ui,sigu,wi,count
     rl= EXP(- dt/tl)
     CALL ragas()
     print*,gasdev
