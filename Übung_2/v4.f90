@@ -5,7 +5,7 @@ PROGRAM ubung2
     IMPLICIT NONE
 
     INTEGER :: n,tl,dt,sigu,ubalken,wbalken,zq,xq, counter,xgrenz
-    REAL    ::sigw,xi,zi,wi,gasdev
+    REAL    ::sigw,xi,zi,wi,gasdev,ui
 
 
     REAL, DIMENSION(:), ALLOCATABLE  :: ges
@@ -72,8 +72,8 @@ close(1)
 
     REAL, DIMENSION(:), ALLOCATABLE  :: posi
     REAL, DIMENSION(:), ALLOCATABLE :: transporter
-    REAL:: rl,dt,tl,xi,zi,sigw
-    INTEGER:: ui,sigu,wi,count
+    REAL:: rl,dt,tl,xi,zi,sigw,wi,ui
+    INTEGER:: sigu,count
       tl = 100  !s Zeit
      dt = 4 !s Zeitschritt
     sigu= 0 !m/s
