@@ -29,7 +29,6 @@ module gas
       return
         end subroutine ragas
         subroutine position()
-                REAL, DIMENSION(:), ALLOCATABLE  :: ges
     REAL, DIMENSION(:,:), ALLOCATABLE  :: posi
           REAL:: rl,dt,tl,gasdev
     INTEGER:: ui,sigu,sigw,zi,wi,xi,count
@@ -39,7 +38,7 @@ module gas
     xi= xi + ui*dt
     wi= rl*wi + SQRT((1 - rl**2))*sigw* gasdev
     zi= zi + wi*dt
-    posi =[posi,(xi,zi)]
+    posi =[posi,[xi,zi]]
     print*,xi
     return
     end subroutine position
