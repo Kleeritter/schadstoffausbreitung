@@ -79,6 +79,8 @@ PROGRAM ubung2
 DO WHILE (counter <= n)
     xi=xq
     zi=zq
+    print*,xi
+
     DO WHILE(xi<= xgrenz)
     if (zi<0) THEN
     call position()
