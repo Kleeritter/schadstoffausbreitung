@@ -62,4 +62,5 @@ plt.title("Partikeltrajektorien")
 plt.xlabel("Distanz  X in m")
 plt.ylabel("Höhe Z in m")
 plt.show()
+plt.savefig("Partikeltrajektorien.png", dpi=150)
 

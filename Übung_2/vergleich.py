@@ -92,6 +92,7 @@ plt.title("Quotient DP/ SP für X Koordinate")
 plt.xlabel("X in m")
 plt.ylabel("Quotient")
 plt.show()
+plt.savefig("qX.png", dpi=150)
 
 for i in tqdm(range(len(gesz))):
     x=[]
@@ -105,3 +106,4 @@ plt.title("Quotient DP/ SP für Z Koordinate")
 plt.xlabel("Z in m")
 plt.ylabel("Quotient")
 plt.show()
+plt.savefig("qZ.png", dpi=150)
