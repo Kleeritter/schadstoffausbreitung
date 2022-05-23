@@ -18,8 +18,7 @@ xgrenzzw= np.float32(2000)# !m
 zq =np.float64( 45) #!m
 xq =np.float64( 50) #!m
 xgrenz= np.float64(2000)# !m
-#posi=np.array([])
-#ges=np.array([])
+
 
 ges=[]
 gesz=[]
@@ -28,9 +27,6 @@ dt = np.float64(4) # Zeitschritt
 sigu= np.float64(0) #m/s
 sigw= np.float64(0.39) #m/s
 rl= math.exp(- dt/tl)
-print(rl)
-xliste=[]
-zliste =[]
 
 
 for i in tqdm(range(n)):
@@ -74,8 +70,6 @@ for i in tqdm(range(n)):
             wi= rl*wi + math.sqrt((1 - rl**2))*sigw* rr
             zi= zi + wi*dt
             posi.append([xi,zi])
-            xliste.append(ui)
-            zliste.append(wi)
             xizw= xizw + uizw*dt
             wizw= rl*wizw + math.sqrt((1 - rl**2))*sigw* rrzw
             zizw= zizw + wizw*dt
@@ -95,6 +89,8 @@ for i in tqdm(range(len(ges))):
     plt.plot(x,z)
 
 plt.title("Quotient DP/ SP für X Koordinate")
+plt.xlabel("X in m")
+plt.ylabel("Quotient")
 plt.show()
 
 for i in tqdm(range(len(gesz))):
@@ -106,5 +102,6 @@ for i in tqdm(range(len(gesz))):
     plt.plot(x,z)
 
 plt.title("Quotient DP/ SP für Z Koordinate")
-plt.axis([0,300,-20,100])
+plt.xlabel("Z in m")
+plt.ylabel("Quotient")
 plt.show()
