@@ -21,12 +21,12 @@ fk=0.818
 gg=0.265
 gk=0.818
 def berechneconc() :
-    for i in range(0,nx):
-        for j in range(0,ny):
-            for k in range(0,nz):
-                dey = fg*((dx*i)**fk)
+    for i in range(0,(nx +1)):
+        for j in range(0,(ny +1)):
+            for k in range(0,(nz+1)):
+                dey = fg*((dx*(i+1))**fk)
                 print(dey)
-       	        dez =gg*((dx*i)**gk)
+       	        dez =gg*((dx*(i+1))**gk)
                 c[i,j,k] =(Q/(2* math.pi *dey*dez*ubalken))* math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) + math.exp((-((k*dz)+h)**2)/(2*dez**2)))
 
     return c
