@@ -1,20 +1,19 @@
 import math
 from tqdm import tqdm
-
+import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import math
 
 
-n= 1000#!Anzahl Partikel
+n= 100 #!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
 xq =np.float64( 50) #!m
 counter=np.float64(0)
 xgrenz= np.float64(2000)# !m
-
 
 ges=[]
 tl = np.float64(100)  #s Zeit
@@ -28,8 +27,12 @@ nz = 20
 dx = 10
 dy = 10
 dz = 10
+ui=5
 
-
+bins=np.arange(0, 2002,2)
+positionsliste=[]
+xvalues=[]
+zvalues=[]
 c=np.zeros((nx, ny, nz))
 def concentration():
     Q= 1.5e+5 #!540 kg/h also 5.4e+8mg/h und so 150000 
@@ -51,8 +54,14 @@ def concentration():
            +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
     return
 
-concentration()
-print(c)
+def positionen(xi,wi,zi):
+    
+    rr=np.float64( random.gauss(0,1))
+    xi= xi + ui*dt
+    wi= rl*wi + math.sqrt((1 - rl**2))*sigw* rr
+    zi= zi + wi*dt
+    return xi,wi,zi
+
 for i in tqdm(range(n)):
     xi=xq
     zi=zq
@@ -60,27 +69,56 @@ for i in tqdm(range(n)):
     wi=wbalken
     posi=[]
 
+
     while (xi<= xgrenz):
         if (zi<0):
             zi=-zi
             wi= -wi
-            rr=np.float64( random.gauss(0,1))
-            ui=5
-            xi= xi + ui*dt
-            wi= rl*wi + math.sqrt((1 - rl**2))*sigw* rr
-            zi= zi + wi*dt
+            xi,zi,wi =positionen(xi,wi,zi)
             posi.append([xi,zi])
+            xvalues.append(xi)
+            zvalues.append(zi)
+            positionsliste.append([xi,zi])
 
 
         else:
-            rr= np.float64(random.gauss(0,1))
-            ui=5
-            xi= xi + ui*dt
-            wi= rl*wi + math.sqrt((1 - rl**2))*sigw* rr
-            zi= zi + wi*dt
+            #print(xi)
+            xi,wi,zi =positionen(xi,wi,zi)
+            #print(xi)
             posi.append([xi,zi])
+            xvalues.append(xi)
+            zvalues.append(zi)
+            positionsliste.append([xi,zi])
+
     ges.append(posi)
-for i in tqdm(range(len(ges))):
+    """
+    df=pd.DataFrame.from_dict({
+        'xvalues': xvalues,
+        'zvalues': zvalues
+    })
+    df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
+    df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
+    """
+    """
+    df=pd.DataFrame.from_dict({
+        'values': posi,
+    })
+df['valuesort']=pd.qcut(df['values'],100, precision=6)
+"""
+xvalues.pop()
+zvalues.pop()
+df=pd.DataFrame.from_dict({
+        'xvalues': xvalues,
+        'zvalues': zvalues
+    })
+df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
+df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
+sx= pd.Series(xvalues)
+sx.value_counts(bins=bins)#.sort_index()
+print(df)
+
+for i in bins:
+for i in tqdm(range(len(ges))):#
     x=[]
     z=[]
     for j in range(len(ges[i])):
