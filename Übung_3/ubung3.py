@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import math
-
+import plotly.graph_objects as go
 
 n= 1000 #!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
-xq =np.float64( 50) #!m
+xq =np.float64( 51) #!m
 counter=np.float64(0)
 xgrenz= np.float64(2000)# !m
 
@@ -34,7 +34,7 @@ positionsliste=[]
 xvalues=[]
 zvalues=[]
 c=np.zeros((nx, ny, nz))
-def concentration():
+def concentrationold():
     Q= 1.5e+5 #!540 kg/h also 5.4e+8mg/h und so 150000 
     ubalken= 5
     h= 100
@@ -54,6 +54,15 @@ def concentration():
            +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
     return
 
+def concentration(nj):
+    dx=2
+    dz=2
+    q= 150
+    dt= 0.4
+    n= 1000
+    c= q*(nj*dt)/(n*dx*dz)
+
+    return c
 def positionen(xi,wi,zi):
     
     rr=np.float64( random.gauss(0,1))
@@ -125,9 +134,15 @@ alla=df.value_counts(["xvaluesort", "zvaluesort"])
 #print(alla["(68,70] (44,46]"])
 print(alla)
 klar=[]
+cplot=[]
+xplot=[]
+zplot=[]
 for i in range(len(alla)):
-    klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i]])
-print(klar)
+    cplot.append(concentration(alla.values[i]))
+    xplot.append(alla.index.values[i][0].mid)
+    zplot.append(alla.index.values[i][1].mid)
+    klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i],concentration(alla.values[i])])
+print(klar[0])
 print(alla.index.values[0][1].mid)
 print(alla.index.values[0][0].mid)
 for i in tqdm(range(len(ges))):#
@@ -144,3 +159,14 @@ plt.ylabel("Höhe Z in m")
 #plt.show()
 plt.savefig("Partikeltrajektorien.png", dpi=150)
 
+#z=[x for i in klar[3]]
+#z= for number in range(1, 5) :(number)
+print(cplot)
+
+fig = go.Figure(data =
+    go.Contour(
+        z=cplot,
+        x=xplot, # horizontal axis
+        y=zplot # vertical axis
+    ))
+fig.show()
