@@ -34,8 +34,8 @@ positionsliste=[]
 xvalues=[]
 zvalues=[]
 c=np.zeros((nx, ny, nz))
-def concentrationold():
-    Q= 1.5e+5 #!540 kg/h also 5.4e+8mg/h und so 150000 
+def gauss():
+    Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
     ubalken= 5
     h= 100
     zq= 100
