@@ -175,4 +175,4 @@ fig = go.Figure(data =
         ),
     ))
 fig.show()
-fig.write_image("contur.png")
+fig.write_image("Übung_3/contur.png")
