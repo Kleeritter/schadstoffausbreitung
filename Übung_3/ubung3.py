@@ -143,8 +143,8 @@ for i in range(len(alla)):
     zplot.append(alla.index.values[i][1].mid)
     klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i],concentration(alla.values[i])])
 print(klar[0])
-print(alla.index.values[0][1].mid)
-print(alla.index.values[0][0].mid)
+#print(alla.index.values[0][1].mid)
+#print(alla.index.values[0][0].mid)
 for i in tqdm(range(len(ges))):#
     x=[]
     z=[]
@@ -161,12 +161,18 @@ plt.savefig("Partikeltrajektorien.png", dpi=150)
 
 #z=[x for i in klar[3]]
 #z= for number in range(1, 5) :(number)
-print(cplot)
+print(max(cplot))
 
 fig = go.Figure(data =
     go.Contour(
         z=cplot,
         x=xplot, # horizontal axis
-        y=zplot # vertical axis
+        y=zplot, # vertical axis
+        contours=dict(
+            start=0.2,
+            end=0.5,
+            size=0.1,
+        ),
     ))
 fig.show()
+fig.write_image("contur.png")
