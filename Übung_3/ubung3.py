@@ -7,7 +7,7 @@ import random
 import math
 
 
-n= 100 #!Anzahl Partikel
+n= 1000 #!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
@@ -113,11 +113,23 @@ df=pd.DataFrame.from_dict({
     })
 df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
 df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
+#df['values'] = df['xvaluesort'] + df['zvaluesort']
 sx= pd.Series(xvalues)
 sx.value_counts(bins=bins)#.sort_index()
 print(df)
 
-for i in bins:
+#alla=pd.Series.to_frame(df.value_counts(["xvaluesort", "zvaluesort"]))#.rename(columns={4:"times"})
+alla=df.value_counts(["xvaluesort", "zvaluesort"])
+#alla.columns=["xvaluesort"]
+#alla.rename(columns={alla.columns[0]:'times'})#,inplace=True)
+#print(alla["(68,70] (44,46]"])
+print(alla)
+klar=[]
+for i in range(len(alla)):
+    klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i]])
+print(klar)
+print(alla.index.values[0][1].mid)
+print(alla.index.values[0][0].mid)
 for i in tqdm(range(len(ges))):#
     x=[]
     z=[]
@@ -129,6 +141,6 @@ for i in tqdm(range(len(ges))):#
 plt.title("Partikeltrajektorien")
 plt.xlabel("Distanz  X in m")
 plt.ylabel("Höhe Z in m")
-plt.show()
+#plt.show()
 plt.savefig("Partikeltrajektorien.png", dpi=150)
 
