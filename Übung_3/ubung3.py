@@ -17,7 +17,7 @@ xgrenz= np.float64(2000)# !m
 
 ges=[]
 tl = np.float64(100)  #s Zeit
-dt = np.float64(4) # Zeitschritt
+dt = np.float64(2) # Zeitschritt
 sigu= np.float64(0) #m/s
 sigw= np.float64(0.39) #m/s
 rl= math.exp(- dt/tl)
@@ -166,7 +166,7 @@ print(max(cplot))
 fig = go.Figure(data =
     go.Contour(
         z=cplot,
-        x=xplot, # horizontal axis
+        x=xplot,#.insert(, # horizontal axis
         y=zplot, # vertical axis
         contours=dict(
             start=0.2,
