@@ -50,10 +50,21 @@ def gauss():
             for k in range(1, nz+1):
        	        dey = fg*((dx*i)**fk)
        	        dez = gg*((dx*i)**gk)
-                c[i-1,j-1,k-1] =(Q/(2* math.pi*dey*dez*ubalken))*math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) 
-           +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
+                c[i-1,j-1,k-1] =(Q/(2* math.pi*dey*dez*ubalken))*math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
     return
-
+cd=np.zeros((nx, nz))
+def gauss2d():
+    Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
+    ubalken= 5
+    h= 100
+    zq= 100
+    xq=0
+    yq=250
+    for i in range( 1, nx+1):
+        for j in range(1,nz+1):
+       	    dez = math.sqrt(2*sigw**2*tl*((i/ubalken)- ubalken +ubalken*math.exp(- (i/(ubalken*tl)))))
+            cd[i-1,j-1] =(Q/(2* math.pi*dez*ubalken)) *(math.exp((-((j*dz)-h)**2)/(2*dez**2)) +math.exp((-((j*dz)+h)**2)/(2*dez**2)))
+    return
 def concentration(nj):
     dx=2
     dz=2
@@ -158,10 +169,13 @@ plt.xlabel("Distanz  X in m")
 plt.ylabel("Höhe Z in m")
 #plt.show()
 plt.savefig("Partikeltrajektorien.png", dpi=150)
-
+#plt.close()
+#plt.contour(xplot, zplot, cplot)
+#plt.show()
 #z=[x for i in klar[3]]
 #z= for number in range(1, 5) :(number)
 print(max(cplot))
+
 
 fig = go.Figure(data =
     go.Contour(
@@ -176,3 +190,20 @@ fig = go.Figure(data =
     ))
 fig.show()
 fig.write_image("Übung_3/contur.png")
+#fig.close()
+
+gauss2d()
+
+fig = go.Figure(data =
+    go.Contour(
+        z=cd,
+        x=[x for x in range(nx)] ,#.insert(, # horizontal axis
+        y=[x for x in range(nz)] , # vertical axis
+        contours=dict(
+            start=0.2,
+            end=0.5,
+            size=0.1,
+        ),
+    ))
+fig.show()
+fig.write_image("Übung_3/conturgaus.png")
