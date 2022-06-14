@@ -204,9 +204,9 @@ fig = go.Figure(data =
         x=[x for x in range(nx)] ,#.insert(, # horizontal axis
         y=[x for x in range(nz)] , # vertical axis
         contours=dict(
-            start=0.2,
-            end=0.5,
-            size=0.1,
+            start=0,
+            end=0.3,
+            size=0.05,
         ),
     ))
 #fig.show()
