@@ -51,13 +51,13 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "file1.nc"
-filename2 = "file1.nc"
+filename = "C:\cygwin64\home\alexa\gitu\schadstoffausbreitung\Übung_3\koks.nc"
+filename2 = "C:\cygwin64\home\alexa\gitu\schadstoffausbreitung\Übung_3\koks.nc"
 
 units = "g/m$^3$"
 
-conc = nc_read_from_file_2d_all(filename, "conc")
-conc2 = nc_read_from_file_2d_all(filename2, "conc")
+conc = nc_read_from_file_2d_all(filename, "c")
+conc2 = nc_read_from_file_2d_all(filename2, "c")
 
 conc = np.where(conc == -9999.0,np.nan,conc)
 x = nc_read_from_file_1d_all(filename, "x")
