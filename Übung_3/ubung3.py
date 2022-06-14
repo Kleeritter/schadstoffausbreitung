@@ -52,6 +52,8 @@ def gauss():
        	        dez = gg*((dx*i)**gk)
                 c[i-1,j-1,k-1] =(Q/(2* math.pi*dey*dez*ubalken))*math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
     return
+cdc=[]
+
 cd=np.zeros((nx, nz))
 def gauss2d():
     Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
@@ -60,11 +62,13 @@ def gauss2d():
     zq= 100
     xq=0
     yq=250
-    for i in range( 1, nx+1):
-        for j in range(1,nz+1):
+    for i,indexei in zip(range( 1, nx,2),(range(0,int(nx/2)))):
+        for j,indexej in zip(range(1,nz+1,2),(range(0,int(nz/2)))):
        	    dez = math.sqrt(2*sigw**2*tl*((i/ubalken)- ubalken +ubalken*math.exp(- (i/(ubalken*tl)))))
-            cd[i-1,j-1] =(Q/(2* math.pi*dez*ubalken)) *(math.exp((-((j*dz)-h)**2)/(2*dez**2)) +math.exp((-((j*dz)+h)**2)/(2*dez**2)))
+            cd[indexei,indexej] =(Q/(2* math.pi*dez*ubalken)) *(math.exp((-((j*dz)-h)**2)/(2*dez**2)) +math.exp((-((j*dz)+h)**2)/(2*dez**2)))
+            #cdc.append(co)
     return
+
 def concentration(nj):
     dx=2
     dz=2
@@ -188,12 +192,12 @@ fig = go.Figure(data =
             size=0.1,
         ),
     ))
-fig.show()
+#fig.show()
 fig.write_image("Übung_3/contur.png")
 #fig.close()
 
 gauss2d()
-
+print(np.nanmax(cd))
 fig = go.Figure(data =
     go.Contour(
         z=cd,
@@ -205,5 +209,5 @@ fig = go.Figure(data =
             size=0.1,
         ),
     ))
-fig.show()
+#fig.show()
 fig.write_image("Übung_3/conturgaus.png")
