@@ -51,8 +51,8 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "C:\cygwin64\home\alexa\gitu\schadstoffausbreitung\Übung_3\koks.nc"
-filename2 = "C:\cygwin64\home\alexa\gitu\schadstoffausbreitung\Übung_3\koks.nc"
+filename = "C:/cygwin64/home/alexa/gitu/schadstoffausbreitung/koks.nc"
+filename2 = "C:/cygwin64/home/alexa/gitu/schadstoffausbreitung/mc.nc"
 
 units = "g/m$^3$"
 
@@ -69,13 +69,17 @@ z2 = nc_read_from_file_1d_all(filename2, "z")
 
 
 print("plotting....")
+
+levels = [0.01,0.1,0.2, 0.3, 0.4, 0.5]
+
 plt.figure()
 
 fig, ax = plt.subplots()
+CS2 = ax.contour(z2, x2, conc2, levels, colors='red' )
+CS = ax.contour(x, z, conc,levels, colors='black' )
 
-levels = [0.05, 0.1, 0.15, 0.20, 0.25]
-CS = ax.contour(x, z, conc, levels, colors='black' )
-CS2 = ax.contour(x2, z2, conc2, levels, colors='red' )
+plt.axis([0,2000,0,350])
+
 
 ax.clabel(CS, fontsize=9, inline=1)
 
@@ -92,4 +96,4 @@ plt.show()
 #cbar.ax.set_ylabel('Lufttemperatur (°C)')
 
 
-plt.savefig(fileout, format='png', dpi=300)
+plt.savefig("fileout", format='png', dpi=300)

@@ -8,9 +8,9 @@ import math
 import plotly.graph_objects as go
 from netCDF4 import Dataset
 import netCDF4 as nc4
+from plotly.subplots import make_subplots
 
-
-n= 1000 #!Anzahl Partikel
+n= 100 #!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
@@ -32,7 +32,7 @@ dy = 10
 dz = 10
 ui=5
 
-bins=np.arange(0, 2002,2)
+bins=np.arange(0, 2000,2)
 positionsliste=[]
 xvalues=[]
 zvalues=[]
@@ -56,24 +56,21 @@ def gauss():
                 c[i-1,j-1,k-1] =(Q/(2* math.pi*dey*dez*ubalken))*math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
     return
 cdc=[]
-
-cd=np.zeros((nx, nz))
+nxx=2000
+nzz=2000
+cdkack=[]
+cd=np.zeros((nxx, nzz))
 def gauss2d():
     Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
     ubalken= 5
-    h= 100
-    zq= 100
-    xq=0
-    yq=250
-    fg=0.504
-    fk=0.818
-    gg=0.265
-    gk=0.818
-    for i,indexei in zip(range( 1, nx,2),(range(0,int(nx/2)))):
-        for j,indexej in zip(range(1,nz+1,2),(range(0,int(nz/2)))):
-            dez = gg*((dx*i)**gk)
-       	    #dez = math.sqrt(2*sigw**2*tl*((i/ubalken)- ubalken +ubalken*math.exp(- (i/(ubalken*tl)))))
-            cd[indexei,indexej] =(Q/(2* math.pi*dez*ubalken)) *(math.exp((-((j*dz)-h)**2)/(2*dez**2)) +math.exp((-((j*dz)+h)**2)/(2*dez**2)))
+    dx=2
+    dz=2
+    for i,indexei in zip(range(1 , nzz),(range(1,nxx,2))):
+        for j,indexej in zip(range(1,nxx),(range(1,nxx,2))):
+            #dez = gg*((dx*i)**gk)
+       	    #dez = 2*sigw**2*tl*((i/ubalken)- ubalken +ubalken*math.exp(- (i/(ubalken*tl))))
+            dez= 2*sigw**2*tl*((i/ubalken)-tl +tl*math.exp(-i/(ubalken*tl)))
+            cd[j,i]=(Q/(math.sqrt(2* math.pi)*math.sqrt(dez)*ubalken) *(math.exp((-((j*dx)-zq)**2)/(2*dez)) +math.exp((-((j*dz)+zq)**2)/(2*dez))))
             #cdc.append(co)
     return
 
@@ -82,7 +79,6 @@ def concentration(nj):
     dz=2
     q= 150
     dt= 0.4
-    n= 1000
     c= q*(nj*dt)/(n*dx*dz)
 
     return c
@@ -106,7 +102,7 @@ for i in tqdm(range(n)):
         if (zi<0):
             zi=-zi
             wi= -wi
-            xi,zi,wi =positionen(xi,wi,zi)
+            xi,wi,zi =positionen(xi,wi,zi)
             posi.append([xi,zi])
             xvalues.append(xi)
             zvalues.append(zi)
@@ -146,16 +142,12 @@ df=pd.DataFrame.from_dict({
     })
 df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
 df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
-#df['values'] = df['xvaluesort'] + df['zvaluesort']
+
 sx= pd.Series(xvalues)
 sx.value_counts(bins=bins)#.sort_index()
-#print(df)
 
-#alla=pd.Series.to_frame(df.value_counts(["xvaluesort", "zvaluesort"]))#.rename(columns={4:"times"})
 alla=df.value_counts(["xvaluesort", "zvaluesort"])
-#alla.columns=["xvaluesort"]
-#alla.rename(columns={alla.columns[0]:'times'})#,inplace=True)
-#print(alla["(68,70] (44,46]"])
+
 print(alla.head())
 klar=[]
 cplot=[]
@@ -165,121 +157,68 @@ cklar=[]
 clar=[]
 for i in range(len(alla)):
     cplot.append(concentration(alla.values[i]))
+    #close.append(gauss2d())
     xplot.append(alla.index.values[i][0].mid)
     zplot.append(alla.index.values[i][1].mid)
     clar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid])
     cklar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i]])
     klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i],concentration(alla.values[i])])
-cc=np.zeros((len(xplot),len(zplot)))
-print(klar[ np.argwhere(np.array(clar) == 53 &45 )[0][1]])
-#print()
-curd=np.arange(1,2000,2)
-curdz=np.arange(1,2000,2)
-def zweidimensionalerer(zahlx,zahlz):
-    for i,j in zip( cklar, range(len(cklar))):
-        if i[0]== zahlx and i[1]== zahlz:
-            al=i[2]            
-            return  al
-        #np.delete(cklar, cklar[j])
 
-#print(xplot)
-cal=[]
-curd=np.arange(1,2000,2)
-for i in tqdm(range(1,200,2)):
-    for j in range(1,200,2):
-       cc[i,j]=zweidimensionalerer(i,j)
 
-#for i in tqdm( curd):
- #  for k,z in zip(range(len(zplot)),zplot):
-  #    cc[i,k]=zweidimensionalerer(j,z)
+cc=np.zeros((nzz,nxx))
+print(max(cplot))
+for i,j,k in zip( xplot, zplot,cplot):
+    cc[int(j),int(i)]=k
+print(cc)  
 
-print(cc)
-czwd=np.zeros((nx,nz))
-#for i,j  in zip ( range(len(klar)), range(len(klar))):
- #   czwd[i,j]=
-#print(alla.index.values[0][1].mid)
-#print(alla.index.values[0][0].mid)
-for i in tqdm(range(len(ges))):#
-    x=[]
-    z=[]
-    for j in range(len(ges[i])):
-        x.append(ges[i][j][0])
-        z.append(ges[i][j][1])
-    plt.plot(x,z)
+gauss2d()
 
-plt.title("Partikeltrajektorien")
-plt.xlabel("Distanz  X in m")
-plt.ylabel("Höhe Z in m")
-#plt.show()
-plt.savefig("Partikeltrajektorien.png", dpi=150)
-#plt.close()
-#plt.contour(xplot, zplot, cplot)
-#plt.show()
-#z=[x for i in klar[3]]
-#z= for number in range(1, 5) :(number)
-#print(max(cplot))
-""""
-fig = go.Figure(data =
+f = nc4.Dataset('koks.nc','w', format='NETCDF4') #'w' stands for write
+#tempgrp = f.createGroup('Temp_data')
+#tempgrp.createDimension('c', (n))
+f.createDimension('x', nxx)
+f.createDimension('z', nzz)
+cnet= f.createVariable('c', 'f8', ('x','z'))
+xnet= f.createVariable('x', 'f8', 'x')
+znet= f.createVariable('z', 'f8', 'z')
+
+cnet[:,:]=cd
+xnet[:]=[x for x in range(0,nxx)]
+znet[:]=[x for x in range(0,nzz)]
+f.close()
+
+print(cd)
+d = nc4.Dataset('mc.nc','w', format='NETCDF4') #'w' stands for write
+d.createDimension('x', nzz)
+d.createDimension('z', nxx)
+cnet= d.createVariable('c', 'f8', ('x','z'))
+xnet= d.createVariable('x', 'f8', 'x')
+znet= d.createVariable('z', 'f8', 'z')
+
+cnet[:,:]=cc
+xnet[:]=[x for x in range(0,nzz)]
+znet[:]=[x for x in range(0,nxx)]
+d.close()
+
+
+lig = make_subplots(    rows=2,
+    specs=[[{"type": "contour"}],
+            [{"type": "contour"}]],
+)
+
+lig.add_trace(
     go.Contour(
         z=cplot,
         x=xplot,#.insert(, # horizontal axis
         y=zplot, # vertical axis
         contours_coloring='lines',
         contours=dict(
-            start=0,
+            start=0.1,
             end=0.5,
             size=0.1,
         ),
-    ))
-fig.show()
-fig.write_image("Übung_3/contur.png")
-#fig.close()
-"""
+    ), row=1, col=1)
 
 
-gauss2d()
-f = nc4.Dataset('koks.nc','w', format='NETCDF4') #'w' stands for write
-tempgrp = f.createGroup('Temp_data')
-#tempgrp.createDimension('c', (n))
-tempgrp.createDimension('x', nx)
-tempgrp.createDimension('z', nz)
-cnet= tempgrp.createVariable('c', 'f8', ('x','z'))
-xnet= tempgrp.createVariable('x', 'f8', 'x')
-znet= tempgrp.createVariable('z', 'f8', 'z')
-
-cnet[:,:]=cd
-xnet[:]=[x for x in range(0,nx)]
-znet[:]=[x for x in range(0,nz)]
-f.close()
-
-
-d = nc4.Dataset('mc.nc','w', format='NETCDF4') #'w' stands for write
-tempgrp = d.createGroup('Daten')
-#tempgrp.createDimension('c', (n))
-tempgrp.createDimension('x', nx)
-tempgrp.createDimension('z', nz)
-cnet= tempgrp.createVariable('c', 'f8', ('x','z'))
-xnet= tempgrp.createVariable('x', 'f8', 'x')
-znet= tempgrp.createVariable('z', 'f8', 'z')
-
-cnet[:,:]=cd
-xnet[:]=[x for x in range(0,nx)]
-znet[:]=[x for x in range(0,nz)]
-d.close()
-#print(cd[0])
-"""
-fig = go.Figure(data =
-    go.Contour(
-        z=cd,
-        x=[x for x in range(nx)] ,#.insert(, # horizontal axis
-        y=[x for x in range(nz)] , # vertical axis
-        contours_coloring='lines',
-         contours=dict(
-            start=0,
-            end=0.5,
-            size=0.1,
-        ),
-    ))
-#fig.show()
-fig.write_image("Übung_3/conturgaus.png")
-"""
+lig.show()
+#lig.write_image("Übung_3/conturallagaus.png")
