@@ -25,7 +25,7 @@ PROGRAM ubung1
     ubalken= 5
     wbalken=0
     counter=0
-    n=10
+    n=100
     h= 100
     zq=45
     xq=51
@@ -50,8 +50,8 @@ PROGRAM ubung1
 !print*,SIZE(difx)
 !print*,difx
 ca=0
-allocate( xlist(0) )
-allocate( zlist(0) )
+allocate( xlist(10**6) )
+allocate( zlist(10**6) )
 DO WHILE (counter < n)
 print *, counter
     xi=xq
@@ -231,8 +231,8 @@ END SUBROUTINE conzentration
     INTEGER :: ix,jz
     REAL, DIMENSION(:), ALLOCATABLE  :: differxlist,differzlist,gurkenxlist,gurkenzlist
         allocate( gurkenzlist(0) )
-    DO i =0, SIZE(xlist)
-    print*, real(i)/SIZE(xlist)
+    DO i =0, ca
+    print*, real(i)/real(ca)
         allocate( differxlist(0) )
         allocate( differzlist(0) )
         DO j=0,2000
