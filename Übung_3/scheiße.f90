@@ -4,7 +4,7 @@ PROGRAM ubung1
 
     IMPLICIT NONE
 
-    INTEGER :: indexcount,xgrenz,counter, nx, ny, nz, i, j,k, z, schritt, ubalken,zq,xq,yq,h,dx,dy,dz,wbalken,n
+    INTEGER :: ca,co,indexcount,xgrenz,counter, nx, ny, nz, i, j,k, z, schritt, ubalken,zq,xq,yq,h,dx,dy,dz,wbalken,n
     REAL    :: xi,zi,fg,fk,gg,gk,dey,dez,Pi,Q,gasdev,winew,zinew,xinew,ui,wi,wiold,ziold,conca,nj
 
 
@@ -13,23 +13,23 @@ PROGRAM ubung1
     REAL, DIMENSION(:,:), ALLOCATABLE  :: gitter
     
     !Modellparameter
-    nx = 1000
-    ny = 50
-    nz = 20
-    dx = 10
-    dy = 10
-    dz = 10
+    nx = 2000
+    ny = 2000
+    !nz = 2
+    dx = 2
+    dy = 2
+    dz = 2
     Pi = 3.1415927
     !Randbedingungen
     Q= 1.5e+5 !540 kg/h also 5.4e+8mg/h und so 150000 
     ubalken= 5
     wbalken=0
     counter=0
-    n=100
+    n=10
     h= 100
-    zq= 45
+    zq=45
     xq=51
-    yq=250
+    !yq=250
     xgrenz=2000
     indexcount=0
     !Schichtung 
@@ -41,6 +41,7 @@ PROGRAM ubung1
     ALLOCATE( c(0:nx,0:ny,0:nz) ) 
     ALLOCATE( difx(0:1000) ) 
     ALLOCATE( difz(0:1000) ) 
+    ALLOCATE(gitter(0:1000,0:1000))
     DO i =1,1999,2
         difx(indexcount)=i
         difz(indexcount)=i
@@ -48,22 +49,11 @@ PROGRAM ubung1
     ENDDO
 !print*,SIZE(difx)
 !print*,difx
-    DO i = 0, nx
-       DO j = 0, ny
-        DO k = 0, nz
-       	  dey = fg*((dx*i)**fk)
-       	  dez =gg*((dx*i)**gk)
-          c(i,j,k) =(Q/(2* Pi*dey*dez*ubalken))*EXP((-((j*dy)-yq)**2)/(2*dey**2)) *(EXP((-((k*dz)-h)**2)/(2*dez**2)) &
-           +EXP((-((k*dz)+h)**2)/(2*dez**2)))
-        ENDDO
-       ENDDO
-    ENDDO
-    
-
-CALL koks()
+ca=0
 allocate( xlist(0) )
 allocate( zlist(0) )
-DO WHILE (counter <= n)
+DO WHILE (counter < n)
+print *, counter
     xi=xq
     zi=zq
     ui=ubalken
@@ -76,17 +66,21 @@ DO WHILE (counter <= n)
     zi=-ziold
     wiold=wi
     wi= -wiold
-    CALL positionen(xi,zi,wi)
+    CALL positionen(xi,wi,zi)
 
     xi=xinew
     zi=zinew
     wi=winew
     xold=xlist
     zold=zlist
-    xlist =[xold,xi]
-    zlist =[zold,zi]
+    !xlist =[xold,xi]
+    !zlist =[zold,zi]
+    xlist(ca) =xi
+    zlist(ca) =zi
+    co=ca
+    ca=  co +1
     ELSE
-        CALL positionen(xi,zi,wi)
+        CALL positionen(xi,wi,zi)
         
         xi=xinew
         zi=zinew
@@ -95,8 +89,12 @@ DO WHILE (counter <= n)
         !xold=xlist
         !zold=zlist
         
-        xlist =[xlist,xi]
-        zlist =[zlist,zi]
+       ! xlist =[xlist,xi]
+       ! zlist =[zlist,zi]
+    xlist(ca) =xi
+    zlist(ca) =zi
+    co=ca
+    ca=  co +1
        
     end if
     
@@ -106,10 +104,15 @@ DO WHILE (counter <= n)
     counter=counter +1
     
 END DO
+open(unit=1,file='test.csv',status='unknown')
+ write(1,*) xlist
+ write(1,*) zlist
+!PRINT*, xlist
 
+PRINT*, "Montecarlo fertig"
 
-CALL gittergurke(xlist,zlist)
-
+CALL gittergurke()
+CALL conzentration()
 
 !CALL positionen(1,1,1)
 !print*, zinew
@@ -178,7 +181,37 @@ ui=5
     IMPLICIT NONE
   
  END SUBROUTINE koks
-
+ 
+SUBROUTINE conzentration()
+    IMPLICIT NONE
+    !INTEGER:: dx,dz,
+    REAL:: q,dx,dz,dt, gitterold
+    print*, maxval	(gitter)
+    
+    dx=2
+    dz=2
+    q=150
+    dt=0.4
+    DO i = 0, 1000
+       DO j = 0, 1000
+       	gitterold=gitter(i,j)
+   	 gitter(i,j)= q*(gitterold*dt)/(n*dx*dz)
+    
+  	ENDDO
+  ENDDO
+  print*, maxval	(gitter)
+  !print*,gitter
+END SUBROUTINE conzentration
+ 
+ SUBROUTINE counterhe(ix,jz)
+    IMPLICIT NONE
+    INTEGER:: ix,jz,gitterold
+    !REAL, DIMENSION(:,:), ALLOCATABLE  :: gitter
+    
+    gitterold= gitter(ix,jz)
+    gitter(ix,jz)=gitterold +1
+    !print*,gitter(ix,jz)
+ END SUBROUTINE counterhe
  !SUBROUTINE conca(nj)
     !IMPLICIT NONE
    ! REAL:: nj,dt
@@ -192,13 +225,14 @@ ui=5
     !c= q*(nj*dt)/(n*dx*dz)
  !END SUBROUTINE conca
 
- SUBROUTINE gittergurke(xlist,zlist)
+ SUBROUTINE gittergurke()
     IMPLICIT NONE
     REAL:: differx,differz
-    REAL, DIMENSION(:), ALLOCATABLE  :: xlist,zlist,differxlist,differzlist,gurkenxlist,gurkenzlist
-    allocate( gurkenxlist(0) )
+    INTEGER :: ix,jz
+    REAL, DIMENSION(:), ALLOCATABLE  :: differxlist,differzlist,gurkenxlist,gurkenzlist
         allocate( gurkenzlist(0) )
-    DO i =0,1! SIZE(xlist)
+    DO i =0, SIZE(xlist)
+    print*, real(i)/SIZE(xlist)
         allocate( differxlist(0) )
         allocate( differzlist(0) )
         DO j=0,2000
@@ -209,20 +243,20 @@ ui=5
         differxlist =[differxlist,differx]
         ENDDO
         !print*, zlist(i)
-        !print*, difx(minloc(differzlist))
-        gurkenxlist=[gurkenxlist, difx(minloc(differxlist))/ difx(minloc(differzlist))]
-        gurkenzlist=[gurkenzlist, difx(minloc(differzlist))]
+      
+        !gurkenxlist=[gurkenxlist, difx(minloc(differxlist))/ difx(minloc(differzlist))]
+        !gurkenzlist=[gurkenzlist, difx(minloc(differzlist))]
+        !print*, ix
+        ix= INT(difx(minloc(differxlist,dim=1)))
+        jz= INT(difx(minloc(differzlist,dim=1)))
+        CALL counterhe( ix,jz )
         
         DEALLOCATE( differxlist )
         DEALLOCATE( differzlist )
         !difz(i)=i
     ENDDO
-    print*, gurkenxlist
+   ! print*, gurkenxlist
     print*, "Differenzen abgeschlossen"
-        DO i =0,1! SIZE(xlist)
-        !count(differxlist==i)
-        !count(differxlist==i)
-    ENDDO
  END SUBROUTINE gittergurke
 
 SUBROUTINE gaus()
@@ -253,25 +287,25 @@ END SUBROUTINE gaus
                       id_var_c, id_var_x, id_var_y,id_var_z,nc_stat
 
     REAL, DIMENSION(:), ALLOCATABLE ::  netcdf_data
-
+	INTEGER:: indexcountnet	
 !
 !-- Initialize the NetCDF file before the first output is made
     IF ( action == 'open' )  THEN
 
 !--    Deleting output file
-       OPEN(1, FILE='ubung1.nc')
+       OPEN(1, FILE='scheiße.nc')
        CLOSE(1, STATUS='DELETE')
     
 !
 !--    Open the netcdf file for writing
-       nc_stat = NF90_CREATE( 'ubung1.nc', NF90_NOCLOBBER, id_set )
+       nc_stat = NF90_CREATE( 'scheiße.nc', NF90_NOCLOBBER, id_set )
        IF ( nc_stat /= NF90_NOERR )  PRINT*, '+++ netcdf error'
 
 !
 !--    Define some global attributes of the dataset
        nc_stat = NF90_PUT_ATT( id_set, NF90_GLOBAL, 'Conventions', 'COARDS' )
        nc_stat = NF90_PUT_ATT( id_set, NF90_GLOBAL, 'title', &
-                               'UDM test' )
+                               'Bruder' )
 
 !
 !--    Define the spatial dimensions and coordinates
@@ -285,15 +319,13 @@ END SUBROUTINE gaus
        nc_stat = NF90_DEF_VAR( id_set, 'y', NF90_DOUBLE, id_dim_y, id_var_y )
        nc_stat = NF90_PUT_ATT( id_set, id_var_y, 'units', 'meters' )
        
-       nc_stat = NF90_DEF_DIM( id_set, 'z', nz+1, id_dim_z )
-       nc_stat = NF90_DEF_VAR( id_set, 'z', NF90_DOUBLE, id_dim_z, id_var_z )
-       nc_stat = NF90_PUT_ATT( id_set, id_var_z, 'units', 'meters' )
+
        
 !
 !--    Define the output array(s)
        nc_stat = NF90_DEF_VAR( id_set, 'c', NF90_DOUBLE,            &
-                               (/ id_dim_x, id_dim_y ,id_dim_z/), id_var_c )
-       nc_stat = NF90_PUT_ATT( id_set, id_var_c, 'units', 'mgm^-3' )
+                               (/ id_dim_x, id_dim_y /), id_var_c )
+       nc_stat = NF90_PUT_ATT( id_set, id_var_c, 'units', 'gm^-3' )
 
 !
 !--    Leave NetCDF define mode
@@ -302,8 +334,10 @@ END SUBROUTINE gaus
 !
 !--    Write data for x and z axis
        ALLOCATE( netcdf_data(0:nx) )
-       DO  i = 0, nx
-          netcdf_data(i) = i*dx
+       indexcountnet=0
+       DO  i = 1, nx
+          netcdf_data(i) = i
+          indexcountnet=indexcountnet+1
        ENDDO
 
        nc_stat = NF90_PUT_VAR( id_set, id_var_x, netcdf_data, &
@@ -311,23 +345,17 @@ END SUBROUTINE gaus
        DEALLOCATE( netcdf_data )
 
        ALLOCATE( netcdf_data(0:ny) )
-       DO  i = 0, ny
-          netcdf_data(i) = i*dy
+       indexcountnet=0
+       DO  i = 1, ny
+          netcdf_data(i) = i
+          indexcountnet=indexcountnet+1
        ENDDO
 
        nc_stat = NF90_PUT_VAR( id_set, id_var_y, netcdf_data, &
                                start = (/ 1 /), count = (/ ny+1 /) )
        DEALLOCATE( netcdf_data)
        !Z
-       ALLOCATE( netcdf_data(0:nz) )
-       DO  i = 0, nz,dz
-          netcdf_data(i) = i * dz
-       ENDDO
-
-       nc_stat = NF90_PUT_VAR( id_set, id_var_z, netcdf_data, &
-                               start = (/ 1 /), count = (/ nz+1 /) )
-       DEALLOCATE( netcdf_data )
-
+       
        RETURN
 
     ENDIF
@@ -346,9 +374,9 @@ END SUBROUTINE gaus
 
 !
 !--    Write the array data
-       nc_stat = NF90_PUT_VAR( id_set, id_var_c, c(0:nx,0:ny,0:nz), &
-                               start = (/ 1, 1 ,1/), &              
-                               count = (/ nx+1, ny+1 ,nz+1/) )
+       nc_stat = NF90_PUT_VAR( id_set, id_var_c, gitter(0:nx,0:ny), &
+                               start = (/ 1, 1/), &              
+                               count = (/ nx+1, ny+1 /) )
     ENDIF
 
  END SUBROUTINE netcdfout
