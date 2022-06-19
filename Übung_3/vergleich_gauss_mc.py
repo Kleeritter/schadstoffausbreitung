@@ -51,8 +51,8 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "koks.nc"
-filename2 = "scheiße.nc"
+filename = "uebung3.nc"
+filename2 = "mc.nc"
 
 units = "g/m$^3$"
 
@@ -65,20 +65,20 @@ z = nc_read_from_file_1d_all(filename, "z")
 
 conc2 = np.where(conc2 == -9999.0,np.nan,conc2)
 x2 = nc_read_from_file_1d_all(filename2, "x")
-z2 = nc_read_from_file_1d_all(filename2, "y")
+z2 = nc_read_from_file_1d_all(filename2, "z")
 
 
 print("plotting....")
 
-levels = [0.01,0.1,0.2, 0.3, 0.4, 0.5]
+levels = [0.1,0.2, 0.3, 0.4, 0.5]
 
 plt.figure()
 
 fig, ax = plt.subplots()
-CS2 = ax.contour(z2, x2, conc2, colors='red' )
-#CS = ax.contour(x, z, conc,levels, colors='black' )
+CS2 = ax.contour(z2, x2, conc2,levels, colors='red' )
+CS = ax.contour(x, z, conc,levels, colors='black' )
 
-plt.axis([0,1000,0,350])
+plt.axis([0,2000,0,350])
 
 
 ax.clabel(CS2, fontsize=9, inline=1)

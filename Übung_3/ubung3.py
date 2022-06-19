@@ -10,14 +10,14 @@ from netCDF4 import Dataset
 import netCDF4 as nc4
 from plotly.subplots import make_subplots
 
-n= 100 #!Anzahl Partikel
+n= 20000#!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
 xq =np.float64( 51) #!m
 counter=np.float64(0)
 xgrenz= np.float64(2000)# !m
-
+zgrenz=400
 ges=[]
 tl = np.float64(100)  #s Zeit
 dt = np.float64(0.4) # Zeitschritt
@@ -27,37 +27,21 @@ rl= math.exp(- dt/tl)
 nx = 1000
 ny = 50
 nz = 2000
-dx = 10
-dy = 10
-dz = 10
+dx = 2
+dy = 2
+dz = 2
 ui=5
 
+
+gitter = np.zeros((int(xgrenz/2 + 1),int(zgrenz/2 + 1)))
 bins=np.arange(0, 2000,2)
 positionsliste=[]
 xvalues=[]
 zvalues=[]
-c=np.zeros((nx, ny, nz))
-def gauss():
-    Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
-    ubalken= 5
-    h= 100
-    zq= 100
-    xq=0
-    yq=250
-    fg=0.504
-    fk=0.818
-    gg=0.265
-    gk=0.818
-    for i in range( 1, nx+1):
-        for j in range(1,ny+1):
-            for k in range(1, nz+1):
-       	        dey = fg*((dx*i)**fk)
-       	        dez = gg*((dx*i)**gk)
-                c[i-1,j-1,k-1] =(Q/(2* math.pi*dey*dez*ubalken))*math.exp((-((j*dy)-yq)**2)/(2*dey**2)) *(math.exp((-((k*dz)-h)**2)/(2*dez**2)) +math.exp((-((k*dz)+h)**2)/(2*dez**2)))
-    return
+
 cdc=[]
-nxx=2000
-nzz=2000
+nxx=int(xgrenz/dx +1)
+nzz=int(zgrenz/dz +1)
 cdkack=[]
 cd=np.zeros((nxx, nzz))
 def gauss2d():
@@ -72,8 +56,12 @@ def gauss2d():
             dez= 2*sigw**2*tl*((i/ubalken)-tl +tl*math.exp(-i/(ubalken*tl)))
             cd[j,i]=(Q/(math.sqrt(2* math.pi)*math.sqrt(dez)*ubalken) *(math.exp((-((j*dx)-zq)**2)/(2*dez)) +math.exp((-((j*dz)+zq)**2)/(2*dez))))
             #cdc.append(co)
+
     return
 
+
+q= 150
+dt= 0.4
 def concentration(nj):
     dx=2
     dz=2
@@ -90,6 +78,27 @@ def positionen(xi,wi,zi):
     zi= zi + wi*dt
     return xi,wi,zi
 
+
+def zuordnen(vi):
+    vr = round(vi)      # Runden der Partikelposition, um anschließend zu überprüfen, zu welchem Gittermittelpunkt zugeordnet werden muss
+    if vr > vi:
+        if (vr % 2) == 0:   # Fall: Aufgerundet und gerade
+            vm = vr - 1
+        else:
+            vm = vr         # Fall: Aufgerundet und ungerade
+        
+    elif vr < vi:
+        if (vr % 2) == 0:
+            vm = vr + 1     # Fall: Abgerundet und gerade
+        else:
+            vm = vr         # Fall: Abgerundet und ungerade
+    else:
+        if (vr % 2) == 0:
+            vm = vr + 1     # Fall: Bereit gerade
+        else:
+            vm = vr         # Fall: Bereits ungerade
+
+    return vm
 for i in tqdm(range(n)):
     xi=xq
     zi=zq
@@ -107,69 +116,25 @@ for i in tqdm(range(n)):
             xvalues.append(xi)
             zvalues.append(zi)
             positionsliste.append([xi,zi])
+            xm = int((zuordnen(xi) - 1) / dx)
+            zm = int((zuordnen(zi) - 1) / dz)
+            gitter[xm,zm] = gitter[xm,zm] + 1
 
 
         else:
-            #print(xi)
             xi,wi,zi =positionen(xi,wi,zi)
-            #print(xi)
             posi.append([xi,zi])
             xvalues.append(xi)
             zvalues.append(zi)
             positionsliste.append([xi,zi])
+            xm = int((zuordnen(xi) - 1) / dx)
+            zm = int((zuordnen(zi) - 1) / dz)
+            gitter[xm,zm] = gitter[xm,zm] + 1
 
     ges.append(posi)
-    """
-    df=pd.DataFrame.from_dict({
-        'xvalues': xvalues,
-        'zvalues': zvalues
-    })
-    df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
-    df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
-    """
-    """
-    df=pd.DataFrame.from_dict({
-        'values': posi,
-    })
-df['valuesort']=pd.qcut(df['values'],100, precision=6)
-"""
 
-xvalues.pop()
-zvalues.pop()
-df=pd.DataFrame.from_dict({
-        'xvalues': xvalues,
-        'zvalues': zvalues
-    })
-df['xvaluesort']=pd.cut(df['xvalues'],bins, precision=6)
-df['zvaluesort']=pd.cut(df['zvalues'],bins, precision=6)
-
-sx= pd.Series(xvalues)
-sx.value_counts(bins=bins)#.sort_index()
-
-alla=df.value_counts(["xvaluesort", "zvaluesort"])
-
-print(alla.head())
-klar=[]
-cplot=[]
-xplot=[]
-zplot=[]
-cklar=[]
-clar=[]
-for i in range(len(alla)):
-    cplot.append(concentration(alla.values[i]))
-    #close.append(gauss2d())
-    xplot.append(alla.index.values[i][0].mid)
-    zplot.append(alla.index.values[i][1].mid)
-    clar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid])
-    cklar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i]])
-    klar.append([alla.index.values[i][0].mid,alla.index.values[i][1].mid,alla.values[i],concentration(alla.values[i])])
-
-
-cc=np.zeros((nzz,nxx))
-print(max(cplot))
-for i,j,k in zip( xplot, zplot,cplot):
-    cc[int(j),int(i)]=k
-print(cc)  
+konzentrationen = [i * ((q * dt)/(n * dx * dz)) for i in gitter]
+ 
 
 gauss2d()
 
@@ -187,7 +152,7 @@ xnet[:]=[x for x in range(0,nxx)]
 znet[:]=[x for x in range(0,nzz)]
 f.close()
 
-print(cd)
+
 d = nc4.Dataset('mc.nc','w', format='NETCDF4') #'w' stands for write
 d.createDimension('x', nzz)
 d.createDimension('z', nxx)
@@ -195,12 +160,12 @@ cnet= d.createVariable('c', 'f8', ('x','z'))
 xnet= d.createVariable('x', 'f8', 'x')
 znet= d.createVariable('z', 'f8', 'z')
 
-cnet[:,:]=cc
-xnet[:]=[x for x in range(0,nzz)]
-znet[:]=[x for x in range(0,nxx)]
+cnet[:,:]=np.transpose(konzentrationen)
+znet[:]=np.arange(0.,nxx*dx,dx,dtype=float)
+xnet[:]=np.arange(0.,nzz*dz,dz,dtype=float)
 d.close()
 
-
+"""
 lig = make_subplots(    rows=2,
     specs=[[{"type": "contour"}],
             [{"type": "contour"}]],
@@ -220,5 +185,6 @@ lig.add_trace(
     ), row=1, col=1)
 
 
-lig.show()
+#lig.show()
 #lig.write_image("Übung_3/conturallagaus.png")
+"""
