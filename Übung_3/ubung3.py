@@ -10,13 +10,13 @@ from netCDF4 import Dataset
 import netCDF4 as nc4
 from plotly.subplots import make_subplots
 
-n= 20000#!Anzahl Partikel
+n= 30000#!Anzahl Partikel
 ubalken = np.float64(5) #!m/s
 wbalken =np.float64( 0) #!m/s
 zq =np.float64( 45) #!m
 xq =np.float64( 51) #!m
 counter=np.float64(0)
-xgrenz= np.float64(2000)# !m
+xgrenz= 2000# !m
 zgrenz=400
 ges=[]
 tl = np.float64(100)  #s Zeit
@@ -39,24 +39,23 @@ positionsliste=[]
 xvalues=[]
 zvalues=[]
 
-cdc=[]
 nxx=int(xgrenz/dx +1)
 nzz=int(zgrenz/dz +1)
-cdkack=[]
-cd=np.zeros((nxx, nzz))
+
+cd= np.zeros((nxx,nzz))
 def gauss2d():
     Q= 150 #!540 kg/h also 5.4e+8mg/h und so 150000 
     ubalken= 5
     dx=2
-    dz=2
-    for i,indexei in zip(range(1 , nzz),(range(1,nxx,2))):
-        for j,indexej in zip(range(1,nxx),(range(1,nxx,2))):
-            #dez = gg*((dx*i)**gk)
-       	    #dez = 2*sigw**2*tl*((i/ubalken)- ubalken +ubalken*math.exp(- (i/(ubalken*tl))))
-            dez= 2*sigw**2*tl*((i/ubalken)-tl +tl*math.exp(-i/(ubalken*tl)))
-            cd[j,i]=(Q/(math.sqrt(2* math.pi)*math.sqrt(dez)*ubalken) *(math.exp((-((j*dx)-zq)**2)/(2*dez)) +math.exp((-((j*dz)+zq)**2)/(2*dez))))
-            #cdc.append(co)
-
+    dz=2#
+    x = np.arange(0.0, xgrenz+dx, dx)
+    for i in range(1 , nx):
+        for j in range(1, nzz):
+            if (x[i]-xq <= 0.0):
+                cd[i,j] = 0.0
+            else:
+                dez= 2*sigw**2*tl*((i/ubalken)-tl +tl*math.exp(-i/(ubalken*tl)))
+                cd[i,j]=(Q/(math.sqrt(2* math.pi)*math.sqrt(dez)*ubalken) *(math.exp((-((j*dx)-zq)**2)/(2*dez)) +math.exp((-((j*dz)+zq)**2)/(2*dez))))
     return
 
 
@@ -138,34 +137,34 @@ konzentrationen = [i * ((q * dt)/(n * dx * dz)) for i in gitter]
 
 gauss2d()
 
-f = nc4.Dataset('koks.nc','w', format='NETCDF4') #'w' stands for write
+f = nc4.Dataset('ne.nc','w', format='NETCDF4') #'w' stands for write
 #tempgrp = f.createGroup('Temp_data')
 #tempgrp.createDimension('c', (n))
 f.createDimension('x', nxx)
 f.createDimension('z', nzz)
-cnet= f.createVariable('c', 'f8', ('x','z'))
+cnet= f.createVariable('c', 'f8', ('z','x'))
 xnet= f.createVariable('x', 'f8', 'x')
 znet= f.createVariable('z', 'f8', 'z')
 
-cnet[:,:]=cd
-xnet[:]=[x for x in range(0,nxx)]
-znet[:]=[x for x in range(0,nzz)]
+cnet[:]=np.transpose(cd)
+xnet[:]=np.arange(0.,nxx*dx,dx,dtype=float)
+znet[:]=np.arange(0.,nzz*dz,dz,dtype=float)
 f.close()
 
 
-d = nc4.Dataset('mc.nc','w', format='NETCDF4') #'w' stands for write
+d = nc4.Dataset('1kk.nc','w', format='NETCDF4') #'w' stands for write
 d.createDimension('x', nzz)
 d.createDimension('z', nxx)
 cnet= d.createVariable('c', 'f8', ('x','z'))
 xnet= d.createVariable('x', 'f8', 'x')
 znet= d.createVariable('z', 'f8', 'z')
 
-cnet[:,:]=np.transpose(konzentrationen)
+cnet[:]=np.transpose(konzentrationen)
 znet[:]=np.arange(0.,nxx*dx,dx,dtype=float)
 xnet[:]=np.arange(0.,nzz*dz,dz,dtype=float)
 d.close()
-
 """
+
 lig = make_subplots(    rows=2,
     specs=[[{"type": "contour"}],
             [{"type": "contour"}]],

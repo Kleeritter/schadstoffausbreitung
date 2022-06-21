@@ -51,8 +51,8 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "uebung3.nc"
-filename2 = "mc.nc"
+filename = "koks.nc"
+filename2 = "1kk.nc"
 
 units = "g/m$^3$"
 
@@ -81,7 +81,7 @@ CS = ax.contour(x, z, conc,levels, colors='black' )
 plt.axis([0,2000,0,350])
 
 
-ax.clabel(CS2, fontsize=9, inline=1)
+ax.clabel(CS, fontsize=9, inline=1)
 
 plt.title('Concentration (' + units + ')')
 plt.xlabel('x (m)')
