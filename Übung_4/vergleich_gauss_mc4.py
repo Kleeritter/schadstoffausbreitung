@@ -75,7 +75,7 @@ def vergleich():
    plt.figure()
 
    fig, ax = plt.subplots()
-   CS2 = ax.contour(z2, x2, conc2, colors='red' )
+   CS2 = ax.contour(z2, x2, conc2,levels, colors='red' )
    CS = ax.contour(x, z, conc,levels, colors='black' )
 
    plt.axis([0,135,0,35])

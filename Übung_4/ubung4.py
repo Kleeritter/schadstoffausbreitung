@@ -1,5 +1,6 @@
 from collections import UserString
 import math
+from matplotlib.pyplot import tick_params
 from tqdm import tqdm
 #import pandas as pd
 #mport matplotlib.pyplot as plt
@@ -10,22 +11,22 @@ import math
 from netCDF4 import Dataset
 import netCDF4 as nc4
 #from plotly.subplots import make_subplots
-import numba # CUDA zur Auslagerung auf die GPU
-from numba import cuda
+#import numba # CUDA zur Auslagerung auf die GPU
+#from numba import cuda
 import vergleich_gauss_mc4
 from vergleich_gauss_mc4 import vergleich #Visualisierung der NC Datei im Vergleich
 
 def ubu3 ():
-    n= 20000#!Anzahl Partikel
+    n= 2000#!Anzahl Partikel
     ubalken = np.float64(5) #!m/s
     wbalken =np.float64( 0) #!m/s
-    zq =np.float64( 0.5) #!m
-    xq =np.float64( 0.008) #!m
+    xq =np.float64( 0.5) #!m
+    zq =np.float64( 0.008) #!m
     counter=np.float64(0)
     xgrenz= 110# !m
     zgrenz=25
     ges=[]
-    #tl = np.float64(100)  #s Zeit
+    tl = np.float64(100)  #s Zeit
     dt = np.float64(0.4) # Zeitschritt
 
     
@@ -41,6 +42,8 @@ def ubu3 ():
     znull=0.008
     sigu= 2.5*ustern #m/s
     sigw= 1.3*ustern #m/s
+    #sigu= np.float64(0) #m/s
+    #sigw= np.float64(0.39) #m/s
 
 
 
@@ -78,20 +81,60 @@ def ubu3 ():
                 vm = vr         # Fall: Bereits ungerade
 
         return vm
+    
+    def gita(vi):
+        vr = round(vi)      # Runden der Partikelposition, um anschließend zu überprüfen, zu welchem Gittermittelpunkt zugeordnet werden muss
+        if vr > vi:
+            if (vr % 2) == 0:   # Fall: Aufgerundet und gerade
+                vm = vr - 1 
+            else:
+                vm = vr         # Fall: Aufgerundet und ungerade
+            
+        elif vr < vi:
+            if (vr % 2) == 0:
+                vm = vr + 1     # Fall: Abgerundet und gerade
+            else:
+                vm = vr         # Fall: Abgerundet und ungerade
+        else:
+            if (vr % 2) == 0:
+                vm = vr + 1     # Fall: Bereit gerade
+            else:
+                vm = vr         # Fall: Bereits ungerade
+
+        return vm
+
     def prandl(zi):
-        ubalken= (ustern/k)*math.log(zi/znull)
+        if zi ==0:
+            ubalken= 0
+        else:
+            ubalken= (ustern/k)*math.log(abs(zi)/znull)
+            
         return ubalken
 
     def prandltl(zi):
         tl= ((k*ustern)/sigw**2) *abs(zi)
         return tl
 
-    def positionen(xi,wi,zi,tl):
+    def prairie():
+
+        return
+    def exaktgitter(xi,xold,zi,zold):
+        maxstep= math.ceil(xi)-math.floor()
+
+        xsi=math.ceil(xi)
+        zsi=math.ceil(zi)
+
+        ti=(xsi -xold)/(xi-xold)
+        tj=(zsi -zold)/(zi-zold)
+        tku=sorted(ti,tj)
+        return
+    def positionen(xi,wi,zi,tl,ui):
         rl= math.exp(- dt/tl)
         rr=np.float64( random.gauss(0,1))
         xi= xi + ui*dt
         wi= rl*wi + math.sqrt((1 - rl**2))*sigw* rr
         zi= zi + wi*dt
+        #print(xi,zi)
         return xi,wi,zi
 
     def konki(xi,zi,xold,zold):
@@ -107,6 +150,8 @@ def ubu3 ():
         return 
 
 
+
+
     def main():
         for i in tqdm(range(n)):
             
@@ -116,15 +161,19 @@ def ubu3 ():
             ui=ubalken
             wi=wbalken
 
-            while (xi<= xgrenz):
+            while (math.ceil(xi)< xgrenz):
                 #print(zi)
                 xold=xi
                 zold=zi
+                
+                #ui=uberechnung(zi)
                 if (zi<znull):
                     zi=-zi
                     wi= -wi
                     tl=prandltl(zi)
-                    xi,wi,zi =positionen(xi,wi,zi,tl)
+                    #tl=
+                    ui=prandl(zi)
+                    xi,wi,zi =positionen(xi,wi,zi,tl,ui)
                     #xm = int((zuordnen(xi) - 1) / dx)
                     #zm = int((zuordnen(zi) - 1) / dz)
                     #gitter[xm,zm] = gitter[xm,zm] + 1
@@ -133,7 +182,8 @@ def ubu3 ():
                     
                 else:
                     tl=prandltl(zi)
-                    xi,wi,zi =positionen(xi,wi,zi,tl)
+                    ui=prandl(zi)
+                    xi,wi,zi =positionen(xi,wi,zi,tl,ui)
                     xm = int((zuordnen(xi) - 1) / dx)
                     zm = int((zuordnen(zi) - 1) / dz)
                     gitter[xm,zm] = gitter[xm,zm] + 1
