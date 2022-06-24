@@ -96,4 +96,4 @@ plt.show()
 #cbar.ax.set_ylabel('Lufttemperatur (°C)')
 
 
-plt.savefig("fileout", format='png', dpi=300)
+#plt.savefig("fileout", format='png', dpi=300)
