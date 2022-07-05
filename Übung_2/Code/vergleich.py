@@ -4,7 +4,6 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-print(random.gauss(0,1))
 
 
 n= 1000#!Anzahl Partikel
@@ -91,9 +90,9 @@ for i in tqdm(range(len(ges))):
 plt.title("Quotient DP/ SP für X Koordinate")
 plt.xlabel("X in m")
 plt.ylabel("Quotient")
-plt.show()
-plt.savefig("qX.png", dpi=150)
+plt.savefig("qX.png", dpi=300)
 
+plt.close()
 for i in tqdm(range(len(gesz))):
     x=[]
     z=[]
@@ -105,5 +104,4 @@ for i in tqdm(range(len(gesz))):
 plt.title("Quotient DP/ SP für Z Koordinate")
 plt.xlabel("Z in m")
 plt.ylabel("Quotient")
-plt.show()
-plt.savefig("qZ.png", dpi=150)
+plt.savefig("qZ.png", dpi=300)

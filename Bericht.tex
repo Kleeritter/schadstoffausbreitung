@@ -39,7 +39,7 @@
 \clearscrheadings
 \setlength{\headheight}{2.5\baselineskip}
 \setlength{\footheight}{1\baselineskip}
-\chead[]{ \\ Übung 4}
+\chead[]{ \\  Abschlussbericht}
 \ihead[]{\\ \authA}
 \ohead[]{Datum: \today }
 \ofoot[]{\pagemark}
@@ -160,11 +160,146 @@
 \end{center}
 \end{titlepage}
 \stepcounter{page}
-
+\tableofcontents  
 \newpage
 
-
+\section{Übung 1}
 \section{Ergebnisse}
+Gefragt war in dieser Übung nach dem Ort der höchsten Schadstoffkonzentration und nach der Größe dieser. Dazu sollten xy,xz und yz Konturschnitte in jeweils unterschiedlichen Höhen angegeben werden.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_1/Bilder/xy_plot.png}
+    \caption{Konturschnitt in XY Ebene bei $z=0 \si{m}$}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_1/Bilder/yz_plot.png}
+    \caption{Konturschnitt in YZ Ebene bei $x=1000 \si{m}$}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_1/Bilder/xz_plot.png}
+    \caption{Konturschnitt in XZ Ebene bei $y=250 \si{m}$}
+    \label{fig:my_label}
+\end{figure}
+Genauer anaylsiert wurde der Ort der höchsten Konzentration in Fortran selbst. Die größte Konzentration wurde gefunden am Ort:
+
+\begin{equation}
+    c(2,26,11)=826,542053 \si{\frac{mg}{m^3}}
+\end{equation}
+Was dem Ort
+\begin{equation}
+    r=(10\si{m},250\si{m},100\si{m})
+\end{equation}
+entspricht.
+\section{Übung 2}
+\subsection{Partikeltrajektorien}
+Gefragt war in dieser Übung nach den Partikeltrajektorien für eine zufällige Linienquelle nach dem Monte Carlo Modell. Für die Berechnung der Partikeltrajektorien und das Visualisieren wurde Python verwendet.
+Zunächst mit 10 Partikeln:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/Partikeltrajektorienzehn.png}
+    \caption{Trajektorien der einzelnen Parktikel N=10}
+    \label{fig:my_label}
+\end{figure}
+Und Anschließend mit 1000 Partikeln.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/Partikeltrajektorien.png}
+    \caption{Trajektorien der einzelnen Parktikel N= 1000}
+    \label{fig:my_label}
+\end{figure}
+\subsection{Vergleich SP und DP}
+Im zweiten Aufgabenteil wurde gefragt ob es einen Unterschied macht, ob für die Berechnung der Trajektorien Double oder Single Precission (REAL in Fortran) verwendet wird. Python verwendet standardmäßig Double Precision was einer Bitprezision von 64 bit entspricht. Mithilfe von dem Paket numpy können auch floats mit Single Precision also 32 bit verwendet werden. Um die Unterschiede zu visualisieren wurde jeweils ein  Quotient gebildet:
+Zunächst für die X Koordinate:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/qX.png}
+    \caption{Vergleich DP/SP für die X Koordinate}
+    \label{fig:my_label}
+\end{figure}
+Hier entstehen in der Berechung keine Unterschiede.
+Und der Quotient für die Z Koordinate
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/qZ.png}
+    \caption{Vergleich DP/SP für die Z Koordinate}
+    \label{fig:my_label}
+\end{figure}
+Hier entstehen in der Berechnung Unterschiede. Besonders die Berechnungen mit der Zufallszahl weisen leichte Differenzen auf sind aber vernachlässigbar klein bzw nur vereinzelte Partkiel sind betroffen. Im direkten Vergleich
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/qXh.png}
+    \caption{DP Trajektorien}
+    \label{fig:my_label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_2/Bilder/qZh.png}
+    \caption{SP Trahjektorien}
+    \label{fig:my_label}
+\end{figure}
+
+sind diese Unterschiede nicht sichtbar.
+\section{Übung 3}
+
+\subsection{Vergleichsplot}
+Gefragt war in dieser Übung nach den Unterschieden in der Berechnung  für eine zufällige Linienquelle nach dem Monte Carlo Modell und dem Gaußmodell. Für die Berechnung der Konzentrationen und das Visualisieren wurde Python verwendet.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{Übung_3/Bilder/30kwide.png}
+    \caption{Vergleich MC und Gauß für N=30000}
+    \label{fig:my_label}
+\end{figure}
+In Abb. 1 ist bereits eine gute Annäherung des Montecarlo Modells an das Gaußmodell zu erkennen. Die Anzahl der Teilchen hat beim Montecarlo Modell einen hohen Einfluss auf die Güte des Modells. Bei einer geringeren Anzahl wie 
+
+\begin{equation}
+    N=10000
+\end{equation}
+sind größere Abweichungen zum Gaußmodell zu erkennen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_3/Bilder/10k.png}
+    \caption{Vergleich MC und Gauß für N=10000}
+    \label{fig:my_label}
+\end{figure}
+Bei einer mittleren Anzahl wie 
+
+\begin{equation}
+    N=20000
+\end{equation}
+gleicht sich das MC Modell bedeutend besser an das Gaußmodell an.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_3/Bilder/20k.png}
+    \caption{Vergleich MC und Gauß für N=20000}
+    \label{fig:my_label}
+\end{figure}
+Bei einer hohen Anzahl wie 
+
+\begin{equation}
+    N=30000
+\end{equation}
+gleicht sich das MC Modell sehr gut an das Gaußmodell an.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{Übung_3/Bilder/30k.png}
+    \caption{Vergleich MC und Gauß für N=30000}
+    \label{fig:my_label}
+\end{figure}
+
+Trotz Bemühungen Berechnungen innerhalb von Python mittels CUDA auf die GPU auszulagern kam mein Rechner bei höherem N an seine Grenzen. Es bleibt anzunehmen, das ein höheres N nur noch marginale Verbesserung in der Darstellung bewirkt.
+\subsection{N und nx}
+Im zweiten Aufgabenteil wurde gefragt, wie N nx und nz gewählt werden müssen. Für nx und nz wurde ein Wert von 2000 gewählt, nx und ny spannen so das Gitterrasterauf in denen die Konzentrationen verlaufen sind. Die Anzahl der Partikel bestimmt maßgeblich die Güte des MC Modelle.Bei steigendem N sind können Unterschiede in den Konzentrationen zunehmend feiner aufgelöst werden, auf Kosten der Rechenzeit. in der Übung hat sich ein Wert für n von 30000 als guter Mittelweg erwiesen.Damit muss ich meine vorherige Annahme revidieren.
+
+\section{Übung 4}
 \subsection{Vergleichsplot}
 Gefragt war in dieser Übung nach einem Vergleich der MonteCarlo Methode und dem Prairie-Grass-Experiment. Zusätlich sollte das MonteCarlo Modell um eine Integration der Prandtlschicht erweitert werden. Eine besondere Herausforderung war zu dem die Integration einer exakten Gitterauswertung. Für die Berechnung der Konzentrationen und das Visualisieren wurde Python verwendet. Dargestellt wurden jeweils die berechnete Konzentrationen mit dem MonteCarlo Modell und die gemessenen Werte aus dem Experiment für verschiedene Höhen.
 
@@ -176,7 +311,7 @@ Q= 150 \frac{g}{s}
 Dies liefert den folgenden Graphen: 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{Bilder/150.png}
+    \includegraphics[scale=1]{Übung_4/Bilder/150.png}
     \caption{Vergleich MC und Grass für Q=150}
     \label{fig:my_label}
 \end{figure}
@@ -190,7 +325,7 @@ Q= 0.15 \frac{g}{s}
  liefert folgenden Graphen:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{Bilder/015.png}
+    \includegraphics[scale=1]{Übung_4/Bilder/015.png}
     \caption{Vergleich MC und Grass für Q=0.15}
     \label{fig:my_label}
 \end{figure}
@@ -203,7 +338,7 @@ Q= 1 \frac{g}{s}
 liefert optimale Ergebnisse:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{Bilder/1.png}
+    \includegraphics[scale=1]{Übung_4/Bilder/1.png}
     \caption{Vergleich MC und Grass für Q= 1}
     \label{fig:my_label}
 \end{figure}
@@ -211,10 +346,23 @@ liefert optimale Ergebnisse:
 Das MonteCarlo Modell 0schafft hier eine sehr gute Annäherung an das Experiment über alle Höhenbereiche hinweg. Lediglich bei Höhen unter 2m gibt es eine stärkere Abweichung. Dies könnte in der nicht optimierten komplexen Reflexion unter $z_{0}$ liegen, welche in der nächsten Übung in den Ablauf integriert werden kann.
 
 
-\section{Quellcode}
+\section{Quellcodes}
+\section{Übung2}
 \subsection{Python}
+\subsubsection{Darstellung}
+%\lstinputlisting[language=Python]{Übung_2/Code/bessererdp.py}
+\subsubsection{Vergleich DP vs SP}
+%\lstinputlisting[language=Python]{Übung_2/Code/vergleich.py}
+\subsection{Übung3}
+\subsubsection{Darstellung}
+%\lstinputlisting[language=Python]{Übung_3/Code/ubung3.py}
+\subsubsection{Vergleich Gauss vs MC}
+%\lstinputlisting[language=Python]{Übung_3/Code/vergleich_gauss_mc.py}
+\subsection{Übung4}
 \subsubsection{Angepasstes MC Modell}
-\lstinputlisting[language=Python]{Code/colab.py}
+%\lstinputlisting[language=Python]{Übung_4/Code/colab.py}
 \subsubsection{Darstellung und Vergleich mit dem Grass Experiment}
-\lstinputlisting[language=Python]{Code/grassmodul.py}
+%\lstinputlisting[language=Python]{Übung_4/Code/grassmodul.py}
+
+
 \end{document}

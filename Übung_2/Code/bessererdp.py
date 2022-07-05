@@ -17,7 +17,7 @@ xgrenz= np.float64(2000)# !m
 
 ges=[]
 tl = np.float64(100)  #s Zeit
-dt = np.float64(0.4) # Zeitschritt
+dt = np.float64(4) # Zeitschritt
 sigu= np.float64(0) #m/s
 sigw= np.float64(0.39) #m/s
 rl= math.exp(- dt/tl)
@@ -56,11 +56,10 @@ for i in tqdm(range(len(ges))):
     for j in range(len(ges[i])):
         x.append(ges[i][j][0])
         z.append(ges[i][j][1])
-    plt.plot(x,z)
+    plt.plot(x,z, ls='dotted')
 
 plt.title("Partikeltrajektorien")
 plt.xlabel("Distanz  X in m")
-plt.ylabel("Höhe Z in m")
-plt.show()
-plt.savefig("Partikeltrajektorien.png", dpi=150)
+plt.ylabel("Hoehe Z in m")
+plt.savefig("Partikeltrajektorien.png", dpi=600)
 
