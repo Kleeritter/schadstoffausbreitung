@@ -1,8 +1,0 @@
-\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\babel@toc {ngerman}{}
-\contentsline {section}{\numberline {1}Ergebnisse}{4}{section.2}%
-\contentsline {subsection}{\numberline {1.1}Vergleichsplot}{4}{subsection.3}%
-\contentsline {section}{\numberline {2}Quellcode}{4}{section.6}%
-\contentsline {subsection}{\numberline {2.1}Python}{4}{subsection.7}%
-\contentsline {subsubsection}{\numberline {2.1.1}Darstellung}{4}{subsubsection.8}%
-\contentsline {subsubsection}{\numberline {2.1.2}Vergleich Gauss vs MC}{4}{subsubsection.9}%
