@@ -6,7 +6,7 @@ import netCDF4 as nc4
 import matplotlib.pyplot as plt
 from grassmodul import grass
 ges = [] # was soll das sein?
-n = 10**3 # !Anzahl Partikel
+n = 10**5 # !Anzahl Partikel
 ubalken = np.float64(5)  # !m/s
 wbalken = np.float64(0)  # !m/s
 xq = np.float64(0)  # !m
@@ -43,7 +43,6 @@ def gg(xold, zold, xi, zi, t):
     return int(xg), int(zg)
 
 def prandl(zi):
-
     if zi < znull:
         ubalken = 0
     else:
@@ -130,7 +129,7 @@ def gitweis(xi, zi):
     #if zm > int(zgrenz / 2):
      #   zm = int(zgrenz / 2)
     gitter[xm, zm] = gitter[xm, zm] + 1
-    konk[xm, zm] += 0*((q * dt)/(n * dx * dz))
+    konk[xm, zm] += ((q * dt)/(n * dx * dz))
     return
 
 for i in tqdm(range(n)):
@@ -140,13 +139,11 @@ for i in tqdm(range(n)):
     wi = wbalken
     dt=0
     while (math.ceil(xi + ubalken * dt) < xgrenz) and (math.ceil(zi) < zgrenz):
-        print(zi)
         xold = xi
         zold = zi
 
-        if (zi < znull):
-            difz= abs(znull-zi)
-            zi = zi +2*difz
+        if (zi < 0):
+            zi = -zi
             wi = -wi
             tl, dt = prandltl(zi)
             ui = prandl(zi)

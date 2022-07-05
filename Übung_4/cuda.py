@@ -106,7 +106,7 @@ def ubu3 ():
             wi=wbalken
 
             while (xi<= xgrenz):
-
+                print(zi)
                 if (zi<0):
                     zi=-zi
                     wi= -wi
