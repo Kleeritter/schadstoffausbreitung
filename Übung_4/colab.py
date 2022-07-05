@@ -6,7 +6,7 @@ import netCDF4 as nc4
 import matplotlib.pyplot as plt
 from grassmodul import grass
 ges = [] # was soll das sein?
-n = 10**3 # !Anzahl Partikel
+n = 10**4 # !Anzahl Partikel
 ubalken = np.float64(5)  # !m/s
 wbalken = np.float64(0)  # !m/s
 xq = np.float64(0)  # !m
@@ -31,8 +31,7 @@ sigw = 1.3 * ustern  # m/s
 
 gitter = np.zeros((int(xgrenz), int(zgrenz)))
 konk = np.zeros((int(xgrenz), int(zgrenz)))
-q = 150
-
+q = 1
 def gg(xold, zold, xi, zi, t):
 
     xg = xold + t * (xi - xold)
@@ -56,7 +55,7 @@ def prandltl(zi):
     if (0.1*tl)>((k * ustern) / sigw ** 2) * abs(2): #falls dt kleiner als tl in 2 m Höhe
         dt = 0.1*tl
     else:
-        dt = 0.1*((k * ustern) / sigw ** 2) * abs(2)
+        dt = ((k * ustern) / sigw ** 2) * abs(2)
 
     return tl,  dt
 
@@ -69,6 +68,7 @@ def rangecheck(xi, xold, zi, zold):
         gitweis(xi, zi)
     else:
         exaktgitter(xi, xold, zi, zold)
+        
 
 def exaktgitter(xi, xold, zi, zold):
     ti = []
@@ -130,7 +130,7 @@ def gitweis(xi, zi):
     #if zm > int(zgrenz / 2):
      #   zm = int(zgrenz / 2)
     gitter[xm, zm] = gitter[xm, zm] + 1
-    konk[xm, zm] += 0*((q * dt)/(n * dx * dz))
+    konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
     return
 
 for i in tqdm(range(n)):
@@ -140,7 +140,7 @@ for i in tqdm(range(n)):
     wi = wbalken
     dt=0
     while (math.ceil(xi + ubalken * dt) < xgrenz) and (math.ceil(zi) < zgrenz):
-        print(zi)
+        #print(zi)
         xold = xi
         zold = zi
 
@@ -157,7 +157,7 @@ for i in tqdm(range(n)):
         else:
             tl, dt = prandltl(zi)
             ui = prandl(zi)
-            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dx)  # ,dt)
+            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt)  # ,dt)
             # gitweis(xi,zi)
             rangecheck(xi, xold, zi, zold)
 
