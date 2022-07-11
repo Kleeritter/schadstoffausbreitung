@@ -4,7 +4,7 @@ using ProgressBars
 #ncinfo("Übung_5/input_uebung5.nc")
 #readdir()
 #x = ncread("a.nc", "c")
-n = 10^4 # !Anzahl Partikel
+n = 10 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
 xq = 0  # !m
@@ -23,19 +23,25 @@ znull = 0.008
 sigu = 2.5 * ustern  # m/s
 sigw = 1.3 * ustern  # m/s
 q = 0.1
-gitter=zeros(Float64,xgrenz+1,zgrenz+1)
-konk=zeros(Float64,xgrenz+1,zgrenz+1)
+gitter=zeros(xgrenz+1,500)
+konk=zeros(xgrenz+1,500)
 
 
 function gg(xold, zold, xi, zi, t)
 
     xg = xold + t * (xi - xold)
     zg = zold + t * (zi - zold)
+    #println(floor(zg))
     #prInt64("der wert",xg, t, xold,xi)
     if xg>xgrenz
-        xg=xgrenz-1
+        xg=xgrenz
     end
-    return floor(xg), floor(zg)
+    if floor(zg) <0
+        print("olla")
+        zg=0
+    end
+    #println(floor(zg))
+    return convert(Int32, floor(xg)+1), convert(Int32, floor(zg)+1)
 end
 
 function prandl(zi)
@@ -56,25 +62,28 @@ function prandltl(zi)
     return tl,  dt
 end  
 
-function rangecheck(xi, xold, zi, zold)
+function rangecheck(xi, xold, zi, zold,dt)
     rangex = floor(xi - xold)
     rangez = floor(zi - zold)
     if (rangex + rangez) < 2
         gitweis(xi, zi)
     else
-        exaktgitter(xi, xold, zi, zold)
+        exaktgitter(xi, xold, zi, zold,dt)
     end
 end
 
-function exaktgitter(xi, xold, zi, zold)
+function exaktgitter(xi, xold, zi, zold,dt)
     ti = []
     tj = []
     toks = []
-    rangex = floor(xi - xold)
-    rangez = floor(zi - zold)
-    xsi=0
-    zsi=0
+    rangex = convert(Int64,floor(xi - xold))
+    rangez = convert(Int64,floor(zi - zold))
+    #xsi=0
+    #zsi=0
+    xsi = ceil(xold)
+    zsi = ceil(zold)
     for i in 0:rangex
+        
         if i == 0
             xsi = ceil(xold)
             push!(toks,(xsi - xold) / (xi - xold))
@@ -89,19 +98,20 @@ function exaktgitter(xi, xold, zi, zold)
             push!(toks,(zsi - zold) / (zi - zold))
         else
             zsi += 1
+            #println(zsi)
             push!(toks,(zsi - zold) / (zi - zold))
         end
     end
     tku = sort!(toks)
+    #println(tku)
     for i in 2:length(tku)+1
         ti = tku[i]
         told = tku[i - 1]
         t = mean([told, ti])
         posx, posz = gg(xold, zold, xi, zi, t)
-        #if posz>zgrenz or posx>xgrenz:
-         #   break
-        gitter[posx+1, posz+1] += (tku[i] - tku[i-1] )* dt
-        konk[posx+1, posz+1] += (tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz))
+        println(posz)
+        #gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt)
+        konk[posx, abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz)))
     return
        # end
     end
@@ -118,8 +128,8 @@ function positionen(xi, wi, zi, tl, ui, dt )
 end
 
 function gitweis(xi, zi)
-    xm = floor((xi))
-    zm = floor((zi))
+    xm = convert(Int64,floor((xi)))
+    zm = convert(Int64,floor((zi)))
     gitter[xm, zm] = gitter[xm, zm] + 1
     konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
     return
@@ -133,22 +143,23 @@ for i in ProgressBar(0:n)
     while (ceil(xi + ubalken * dt) < xgrenz) & (ceil(zi) < zgrenz)
         xold = xi
         zold = zi
-
+        #println(zi)
         if (zi < znull)
             difz= abs(znull-zi)
             zi = zi +2*difz
             wi = -wi
+            #println(zi)
             tl, dt = prandltl(zi)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt ) 
-            rangecheck(xi, xold, zi, zold)
+            rangecheck(xi, xold, zi, zold,dt)
 
 
         else
             tl, dt = prandltl(zi)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt)
-            rangecheck(xi, xold, zi, zold)
+            rangecheck(xi, xold, zi, zold,dt)
         end
     end
 end
