@@ -1,10 +1,12 @@
 using NetCDF
 using Random, Distributions
 using ProgressBars
+using LinearAlgebra
+using Plots
 #ncinfo("Übung_5/input_uebung5.nc")
 #readdir()
 #x = ncread("a.nc", "c")
-n = 10^4 # !Anzahl Partikel
+n = 10^5 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
 xq = 0  # !m
@@ -16,15 +18,15 @@ zgrenz = 25
 dx = 1
 dy = 1
 dz = 1
-
+ges=[]
 ustern = 0.35
 k = 0.38
 znull = 0.008
 sigu = 2.5 * ustern  # m/s
 sigw = 1.3 * ustern  # m/s
-q = 0.1
-gitter=zeros(xgrenz+1,500)
-konk=zeros(xgrenz+1,500)
+q = 5
+gitter=zeros(xgrenz+1,zgrenz+1)
+konk=zeros(xgrenz+1,zgrenz+1)
 
 
 function gg(xold, zold, xi, zi, t)
@@ -127,10 +129,13 @@ function positionen(xi, wi, zi, tl, ui, dt )
 end
 
 function gitweis(xi, zi,dt)
+    if floor(zi) <0
+        zi=0
+    end
     xm = abs(convert(Int64,floor((xi+1))))
     zm = abs(convert(Int64,floor((zi+1))))
-    #gitter[xm, zm] = gitter[xm, zm] + 1
-    #konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
+    gitter[xm, zm] = gitter[xm, zm] + 1
+    konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
     return
 end
 for i in ProgressBar(0:n)
@@ -152,16 +157,37 @@ for i in ProgressBar(0:n)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt ) 
             rangecheck(xi, xold, zi, zold,dt)
-
+            push!(posi, [xi,zi])
 
         else
             tl, dt = prandltl(zi)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt)
             rangecheck(xi, xold, zi, zold,dt)
+            push!(posi, [xi,zi])
         end
     end
+    push!(ges,posi)
+end
+"""
+gr();
+for i in tqdm(1:length(ges))
+    x=[]
+    z=[]
+    for j in 1:length(ges[i])
+        push!(x,(ges[i][j][1]))
+        push!(z,(ges[i][j][2]))
+    end
+    plot(x,z)
+ 
+end
+savefig("alla.png")
+"""
+#print(maximum(konk))
+if  isfile("test.nc") == true
+    print("alla")
+    rm("test.nc",force=true)
 end
 
-nccreate(filename, varname, "x1", collect(11:20), "t", 20, Dict("units"=>"s"), atts=attribs)
-ncwrite(d, filename, varname)
+nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
+ncwrite(konk, "test.nc", "c")

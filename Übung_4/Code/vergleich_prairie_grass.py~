@@ -52,15 +52,15 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "test.nc"
-fileout = "bra.png"
+filename = "prada.nc"
+fileout = "uebung4.png"
 units = "s/m$^2$"
 
 conc = nc_read_from_file_2d_all(filename, "c")
 
 conc = np.where(conc == -9999.0,np.nan,conc)
-x = nc_read_from_file_1d_all(filename, "x")
-z = nc_read_from_file_1d_all(filename, "z")
+x = nc_read_from_file_1d_all(filename, "z")
+z = nc_read_from_file_1d_all(filename, "x")
 
 
 for i in range(0,len(x)):
@@ -82,7 +82,7 @@ fig = plt.figure()
 ax = plt.axes()
 
 ax.plot(pg, z, label='monte')
-ax.plot(pg_mod, z, label='grass')
+ax.plot(pg_mod, x, label='grass')
 
 plt.xlabel('Concentration (' + units + ')')
 plt.ylabel('z (m)')
