@@ -6,7 +6,7 @@ import netCDF4 as nc4
 import matplotlib.pyplot as plt
 from grassmodul import grass
 
-n = 10**4 # !Anzahl Partikel
+n = 10**6 # !Anzahl Partikel
 ubalken = np.float64(5)  # !m/s
 wbalken = np.float64(0)  # !m/s
 xq = np.float64(0)  # !m

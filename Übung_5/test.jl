@@ -4,7 +4,7 @@ using ProgressBars
 #ncinfo("Übung_5/input_uebung5.nc")
 #readdir()
 #x = ncread("a.nc", "c")
-n = 10 # !Anzahl Partikel
+n = 10^4 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
 xq = 0  # !m
@@ -37,11 +37,10 @@ function gg(xold, zold, xi, zi, t)
         xg=xgrenz
     end
     if floor(zg) <0
-        print("olla")
         zg=0
     end
     #println(floor(zg))
-    return convert(Int32, floor(xg)+1), convert(Int32, floor(zg)+1)
+    return convert(Int64, floor(xg+1)), convert(Int64, floor(zg+1))
 end
 
 function prandl(zi)
@@ -66,7 +65,7 @@ function rangecheck(xi, xold, zi, zold,dt)
     rangex = floor(xi - xold)
     rangez = floor(zi - zold)
     if (rangex + rangez) < 2
-        gitweis(xi, zi)
+        gitweis(xi, zi,dt)
     else
         exaktgitter(xi, xold, zi, zold,dt)
     end
@@ -109,9 +108,9 @@ function exaktgitter(xi, xold, zi, zold,dt)
         told = tku[i - 1]
         t = mean([told, ti])
         posx, posz = gg(xold, zold, xi, zi, t)
-        println(posz)
-        #gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt)
-        konk[posx, abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz)))
+        #println(posz)
+        gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt)
+        konk[abs(posx), abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz)))
     return
        # end
     end
@@ -127,11 +126,11 @@ function positionen(xi, wi, zi, tl, ui, dt )
     return xi, wi, zi
 end
 
-function gitweis(xi, zi)
-    xm = convert(Int64,floor((xi)))
-    zm = convert(Int64,floor((zi)))
-    gitter[xm, zm] = gitter[xm, zm] + 1
-    konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
+function gitweis(xi, zi,dt)
+    xm = abs(convert(Int64,floor((xi+1))))
+    zm = abs(convert(Int64,floor((zi+1))))
+    #gitter[xm, zm] = gitter[xm, zm] + 1
+    #konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
     return
 end
 for i in ProgressBar(0:n)
@@ -163,3 +162,6 @@ for i in ProgressBar(0:n)
         end
     end
 end
+
+nccreate(filename, varname, "x1", collect(11:20), "t", 20, Dict("units"=>"s"), atts=attribs)
+ncwrite(d, filename, varname)
