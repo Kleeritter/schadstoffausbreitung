@@ -6,14 +6,14 @@ using Plots
 #ncinfo("Übung_5/input_uebung5.nc")
 #readdir()
 #x = ncread("a.nc", "c")
-n = 10^5 # !Anzahl Partikel
+n = 10^0 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
-xq = 0  # !m
-zq = 0.5  # !m
+xq = 60.5  # !m
+zq = 1  # !m
 counter = 0
-xgrenz = 110  # !m
-zgrenz = 25
+xgrenz = 120  # !m
+zgrenz = 120
 
 dx = 1
 dy = 1
@@ -21,13 +21,27 @@ dz = 1
 ges=[]
 ustern = 0.35
 k = 0.38
-znull = 0.008
+znull = 1
 sigu = 2.5 * ustern  # m/s
 sigw = 1.3 * ustern  # m/s
 q = 5
 gitter=zeros(xgrenz+1,zgrenz+1)
 konk=zeros(xgrenz+1,zgrenz+1)
 
+#ncinfo("Übung_5/input_uebung5.nc")
+marongu = ncread("Übung_5/input_uebung5.nc", "u")
+marongw = ncread("Übung_5/input_uebung5.nc", "w")
+marongus = ncread("Übung_5/input_uebung5.nc", "u2")
+marongws = ncread("Übung_5/input_uebung5.nc", "w2")
+gurkenlist=findall(x->x==-9999.0,marongu)
+gurkenlistw=findall(x->x==-9999.0,marongw)
+for i in 1: length(gurkenlist)
+marongu[gurkenlist[i]]=NaN
+end 
+
+for i in 1: length(gurkenlistw)
+    marongw[gurkenlist[i]]=NaN
+end
 
 function gg(xold, zold, xi, zi, t)
 
@@ -53,9 +67,15 @@ function prandl(zi)
     end
     return ubalken
 end
-function prandltl(zi)
-    tl = ((k * ustern) / sigw ^ 2) * abs(zi)
-    if (0.1*tl)>((k * ustern) / sigw ^ 2) * abs(2) #falls dt kleiner als tl in 2 m Hoehe
+function prandltl(zi,xi)
+    xii=convert(Int64,floor(xi))+1
+    zii=convert(Int64,floor(zi))+1
+    #println("indexus",xii,zii)
+    #println("so ein scheiss", sqrt(marongus[xii,zii]+marongws[xii,zii]))
+    tl= 0.05*((k*zii)/(1+k*(zii/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii]))
+    #print(tl)
+    #tl = ((k * ustern) / sigw ^ 2) * abs(zi)
+    if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2])) #falls dt kleiner als tl in 2 m Hoehe
         dt = 0.1*tl
     else
         dt = ((k * ustern) / sigw ^ 2) * abs(2)
@@ -77,6 +97,7 @@ function exaktgitter(xi, xold, zi, zold,dt)
     ti = []
     tj = []
     toks = []
+    #print(xi)
     rangex = convert(Int64,floor(xi - xold))
     rangez = convert(Int64,floor(zi - zold))
     #xsi=0
@@ -122,10 +143,16 @@ function positionen(xi, wi, zi, tl, ui, dt )
     rl = exp(- dt / tl)
     d = Normal()
     rr = rand(d, 1)[1]
+    ui= 5 + (1-rl)*tl*1
+    #print(tl)
     xi = xi + ui * dt
-    wi = rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr
+    wi = rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*1
     zi = zi + wi * dt
     return xi, wi, zi
+end
+
+function reflex(xi,zi)
+    
 end
 
 function gitweis(xi, zi,dt)
@@ -139,6 +166,7 @@ function gitweis(xi, zi,dt)
     return
 end
 for i in ProgressBar(0:n)
+    print(marongus[61,2])
     xi = xq
     zi = zq
     posi = []
@@ -153,14 +181,14 @@ for i in ProgressBar(0:n)
             zi = zi +2*difz
             wi = -wi
             #println(zi)
-            tl, dt = prandltl(zi)
+            tl, dt = prandltl(zi,xi)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt ) 
             rangecheck(xi, xold, zi, zold,dt)
             push!(posi, [xi,zi])
 
         else
-            tl, dt = prandltl(zi)
+            tl, dt = prandltl(zi,xi)
             ui = prandl(zi)
             xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt)
             rangecheck(xi, xold, zi, zold,dt)
@@ -191,3 +219,7 @@ end
 
 nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
 ncwrite(konk, "test.nc", "c")
+
+
+print(marongu[gurkenlist[1]])
+print(marongu[1,1])
