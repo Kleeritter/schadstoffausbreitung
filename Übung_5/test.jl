@@ -4,7 +4,7 @@ using ProgressBars
 using LinearAlgebra
 using Plots
 using SymPy
-n = 10^0 # !Anzahl Partikel
+n = 0 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
 xq = 60.5  # !m
@@ -13,6 +13,9 @@ counter = 0
 xgrenz = 120  # !m
 zgrenz = 120
 
+r = symbols("r")
+xlist=[]
+zlist=[]
 dx = 1
 dy = 1
 dz = 1
@@ -75,7 +78,7 @@ function prandltl(zi,xi)
     if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2])) #falls dt kleiner als tl in 2 m Hoehe
         dt = 0.1*tl
     else
-        dt = ((k * ustern) / sigw ^ 2) * abs(2)
+        dt = 0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2]))
     end    
     return tl,  dt
 end  
@@ -94,7 +97,8 @@ function exaktgitter(xi, xold, zi, zold,dt)
     ti = []
     tj = []
     toks = []
-    print(xi,xold)
+    #print(xi,xold)
+    #print(xi)
     rangex = convert(Int64,floor(xi - xold))
     rangez = convert(Int64,floor(zi - zold))
     xsi = ceil(xold)
@@ -115,26 +119,25 @@ function exaktgitter(xi, xold, zi, zold,dt)
             push!(toks,(zsi - zold) / (zi - zold))
         else
             zsi += 1
-            #println(zsi)
+
             push!(toks,(zsi - zold) / (zi - zold))
         end
     end
     tku = sort!(toks)
-    #println(tku)
     for i in 2:length(tku)+1
         ti = tku[i]
         told = tku[i - 1]
         t = mean([told, ti])
         posx, posz = gg(xold, zold, xi, zi, t)
-        #println(posz)
         gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt)
         konk[abs(posx), abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz)))
     return
-       # end
+
     end
 end
 
 function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
+
     rl = exp(- dt / tl)
     d = Normal()
     rr = rand(d, 1)[1]
@@ -142,58 +145,76 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
         difqu=0
         difqw=0
     else
-    difqu= (marongus[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongus[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*(xold-xi)
-    difqw=(marongws[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongws[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*(xold-xi)
+    difqu= abs(marongus[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongus[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2* abs(xold-xi)
+    difqw=abs(marongws[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongws[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*abs(xold-xi)
     end
-    #print(difqu,difqw)
-    ui= 5 + (1-rl)*tl*difqu
+    #println(difqu," mit ",xold," zold: ",zold)
+    
+    ui= marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1] + (1-rl)*tl*difqu
     xi = xi + ui * dt
-    wi = rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*difqw
+    wi = marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]+rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*difqw
     zi = zi + wi * dt
-    reflex(xi,zi,xold,zold)
-    return xi, wi, zi
+
+    #print(marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1], " mit ",xold," zold: ",zold)
+    println(marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]," alla ",marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]," neues Glück ", xi ," ", zi)
+    while ((xi<=30 && zi<=60)||(xi>=90 && zi<=60)||(30<=xi<=90 && zi<=0)||zi<1)
+        if xi>xold && zold<60 # rechte Wand
+            println("alarm rechte Wand")
+            ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
+            if br==1
+                xi=xi-2*(abs(90-xi))
+                ui=-ui
+            end
+        elseif xi<xold && zold<60 && zi>1 #linke Wand
+            println("alarm linke Wand")
+            ui,wi,br= eckendreck(xi,zi,xold,zold,ui,wi)
+            if br==1
+            xi=xi+2*(abs(30-xi))
+            ui=-ui
+            end
+        elseif abs(zi-60) < abs(zi-1)  #Decke
+            println("alarm Decke")
+            wi=-wi
+            zi=zi+2*(abs(60-xi))
+        else  #Boden
+            println("Boden ist aus Lava")
+            wi=-wi
+            zi=zi+2*(abs(0-zi))
+        end
+    
+end
+#println(zi)
+return xi, wi, zi,ui
+
 end
 
-function reflex(xi,zi,xold,zold,ui,wi)
- while ((xi<=30 & zi<=60)or(xi>=90 &z<=60)or(30<=xi<=90 & z<=0))
-if xi>xold & zold<60 # linke Wand
-    ui,wi= eckendreck(xi,zi,xold,zold)
-        xi=xi-2*(abs(90-xi))
-        ui=-ui
 
-elseif xi<xold &zold<60 #rechte Wand
-    ui,wi= eckendreck(xi,zi,xold,zold)
-    xi=xi+2*(abs(90-xi))
-    ui=-ui
-else  #Boden & Decke
-
-
-end
- end
-return xi,zi,xold,zold,ui,wi  
-end
-
-function  eckendreck(xi,zi,xold,zold)
-    if xi<=30& linsolve(r*[1,1]+[30,60]-[xold,zold],r) & linsolve(r*[1,1]+[30,60]-[xi,zi],r) !=EmptySet
+function  eckendreck(xi,zi,xold,zold,ui,wi)
+    if xi<=30&& typeof(solve(r*[1,1]+[30,60]-[xold,zold],r)) !=Vector{Any} && typeof(solve(r*[1,1]+[30,60]-[xi,zi],r)) !=Vector{Any}
         ui=-ui
         wi=-wi
+        xi=xold
+        zi=zold
+        br=2
 
-    elseif xi<=30& linsolve(r*[1,1]+[30,0]-[xold,zold],r) & linsolve(r*[1,1]+[30,0]-[xi,zi],r) !=EmptySet
+    elseif xi<=30&& typeof(solve(r*[1,1]+[30,0]-[xold,zold],r)) !=Vector{Any} && typeof(solve(r*[1,1]+[30,0]-[xi,zi],r)) !=Vector{Any}
             ui=-ui
             wi=-wi
-
-    elseif xi>=60 & linsolve(r*[1,1]+[90,0]-[xold,zold],r) & linsolve(r*[1,1]+[90,0]-[xi,zi],r) !=EmptySet
+            br=2
+    elseif xi>=90 && typeof(solve(-r*[1,1]+[90,0]-[xold,zold],r))!=Vector{Any} && typeof(solve(-r*[1,1]+[90,0]-[xi,zi],r)) !=Vector{Any}
             ui=-ui
             wi=-wi
-  
-    elseif xi>=60 linsolve(r*[1,1]+[90,60]-[xold,zold],r) & linsolve(r*[1,1]+[90,60]-[xi,zi],r) !=EmptySet
+            br=2
+    elseif xi>=90&& typeof(solve(-r*[1,1]+[90,60]-[xold,zold],r))!=Vector{Any} && typeof(solve(-r*[1,1]+[90,60]-[xi,zi],r)) !=Vector{Any}
         ui=-ui
         wi=-wi
+        br=2
 else
     ui=ui
     wi=wi
+    br=1
 end
-return ui,wi
+return ui,wi, br
 end 
 
 
@@ -210,46 +231,35 @@ function gitweis(xi, zi,dt)
     return
 end
 for i in ProgressBar(0:n)
-    print(marongus[61,2])
     xi = xq
     zi = zq
     posi = []
-    wi = wbalken
     dt=0
-    while (ceil(xi + ubalken * dt) < xgrenz) & (ceil(zi) < zgrenz)
+    ui=0
+    while (ceil(xi + ui * dt) < xgrenz) & (ceil(zi) < zgrenz)
         xold = xi
         zold = zi
-        #println(zi)
-        if (zi < znull)
-            difz= abs(znull-zi)
-            zi = zi +2*difz
-            wi = -wi
-            #println(zi)
-            tl, dt = prandltl(zi,xi)
-            ui = prandl(zi)
-            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt,xold,zold ) 
-            rangecheck(xi, xold, zi, zold,dt)
-            push!(posi, [xi,zi])
+        wi = marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
+        ui= marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
 
-        else
             tl, dt = prandltl(zi,xi)
             ui = prandl(zi)
-            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt,xold,zold)
+            xi, wi, zi,ui = positionen(xi, wi, zi, tl, ui, dt,xold,zold)
+
             rangecheck(xi, xold, zi, zold,dt)
+            #println(zi)
             push!(posi, [xi,zi])
-        end
+            push!(xlist, xi)
+            push!(zlist, zi)
     end
     push!(ges,posi)
 end
-#print(maximum(konk))
+
 if  isfile("test.nc") == true
-    print("alla")
     rm("test.nc",force=true)
 end
 
 nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
 ncwrite(konk, "test.nc", "c")
 
-
-print(marongu[gurkenlist[1]])
-print(marongu[1,1])
+plot(xlist,zlist)
