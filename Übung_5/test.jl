@@ -3,9 +3,7 @@ using Random, Distributions
 using ProgressBars
 using LinearAlgebra
 using Plots
-#ncinfo("Übung_5/input_uebung5.nc")
-#readdir()
-#x = ncread("a.nc", "c")
+using SymPy
 n = 10^0 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
@@ -28,7 +26,6 @@ q = 5
 gitter=zeros(xgrenz+1,zgrenz+1)
 konk=zeros(xgrenz+1,zgrenz+1)
 
-#ncinfo("Übung_5/input_uebung5.nc")
 marongu = ncread("Übung_5/input_uebung5.nc", "u")
 marongw = ncread("Übung_5/input_uebung5.nc", "w")
 marongus = ncread("Übung_5/input_uebung5.nc", "u2")
@@ -97,11 +94,9 @@ function exaktgitter(xi, xold, zi, zold,dt)
     ti = []
     tj = []
     toks = []
-    #print(xi)
+    print(xi,xold)
     rangex = convert(Int64,floor(xi - xold))
     rangez = convert(Int64,floor(zi - zold))
-    #xsi=0
-    #zsi=0
     xsi = ceil(xold)
     zsi = ceil(zold)
     for i in 0:rangex
@@ -139,21 +134,70 @@ function exaktgitter(xi, xold, zi, zold,dt)
     end
 end
 
-function positionen(xi, wi, zi, tl, ui, dt )
+function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
     rl = exp(- dt / tl)
     d = Normal()
     rr = rand(d, 1)[1]
-    ui= 5 + (1-rl)*tl*1
-    #print(tl)
+    if xi==xq
+        difqu=0
+        difqw=0
+    else
+    difqu= (marongus[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongus[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*(xold-xi)
+    difqw=(marongws[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongws[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*(xold-xi)
+    end
+    #print(difqu,difqw)
+    ui= 5 + (1-rl)*tl*difqu
     xi = xi + ui * dt
-    wi = rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*1
+    wi = rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*difqw
     zi = zi + wi * dt
+    reflex(xi,zi,xold,zold)
     return xi, wi, zi
 end
 
-function reflex(xi,zi)
-    
+function reflex(xi,zi,xold,zold,ui,wi)
+ while ((xi<=30 & zi<=60)or(xi>=90 &z<=60)or(30<=xi<=90 & z<=0))
+if xi>xold & zold<60 # linke Wand
+    ui,wi= eckendreck(xi,zi,xold,zold)
+        xi=xi-2*(abs(90-xi))
+        ui=-ui
+
+elseif xi<xold &zold<60 #rechte Wand
+    ui,wi= eckendreck(xi,zi,xold,zold)
+    xi=xi+2*(abs(90-xi))
+    ui=-ui
+else  #Boden & Decke
+
+
 end
+ end
+return xi,zi,xold,zold,ui,wi  
+end
+
+function  eckendreck(xi,zi,xold,zold)
+    if xi<=30& linsolve(r*[1,1]+[30,60]-[xold,zold],r) & linsolve(r*[1,1]+[30,60]-[xi,zi],r) !=EmptySet
+        ui=-ui
+        wi=-wi
+
+    elseif xi<=30& linsolve(r*[1,1]+[30,0]-[xold,zold],r) & linsolve(r*[1,1]+[30,0]-[xi,zi],r) !=EmptySet
+            ui=-ui
+            wi=-wi
+
+    elseif xi>=60 & linsolve(r*[1,1]+[90,0]-[xold,zold],r) & linsolve(r*[1,1]+[90,0]-[xi,zi],r) !=EmptySet
+            ui=-ui
+            wi=-wi
+  
+    elseif xi>=60 linsolve(r*[1,1]+[90,60]-[xold,zold],r) & linsolve(r*[1,1]+[90,60]-[xi,zi],r) !=EmptySet
+        ui=-ui
+        wi=-wi
+else
+    ui=ui
+    wi=wi
+end
+return ui,wi
+end 
+
+
+
 
 function gitweis(xi, zi,dt)
     if floor(zi) <0
@@ -183,34 +227,20 @@ for i in ProgressBar(0:n)
             #println(zi)
             tl, dt = prandltl(zi,xi)
             ui = prandl(zi)
-            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt ) 
+            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt,xold,zold ) 
             rangecheck(xi, xold, zi, zold,dt)
             push!(posi, [xi,zi])
 
         else
             tl, dt = prandltl(zi,xi)
             ui = prandl(zi)
-            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt)
+            xi, wi, zi = positionen(xi, wi, zi, tl, ui, dt,xold,zold)
             rangecheck(xi, xold, zi, zold,dt)
             push!(posi, [xi,zi])
         end
     end
     push!(ges,posi)
 end
-"""
-gr();
-for i in tqdm(1:length(ges))
-    x=[]
-    z=[]
-    for j in 1:length(ges[i])
-        push!(x,(ges[i][j][1]))
-        push!(z,(ges[i][j][2]))
-    end
-    plot(x,z)
- 
-end
-savefig("alla.png")
-"""
 #print(maximum(konk))
 if  isfile("test.nc") == true
     print("alla")
