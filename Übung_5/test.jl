@@ -155,7 +155,7 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder )
     #print(marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))], " mit ",xold," zold: ",zold)
     #println(dt," alla ",tl," neues Glück ", xi ," ", zi)
     println(xi, " ", zi)
-    while ((xi<=30 && zi<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<1)
+    while ((floor(xi)<=31 && zi<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<1)
         if xi>xold && zold<=61 # rechte Wand
             println("alarm rechte Wand")
             ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
