@@ -4,14 +4,14 @@ using ProgressBars
 using LinearAlgebra
 using Plots
 using SymPy
-n = 0 # !Anzahl Partikel
+n = 1000 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
 xq = 60.5  # !m
 zq = 1  # !m
 counter = 0
 xgrenz = 120  # !m
-zgrenz = 120
+zgrenz = 60
 
 r = symbols("r")
 xlist=[]
@@ -75,11 +75,13 @@ function prandltl(zi,xi)
     tl= 0.05*((k*zii)/(1+k*(zii/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii]))
     #print(tl)
     #tl = ((k * ustern) / sigw ^ 2) * abs(zi)
-    if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2])) #falls dt kleiner als tl in 2 m Hoehe
-        dt = 0.1*tl
-    else
-        dt = 0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2]))
-    end    
+    #if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2])) #falls dt kleiner als tl in 2 m Hoehe
+     #   dt = 0.1*tl
+    #else
+      #  dt = 0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2]))
+       # println("Sonderfall")
+    #end 
+    dt = 0.1*tl  
     return tl,  dt
 end  
 
@@ -156,7 +158,7 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
     zi = zi + wi * dt
 
     #print(marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1], " mit ",xold," zold: ",zold)
-    println(marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]," alla ",marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]," neues Glück ", xi ," ", zi)
+    #println(dt," alla ",rl," neues Glück ", xi ," ", zi)
     while ((xi<=30 && zi<=60)||(xi>=90 && zi<=60)||(30<=xi<=90 && zi<=0)||zi<1)
         if xi>xold && zold<60 # rechte Wand
             println("alarm rechte Wand")
@@ -236,7 +238,7 @@ for i in ProgressBar(0:n)
     posi = []
     dt=0
     ui=0
-    while (ceil(xi + ui * dt) < xgrenz) & (ceil(zi) < zgrenz)
+    while (ceil(xi) < xgrenz) & (ceil(zi) < zgrenz)
         xold = xi
         zold = zi
         wi = marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
