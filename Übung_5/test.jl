@@ -92,7 +92,7 @@ function exaktgitter(xi, xold, zi, zold,dt)
     tj = []
     toks = []
     #print(xi,xold)
-    println(xi)
+    #println(xi)
     rangex = convert(Int64,floor(xi - xold))
     rangez = convert(Int64,floor(zi - zold))
     xsi = ceil(xold)
@@ -136,29 +136,30 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder )
     Random.seed!()
     d = Normal()
     rr = rand(d, 1)[1]
-    if xi==xq
-        difqu=0
-        difqw=0
-    else
+   #if xi==xq
+    #    difqu=0
+     #   difqw=0
+    #else
     difqu= abs(marongus[abs(convert(Int64,floor(xolder))),abs(convert(Int64,floor(zolder)))]-marongus[abs(convert(Int64,floor(xi))),abs(convert(Int64,floor(zi)))])/ 2* abs(xolder-xi)
     difqw=abs(marongws[abs(convert(Int64,floor(xolder))),abs(convert(Int64,floor(zolder)))]-marongws[abs(convert(Int64,floor(xi))),abs(convert(Int64,floor(zi)))])/ 2*abs(xolder-xi)
-    end
-    println(difqu," mit ",xold," zold: ",zold)
+    #end
+    #println(difqu," mit ",xold," zold: ",zold)
     
-    ukack= rl *ui  + sqrt((1 - rl ^ 2)) * sqrt(marongus[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl*difqu
+    ukack= rl *ui  + sqrt((1 - rl ^ 2)) * sqrt(marongus[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl
     ui= marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))] +ukack
     xi = xi + ui * dt
-    wkack = rl * wi + sqrt((1 - rl ^ 2)) *sqrt(marongws[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl*difqw
+    wkack = rl * wi + sqrt((1 - rl ^ 2)) *sqrt(marongws[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl
     wi=marongw[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))] +wkack
     zi = zi + wi * dt
 
     #print(marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))], " mit ",xold," zold: ",zold)
     #println(dt," alla ",tl," neues Glück ", xi ," ", zi)
-    println(rr, " ", xi)
+    println(xi, " ", zi)
     while ((xi<=30 && zi<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<1)
         if xi>xold && zold<=61 # rechte Wand
             println("alarm rechte Wand")
             ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
+            println(br)
             if br==1
                 xi=xi-2*(abs(90-xi))
                 ui=-ui
@@ -238,8 +239,8 @@ for i in ProgressBar(1:n)
     dt=0
     ui=0
     wi=0
-    xold=0
-    zold=0
+    xold=xq
+    zold=zq
     while (ceil(xi+ui*dt) < xgrenz) #& (ceil(zi) < zgrenz)
         xolder=xold
         zolder=zold
@@ -266,4 +267,4 @@ end
 nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
 ncwrite(konk, "test.nc", "c")
 
-plot(xlist,zlist, xlims=(0, 120), ylims=(0,120))
+plot(xlist,zlist, xlims=(30, 120), ylims=(0,90))
