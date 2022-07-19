@@ -16,7 +16,7 @@ def nc_read_from_file_2d_all(filename, varname):
    tmp_array = np.array(nc_file.variables[varname][:,:], dtype=type(nc_file.variables[varname]))
    return tmp_array
 
-filename = "C:/Users/lisad/Downloads/input_uebung5.nc"
+filename = "input_uebung5.nc"
 
 u_wind = np.transpose(nc_read_from_file_2d_all(filename, "u"))
 u_wind = np.where(u_wind == -9999.0, np.nan, u_wind)
@@ -121,7 +121,7 @@ def positionen(xi, xa, zi, za, ui, wi, su, sw, u_wind, w_wind):
       dt = 0.1 * tl
    else:
       dt = (0.05 * (k * 2) / (1 + k * (2 / lam))) / (mw * math.sqrt(su[int(xi), int(zi)] + sw[int(xi), int(zi)]))
-   
+      print("alla")
    rl = math.exp(- dt / tl)
    
    if xi == xa:
@@ -143,7 +143,7 @@ def positionen(xi, xa, zi, za, ui, wi, su, sw, u_wind, w_wind):
    zi = zi + wi * dt
    
    xi, zi, ui, wi = reflexion(xi, zi, ui, wi, xa, za)
-   print(xi, zi)
+   #print(xi, zi)
    
    return xi, zi, wi, ui, dt
 
@@ -188,7 +188,7 @@ for i in tqdm(range(0, n)):
    dt = 0
 
    while ((xi + ui * dt )) < xg:
-
+      print(xi)
       xa = xi
       za = zi
 

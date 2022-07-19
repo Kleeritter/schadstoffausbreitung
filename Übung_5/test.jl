@@ -4,18 +4,17 @@ using ProgressBars
 using LinearAlgebra
 using Plots
 using SymPy
-n = 10 # !Anzahl Partikel
-ubalken = 5  # !m/s
-wbalken =0  # !m/s
+n = 1 # !Anzahl Partikel
 xq = 61.5  # !m
-zq = 1  # !m
+zq = 2  # !m
 counter = 0
 xgrenz = 120  # !m
-zgrenz = 60
+zgrenz = 120
 
 r = symbols("r")
 xlist=[]
 zlist=[]
+
 dx = 1
 dy = 1
 dz = 1
@@ -26,11 +25,12 @@ znull = 1
 #sigu = 2.5 * ustern  # m/s
 #sigw = 1.3 * ustern  # m/s
 q = 1
-gitter=zeros(xgrenz+1,zgrenz+1)
-konk=zeros(xgrenz+1,zgrenz+1)
+gitter=zeros(xgrenz,zgrenz)
+konk=zeros(xgrenz,zgrenz)
 
 print(pwd())
 
+#cd("Übung_5")
 marongu = ncread("input_uebung5.nc", "u")
 marongw =ncread("input_uebung5.nc","w")# ncread("Übung_5/input_uebung5.nc", "w")
 marongus = ncread("input_uebung5.nc","u2") #ncread("Übung_5/input_uebung5.nc", "u2")
@@ -57,30 +57,23 @@ function gg(xold, zold, xi, zi, t)
     if floor(zg) <0
         zg=0
     end
-    return convert(Int64, floor(xg+1)), convert(Int64, floor(zg+1))
+    return convert(Int64, floor(xg)), convert(Int64, floor(zg))
 end
 
-function prandl(zi)
-    if zi < znull
-        ubalken = 0
-    else
-        ubalken = (ustern / k) * log(abs(zi) / znull)
-    end
-    return ubalken
-end
 function prandltl(zi,xi)
-    xii=convert(Int64,floor(xi))+1
-    zii=convert(Int64,floor(zi))+1
+    xii=convert(Int64,floor(xi))
+    zii=convert(Int64,floor(zi))
     tl= 0.05*((k*zii)/(1+k*(zii/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii]))
     #print(tl)
     #tl = ((k * ustern) / sigw ^ 2) * abs(zi)
-    #if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2])) #falls dt kleiner als tl in 2 m Hoehe
-     #   dt = 0.1*tl
+    #if (0.1*tl)>0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii])) #falls dt kleiner als tl in 2 m Hoehe
+      dt = 0.1*tl
     #else
-      #  dt = 0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,2]+marongws[xii,2]))
-       # println("Sonderfall")
-    #end 
-    dt = 0.1*tl  
+     #   dt = 0.05*((k*2)/(1+k*(2/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii]))
+      #  println("Sonderfall")
+   # end 
+    #dt = 0.1*tl  
+    #println(dt," alla ",tl," mit ", marongus[xii,zii] ," ", marongws[xii,zii]," und ",xii, " ",zii)
     return tl,  dt
 end  
 
@@ -99,7 +92,7 @@ function exaktgitter(xi, xold, zi, zold,dt)
     tj = []
     toks = []
     #print(xi,xold)
-    #print(xi)
+    println(xi)
     rangex = convert(Int64,floor(xi - xold))
     rangez = convert(Int64,floor(zi - zold))
     xsi = ceil(xold)
@@ -125,7 +118,7 @@ function exaktgitter(xi, xold, zi, zold,dt)
         end
     end
     tku = sort!(toks)
-    for i in 2:length(tku)+1
+    for i in 2:length(tku)
         ti = tku[i]
         told = tku[i - 1]
         t = mean([told, ti])
@@ -137,29 +130,33 @@ function exaktgitter(xi, xold, zi, zold,dt)
     end
 end
 
-function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
+function positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder )
 
     rl = exp(- dt / tl)
+    Random.seed!()
     d = Normal()
     rr = rand(d, 1)[1]
     if xi==xq
         difqu=0
         difqw=0
     else
-    difqu= abs(marongus[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongus[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2* abs(xold-xi)
-    difqw=abs(marongws[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]-marongws[abs(convert(Int64,floor(xi)))+1,abs(convert(Int64,floor(zi)))+1])/ 2*abs(xold-xi)
+    difqu= abs(marongus[abs(convert(Int64,floor(xolder))),abs(convert(Int64,floor(zolder)))]-marongus[abs(convert(Int64,floor(xi))),abs(convert(Int64,floor(zi)))])/ 2* abs(xolder-xi)
+    difqw=abs(marongws[abs(convert(Int64,floor(xolder))),abs(convert(Int64,floor(zolder)))]-marongws[abs(convert(Int64,floor(xi))),abs(convert(Int64,floor(zi)))])/ 2*abs(xolder-xi)
     end
-    #println(difqu," mit ",xold," zold: ",zold)
+    println(difqu," mit ",xold," zold: ",zold)
     
-    ui= marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1] + (1-rl)*tl*difqu
+    ukack= rl *ui  + sqrt((1 - rl ^ 2)) * sqrt(marongus[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl*difqu
+    ui= marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))] +ukack
     xi = xi + ui * dt
-    wi = marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]+rl * wi + sqrt((1 - rl ^ 2)) * sigw * rr +(1-rl)*tl*difqw
+    wkack = rl * wi + sqrt((1 - rl ^ 2)) *sqrt(marongws[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))])*rr*+(1-rl)*tl*difqw
+    wi=marongw[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))] +wkack
     zi = zi + wi * dt
 
-    #print(marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1], " mit ",xold," zold: ",zold)
-    #println(dt," alla ",rl," neues Glück ", xi ," ", zi)
-    while ((xi<=30 && zi<=60)||(xi>=90 && zi<=60)||(30<=xi<=90 && zi<=0)||zi<1)
-        if xi>xold && zold<60 # rechte Wand
+    #print(marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))], " mit ",xold," zold: ",zold)
+    #println(dt," alla ",tl," neues Glück ", xi ," ", zi)
+    println(rr, " ", xi)
+    while ((xi<=30 && zi<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<1)
+        if xi>xold && zold<=61 # rechte Wand
             println("alarm rechte Wand")
             ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
             if br==1
@@ -176,7 +173,7 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
         elseif abs(zi-60) < abs(zi-1)  #Decke
             println("alarm Decke")
             wi=-wi
-            zi=zi+2*(abs(60-xi))
+            zi=zi+2*(abs(60-zi))
         else  #Boden
             println("Boden ist aus Lava")
             wi=-wi
@@ -184,7 +181,6 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold )
         end
     
 end
-#println(zi)
 return xi, wi, zi,ui
 
 end
@@ -201,14 +197,20 @@ function  eckendreck(xi,zi,xold,zold,ui,wi)
     elseif xi<=30&& typeof(solve(r*[1,1]+[30,0]-[xold,zold],r)) !=Vector{Any} && typeof(solve(r*[1,1]+[30,0]-[xi,zi],r)) !=Vector{Any}
             ui=-ui
             wi=-wi
+            xi=xold
+            zi=zold
             br=2
     elseif xi>=90 && typeof(solve(-r*[1,1]+[90,0]-[xold,zold],r))!=Vector{Any} && typeof(solve(-r*[1,1]+[90,0]-[xi,zi],r)) !=Vector{Any}
             ui=-ui
             wi=-wi
+            xi=xold
+            zi=zold
             br=2
     elseif xi>=90&& typeof(solve(-r*[1,1]+[90,60]-[xold,zold],r))!=Vector{Any} && typeof(solve(-r*[1,1]+[90,60]-[xi,zi],r)) !=Vector{Any}
         ui=-ui
         wi=-wi
+        xi=xold
+        zi=zold
         br=2
 else
     ui=ui
@@ -223,34 +225,38 @@ function gitweis(xi, zi,dt)
     if floor(zi) <0
         zi=0
     end
-    xm = abs(convert(Int64,floor((xi+1))))
-    zm = abs(convert(Int64,floor((zi+1))))
+    xm = abs(convert(Int64,floor((xi))))
+    zm = abs(convert(Int64,floor((zi))))
     gitter[xm, zm] = gitter[xm, zm] + 1
     konk[xm, zm] += 1*((q * dt)/(n * dx * dz))
     return
 end
-for i in ProgressBar(0:n)
+
+for i in ProgressBar(1:n)
     xi = xq
     zi = zq
-    posi = []
     dt=0
     ui=0
-    while (ceil(xi) < xgrenz) & (ceil(zi) < zgrenz)
+    wi=0
+    xold=0
+    zold=0
+    while (ceil(xi+ui*dt) < xgrenz) #& (ceil(zi) < zgrenz)
+        xolder=xold
+        zolder=zold
         xold = xi
         zold = zi
-        wi = marongw[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
-        ui= marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
+        #wi = marongw[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))]
+        #ui= marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))]
 
             tl, dt = prandltl(zi,xi)
-            xi, wi, zi,ui = positionen(xi, wi, zi, tl, ui, dt,xold,zold)
+            xi, wi, zi,ui = positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder)
 
             rangecheck(xi, xold, zi, zold,dt)
             #println(zi)
-            push!(posi, [xi,zi])
             push!(xlist, xi)
             push!(zlist, zi)
     end
-    push!(ges,posi)
+
 end
 
 if  isfile("test.nc") == true
@@ -260,4 +266,4 @@ end
 nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
 ncwrite(konk, "test.nc", "c")
 
-plot(xlist,zlist)
+plot(xlist,zlist, xlims=(0, 120), ylims=(0,120))
