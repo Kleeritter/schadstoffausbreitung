@@ -4,10 +4,10 @@ using ProgressBars
 using LinearAlgebra
 using Plots
 using SymPy
-n = 1000 # !Anzahl Partikel
+n = 10 # !Anzahl Partikel
 ubalken = 5  # !m/s
 wbalken =0  # !m/s
-xq = 60.5  # !m
+xq = 61.5  # !m
 zq = 1  # !m
 counter = 0
 xgrenz = 120  # !m
@@ -20,19 +20,21 @@ dx = 1
 dy = 1
 dz = 1
 ges=[]
-ustern = 0.35
+#ustern = 0.35
 k = 0.38
 znull = 1
-sigu = 2.5 * ustern  # m/s
-sigw = 1.3 * ustern  # m/s
-q = 5
+#sigu = 2.5 * ustern  # m/s
+#sigw = 1.3 * ustern  # m/s
+q = 1
 gitter=zeros(xgrenz+1,zgrenz+1)
 konk=zeros(xgrenz+1,zgrenz+1)
 
-marongu = ncread("Übung_5/input_uebung5.nc", "u")
-marongw = ncread("Übung_5/input_uebung5.nc", "w")
-marongus = ncread("Übung_5/input_uebung5.nc", "u2")
-marongws = ncread("Übung_5/input_uebung5.nc", "w2")
+print(pwd())
+
+marongu = ncread("input_uebung5.nc", "u")
+marongw =ncread("input_uebung5.nc","w")# ncread("Übung_5/input_uebung5.nc", "w")
+marongus = ncread("input_uebung5.nc","u2") #ncread("Übung_5/input_uebung5.nc", "u2")
+marongws = ncread("input_uebung5.nc","w2")#ncread("Übung_5/input_uebung5.nc", "w2")
 gurkenlist=findall(x->x==-9999.0,marongu)
 gurkenlistw=findall(x->x==-9999.0,marongw)
 for i in 1: length(gurkenlist)
@@ -55,7 +57,6 @@ function gg(xold, zold, xi, zi, t)
     if floor(zg) <0
         zg=0
     end
-    #println(floor(zg))
     return convert(Int64, floor(xg+1)), convert(Int64, floor(zg+1))
 end
 
@@ -70,8 +71,6 @@ end
 function prandltl(zi,xi)
     xii=convert(Int64,floor(xi))+1
     zii=convert(Int64,floor(zi))+1
-    #println("indexus",xii,zii)
-    #println("so ein scheiss", sqrt(marongus[xii,zii]+marongws[xii,zii]))
     tl= 0.05*((k*zii)/(1+k*(zii/5)))/(0.23*sqrt(marongus[xii,zii]+marongws[xii,zii]))
     #print(tl)
     #tl = ((k * ustern) / sigw ^ 2) * abs(zi)
@@ -220,8 +219,6 @@ return ui,wi, br
 end 
 
 
-
-
 function gitweis(xi, zi,dt)
     if floor(zi) <0
         zi=0
@@ -245,7 +242,6 @@ for i in ProgressBar(0:n)
         ui= marongu[abs(convert(Int64,floor(xold)))+1,abs(convert(Int64,floor(zold)))+1]
 
             tl, dt = prandltl(zi,xi)
-            ui = prandl(zi)
             xi, wi, zi,ui = positionen(xi, wi, zi, tl, ui, dt,xold,zold)
 
             rangecheck(xi, xold, zi, zold,dt)
