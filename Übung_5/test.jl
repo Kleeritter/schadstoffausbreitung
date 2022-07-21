@@ -4,7 +4,7 @@ using ProgressBars
 using LinearAlgebra
 using Plots
 using SymPy
-n = 1 # !Anzahl Partikel
+n = 10^2 # !Anzahl Partikel
 xq = 61.5  # !m
 zq = 2  # !m
 counter = 0
@@ -154,31 +154,31 @@ function positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder )
 
     #print(marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))], " mit ",xold," zold: ",zold)
     #println(dt," alla ",tl," neues Glück ", xi ," ", zi)
-    println(xi, " ", zi)
-    while ((floor(xi)<=31 && zi<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<1)
-        if xi>xold && zold<=61 # rechte Wand
-            println("alarm rechte Wand")
+    #println(xi, " ", zi)
+    while ((floor(xi)<=31 && floor(zi)<=61)||(xi>=90 && floor(zi)<=61)||(30<=xi<=90 && zi<=0)||zi<2)
+        if (xi>=90 && floor(zi)<=61) # rechte Wand
+            #println("alarm rechte Wand")
             ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
-            println(br)
+            #println(br)
             if br==1
-                xi=xi-2*(abs(90-xi))
+                xi=xi-2*(abs(91-xi))
                 ui=-ui
             end
-        elseif xi<xold && zold<60 && zi>1 #linke Wand
-            println("alarm linke Wand")
+        elseif (floor(xi)<=31 && floor(zi)<=61) && zi>2 #linke Wand
+            #println("alarm linke Wand")
             ui,wi,br= eckendreck(xi,zi,xold,zold,ui,wi)
             if br==1
-            xi=xi+2*(abs(30-xi))
+            xi=xi+2*(abs(31-xi))
             ui=-ui
             end
         elseif abs(zi-60) < abs(zi-1)  #Decke
-            println("alarm Decke")
+            #println("alarm Decke")
             wi=-wi
-            zi=zi+2*(abs(60-zi))
+            zi=zi+2*(abs(61-zi))
         else  #Boden
-            println("Boden ist aus Lava")
+            #println("Boden ist aus Lava")
             wi=-wi
-            zi=zi+2*(abs(0-zi))
+            zi=zi+2*(abs(2-zi))
         end
     
 end
@@ -267,4 +267,4 @@ end
 nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
 ncwrite(konk, "test.nc", "c")
 
-plot(xlist,zlist, xlims=(30, 120), ylims=(0,90))
+plot(xlist,zlist, xlims=(0, 120), ylims=(0,120))
