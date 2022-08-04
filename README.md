@@ -1,4 +1,5 @@
-# schadstoffausbreitung
+# Schadstoffausbreitung
+Errinerungen an das Programierpraktikum Schadstoffausbreitung
 ## Compiler Befehle
  - gfortran -Ofast -I /usr/include/ -lnetcdf -lnetcdff -c test.f90
  - gfortran -o test test.o -Ofast -I /usr/include/ -lnetcdff -lnetcdf
