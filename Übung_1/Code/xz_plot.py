@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 #import gc # Garbage Collector
 
 
-filename = "ubung1.nc"
+filename = "u1.nc"
 fileout = "output_file.png"
 units = "mg/m^3"
 variable = "c"

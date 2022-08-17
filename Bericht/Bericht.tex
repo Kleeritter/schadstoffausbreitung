@@ -167,56 +167,9 @@
 \section{Übung 2}
 \section{Übung 3}
 \section{Übung 4}
-\subsection{Vergleichsplot}
-Gefragt war in dieser Übung nach einem Vergleich der MonteCarlo Methode und dem Prairie-Grass-Experiment. Zusätlich sollte das MonteCarlo Modell um eine Integration der Prandtlschicht erweitert werden. Eine besondere Herausforderung war zu dem die Integration einer exakten Gitterauswertung. Für die Berechnung der Konzentrationen und das Visualisieren wurde Python verwendet. Dargestellt wurden jeweils die berechnete Konzentrationen mit dem MonteCarlo Modell und die gemessenen Werte aus dem Experiment für verschiedene Höhen.
-
-In dem Praire-Grass-Experiment wurden die Quellstärke nicht weiter konkretisiert, deshalb wurden verschieden Quellstärken ausprobiert. Zunächst mit der Quellstärke
-
-\begin{equation}
-Q= 150 \frac{g}{s}
-\end{equation}
-Dies liefert den folgenden Graphen: 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=1]{Bilder/150.png}
-    \caption{Vergleich MC und Grass für Q=150}
-    \label{fig:my_label}
-\end{figure}
-
-Das  MonteCarlo Modell liefert mit diesem Q nur eine sehr schlechte annäherung für Höhen unter 10m.
-
-Ein Q von
-\begin{equation}
-Q= 0.15 \frac{g}{s}
-\end{equation}
- liefert folgenden Graphen:
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=1]{Bilder/015.png}
-    \caption{Vergleich MC und Grass für Q=0.15}
-    \label{fig:my_label}
-\end{figure}
-Diese Quellstärke ist zu gering und das MonteCarlo liefert auch hier nur eine schlechte Anpassung.
-
-Eine Quellstärke von 
-\begin{equation}
-Q= 1 \frac{g}{s}
-\end{equation}
-liefert optimale Ergebnisse:
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=1]{Bilder/1.png}
-    \caption{Vergleich MC und Grass für Q= 1}
-    \label{fig:my_label}
-\end{figure}
-
-Das MonteCarlo Modell 0schafft hier eine sehr gute Annäherung an das Experiment über alle Höhenbereiche hinweg. Lediglich bei Höhen unter 2m gibt es eine stärkere Abweichung. Dies könnte in der nicht optimierten komplexen Reflexion unter $z_{0}$ liegen, welche in der nächsten Übung in den Ablauf integriert werden kann.
-
 
 \section{Quellcode}
 \subsection{Python}
 \subsubsection{Angepasstes MC Modell}
-\lstinputlisting[language=Python]{Code/colab.py}
 \subsubsection{Darstellung und Vergleich mit dem Grass Experiment}
-\lstinputlisting[language=Python]{Code/grassmodul.py}
 \end{document}
