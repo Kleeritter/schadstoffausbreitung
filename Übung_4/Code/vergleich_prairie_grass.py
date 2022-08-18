@@ -52,7 +52,7 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "test.nc"
+filename = "Bericht/monte.nc"
 fileout = "bra.png"
 units = "s/m$^2$"
 
@@ -69,6 +69,7 @@ for i in range(0,len(x)):
       pg_mod = conc[:,i]
       break
 
+print(pg_mod)
 c0 = 4.63E-02
 gamma = 0.68
 my = 1.3

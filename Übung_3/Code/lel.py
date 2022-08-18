@@ -23,7 +23,7 @@ x_q = 51
 x_grenz = 2000
 z_grenz = 400
 Q = 150
-N = 20000
+N = 50000
 
 # Lagrangsche Autokorrelationsfunktion (Näherung)
 

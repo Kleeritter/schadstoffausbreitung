@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.17)  17 AUG 2022 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.17)  18 AUG 2022 19:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1053,6 +1053,21 @@ Package csquotes Info: Redefining alias 'default' -> 'ngerman'.
 
 LaTeX Warning: Label `fig:my_label' multiply defined.
 
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
 )
 \openout1 = `Bericht.aux'.
 
@@ -1246,14 +1261,9 @@ Package microtype Info: Loading generic protrusion settings for font family
 <Bilder/1a.png, id=12, 702.625pt x 501.875pt>
 File: Bilder/1a.png Graphic file (type png)
 <use Bilder/1a.png>
-Package pdftex.def Info: Bilder/1a.png  used on input line 170.
+Package pdftex.def Info: Bilder/1a.png  used on input line 175.
 (pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
-<Bilder/1b.png, id=14, 702.625pt x 501.875pt>
-File: Bilder/1b.png Graphic file (type png)
-<use Bilder/1b.png>
-Package pdftex.def Info: Bilder/1b.png  used on input line 176.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 182
+LaTeX Font Info:    Trying to load font information for U+msa on input line 179
 .
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1262,7 +1272,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 182
+LaTeX Font Info:    Trying to load font information for U+msb on input line 179
 .
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1274,11 +1284,58 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 )
+<Bilder/1b.png, id=14, 702.625pt x 501.875pt>
+File: Bilder/1b.png Graphic file (type png)
+<use Bilder/1b.png>
+Package pdftex.def Info: Bilder/1b.png  used on input line 182.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [3 <./Bilder/1a.png>]
+<Bilder/1b1k.png, id=27, 702.625pt x 501.875pt>
+File: Bilder/1b1k.png Graphic file (type png)
+<use Bilder/1b1k.png>
+Package pdftex.def Info: Bilder/1b1k.png  used on input line 195.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [4 <./Bilder/1b.png>]
+<Bilder/1b10k.png, id=37, 702.625pt x 501.875pt>
+File: Bilder/1b10k.png Graphic file (type png)
+<use Bilder/1b10k.png>
+Package pdftex.def Info: Bilder/1b10k.png  used on input line 207.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [5 <./Bilder/1b1k.png> <./Bilder/1b10k.png>]
+<Bilder/1b20k.png, id=47, 702.625pt x 501.875pt>
+File: Bilder/1b20k.png Graphic file (type png)
+<use Bilder/1b20k.png>
+Package pdftex.def Info: Bilder/1b20k.png  used on input line 219.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+<Bilder/1b50k.png, id=48, 702.625pt x 501.875pt>
+File: Bilder/1b50k.png Graphic file (type png)
+<use Bilder/1b50k.png>
+Package pdftex.def Info: Bilder/1b50k.png  used on input line 231.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+
+[6 <./Bilder/1b20k.png>]
+<Bilder/2back.png, id=57, 702.625pt x 501.875pt>
+File: Bilder/2back.png Graphic file (type png)
+<use Bilder/2back.png>
+Package pdftex.def Info: Bilder/2back.png  used on input line 249.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [7 <./Bilder/1b50k.png>]
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2020/03/24 1.8d listings language file
+)
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 260.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `cmtt' (encoding: OT1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+(./Aufgabe2.jl [8 <./Bilder/2back.png>] [9] [10] [11] [12])
 
 Package caption Warning: Unused \captionsetup[table] on input line 93.
 See the caption package documentation for explanation.
 
-[3 <./Bilder/1a.png> <./Bilder/1b.png>] [4] (./Bericht.aux)
+[13] (./Bericht.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 15.12pt have occurred.
@@ -1293,24 +1350,26 @@ Package logreq Info: Writing requests to 'Bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33137 strings out of 478268
- 665090 string characters out of 5846347
- 1548891 words of memory out of 5000000
- 50886 multiletter control sequences out of 15000+600000
- 479201 words of font info for 83 fonts, out of 8000000 for 9000
+ 34041 strings out of 478268
+ 674501 string characters out of 5846347
+ 1947881 words of memory out of 5000000
+ 51464 multiletter control sequences out of 15000+600000
+ 479738 words of font info for 89 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 108i,19n,106p,10602b,2367s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,20n,106p,10602b,2599s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
 </usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
 usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></us
-r/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
-ocal/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/lo
-cal/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
-Output written on Bericht.pdf (3 pages, 129419 bytes).
+r/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/l
+ocal/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
+l/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local
+/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/loca
+l/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Bericht.pdf (12 pages, 444015 bytes).
 PDF statistics:
- 108 PDF objects out of 1000 (max. 8388607)
- 84 compressed objects within 1 object stream
- 17 named destinations out of 1000 (max. 500000)
- 24667 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 531 PDF objects out of 1000 (max. 8388607)
+ 480 compressed objects within 5 object streams
+ 319 named destinations out of 1000 (max. 500000)
+ 27780 words of extra memory for PDF output out of 29859 (max. 10000000)
 

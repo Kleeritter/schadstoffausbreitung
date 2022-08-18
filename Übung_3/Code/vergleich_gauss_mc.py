@@ -51,8 +51,8 @@ def nc_read_from_file_1d_all(filename, varname):
 
 
 
-filename = "koks.nc"
-filename2 = "prada.nc"
+filename = "Bericht/boob.nc"
+filename2 = "sens.nc"
 
 units = "g/m$^3$"
 
@@ -67,7 +67,7 @@ conc2 = np.where(conc2 == -9999.0,np.nan,conc2)
 x2 = nc_read_from_file_1d_all(filename2, "x")
 z2 = nc_read_from_file_1d_all(filename2, "z")
 
-
+print(np.argmax(conc))
 print("plotting....")
 
 levels = [0.1,0.2, 0.3, 0.4, 0.5]
@@ -76,9 +76,9 @@ plt.figure()
 
 fig, ax = plt.subplots()
 CS2 = ax.contour(z2, x2, conc2,levels, colors='red' )
-CS = ax.contour(x, z, conc,levels, colors='black' )
+CS = ax.tricontourf(x, z, conc, colors='black' )
 
-plt.axis([0,135,0,35])
+#plt.axis([0,135,0,35])
 
 
 ax.clabel(CS, fontsize=9, inline=1)

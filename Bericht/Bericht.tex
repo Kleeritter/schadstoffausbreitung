@@ -162,15 +162,21 @@
 \stepcounter{page}
 
 \newpage
-
+\section{Einleitung }
+Dieser Bericht stellt als Abschlussbericht die Ergebnisse und Erkenntnisse des Programmierpraktikums Schadstoffausbreitung zusammen. Als Programmiersprache wurde über alle Aufgaben hinweg Julia verwendet und als Graphisches Backend PlotlyJS.
 \section{Aufgabe  1}
+Ziel dieser Aufgabe ist es ein Gauß-Modell für eine kontinuierliche Linienquelle zu Programmieren und anschließend die Maximalkonzentration am Erdboden zu bestimmen.
+
+In Aufgabenteil b wird ein Monte-Carlo-Modell für eine kontinuirliche Linienquelle programmiert und mit dem Gauß-Modell aus Aufgabenteil a verglichen.
 \subsection{Aufgabenteil a}
+In Abbildung 1. ist die zu erwartende Konzentrationsverteilung des Gauß-Modells als X-Z-Schnitt visualisiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1a.png}
 	\caption{Konzentrationsverteilung}
 	\label{fig:my_label}
 \end{figure}
+Für eine feinere grapische Analyse wurde in Abbildung 2. die Konzentrationsverteilung am Erdboden, also für $z=\si{m}$, visualisiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b.png}
@@ -178,17 +184,79 @@
 	\label{fig:my_label}
 \end{figure}
 
-Die maximale Konzentration wurde mittels julia bestimmt als
+Die maximale Konzentration wurde final rechnerisch mittels Julia bestimmt als
 \begin{equation}
 	c[0,711] = 0,32263  \frac{g}{m^3}
 \end{equation}
 \subsection{Aufgabenteil b}
-\section{Übung 2}
-\section{Übung 3}
-\section{Übung 4}
+Für den Vergleich zwischen Monte-Carlo-Modell und Gauß-Modell wurden beide Modelle in einem Contour-Plot visualisiert.  Für die optimale Visualisierung wurden verschiedene Partikelanzahlen visualisiert.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/1b1k.png}
+	\caption{Vergleich für N=1000}
+	\label{fig:my_label}
+\end{figure}
+In Abb. 4 ist leider keine gute Annäherung des Montecarlo Modells an das Gaußmodell zu erkennen. Die Anzahl der Teilchen hat beim Montecarlo Modell einen hohen Einfluss auf die Güte des Modells. Bei einer geringeren Anzahl wie 
+
+\begin{equation}
+	N=1000
+\end{equation}
+sind extrem große Abweichungen zum Gaußmodell zu erkennen.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/1b10k.png}
+	\caption{Vergleich für N=10000}
+	\label{fig:my_label}
+\end{figure}
+Bei einer mittleren Anzahl wie 
+
+\begin{equation}
+	N=10000
+\end{equation}
+gleicht sich das MC Modell bedeutend besser an das Gaußmodell an.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/1b20k.png}
+	\caption{Vergleich für N=20000}
+	\label{fig:my_label}
+\end{figure}
+Bei einer hohen Anzahl wie 
+
+\begin{equation}
+	N=20000
+\end{equation}
+gleicht sich das MC Modell sehr gut an das Gaußmodell an.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/1b50k.png}
+	\caption{Vergleich für N=50000}
+	\label{fig:my_label}
+\end{figure}
+Abbildung 5  zeigt das mit meiner Hardware maximal mögliche Ergebnis. Jenseits von dieser Anzahl sind zwar noch leichte Verbesserungen zu erwarten, nichts destotrotz zeigt sich bei 
+
+\begin{equation}
+	N=50000
+\end{equation}
+
+eine extrem gute Annäherung an das Gauß-Modell. Für eine Ausreichende Statistik reichen aber bereits 
+\begin{equation}
+	N=20000
+\end{equation}.
+\section{Aufgabe 2}
+In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimiert und die Ergebnisse durch das Prairie-Grass-Experiment validiert werden.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/2back.png}
+	\caption{Vergleich Prairie-Grass}
+	\label{fig:my_label}
+\end{figure}
+\section{Aufgabe  3}
+\subsection{Aufgabenteil a}
+\subsection{Aufgabenteil b}
+\section{Aufgabe  4}
 
 \section{Quellcode}
-\subsection{Python}
-\subsubsection{Angepasstes MC Modell}
-\subsubsection{Darstellung und Vergleich mit dem Grass Experiment}
+\subsection{Aufgabe 2}
+\lstinputlisting[language=Python]{Aufgabe2.jl}
+\subsection{Aufgabe 3}
 \end{document}
