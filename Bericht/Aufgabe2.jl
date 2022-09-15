@@ -3,57 +3,43 @@ using Random, Distributions
 using ProgressBars
 using PlotlyJS
 
-
-global n,ubalken,wbalken,zq,xq,xgrenz,zgrenz,tl,nx,ny,nz,dx,dy,dz::Int
+# Definition der globalen Variablen
+global n,ubalken,wbalken,zq,xq,xgrenz,zgrenz,tl,nx,ny,nz,dx,dy,dz::Int 
 global dt,sigu,sigw,ustern,k,znull,q::Float64
 global units::String
 global gitter,cd,x,cdground::Array
-n= 10^3#!Anzahl Partikel
-ubalken = 5 #!m/s
-wbalken = 0 #!m/s
-zq = 0 #!m
-xq = 0.5 #!m
-counter=0
-xgrenz= 110# !m
-zgrenz=25
-tl = 100  #s Zeit
-dt = 0.4 # Zeitschritt
-sigu= 0 #m/s
-sigw= 0.39 #m/s
 
-dx = 1
-dy = 1
-dz = 1
-ui=5
+n= 10^3             # Anzahl Partikel
+ubalken = 5         # mittlere Windkomponente in u Richtung in m/s
+wbalken = 0         # mittlere Windkomponente in w Richtung in m/s
+zq = 0              # Quellort z Komponente in m
+xq = 0.5            # Quellort x Komponente in m
+xgrenz= 110         # Grenze in x Richtung in m
+zgrenz=25           # Grenze in z Richtung in m
+tl = 100            #s Zeit
+dt = 0.4            # Zeitschritt in s
+dx = 1              # Gitterweite x Richtung in m    
+dz = 1              # Gitterweite z Richtung in m
+ui=5                #
+ustern = 0.35       #
+k = 0.38            # Kappa
+znull = 0.008       # Rauhigkeitslaenge
+sigu = 2.5 * ustern # Standartabweichung u m/sm/s
+sigw = 1.3 * ustern # Standartabweichung w m/s m/s
+q= 0.7              # Konzentration fuer das Montecarlo Modell in m/s
+rl= exp(- dt/tl)    # Berechnung von rl
+units = "g/m^3"     # Einheit fuer Graphen
+
+## Arrays Initialisieren
 
 
-## Modellparameter
-nx = 2000
-nz = 400
-dx = 1
-dz = 1
-q= 0.7 #540 kg/h also 5.4e+8mg/h und so 150000 
-
-ustern = 0.35
-k = 0.38
-znull = 0.008
-sigu = 2.5 * ustern  # m/s
-sigw = 1.3 * ustern  # m/s
-## Schichtung
-
-## Array Initialisieren
-
-nxx=nx+1 
-nzz=nz+1
-units = "g/m^3"
 gitter=zeros(xgrenz,zgrenz)
 konk=zeros(xgrenz,zgrenz)
-cd= zeros(nxx,nzz)
-x = range(0,nxx)
-rl= exp(- dt/tl)
+
 
 ##Funktionen ##
-### Geradengleichung ###
+
+### Geradengleichung ### Fuer die Exakte Gitterauswertung ist es notwendig 
 function gg(xold, zold, xi, zi, t) 
     xg = xold + t * (xi - xold)
     zg = zold + t * (zi - zold)
@@ -68,6 +54,8 @@ function gg(xold, zold, xi, zi, t)
     end
     return convert(Int64, floor(xg)), convert(Int64, floor(zg))
 end
+
+
 ### Manager###
 function rangecheck(xi, xold, zi, zold,dt)
     rangex = floor(xi - xold)
@@ -81,8 +69,6 @@ end
 
 ### Berechnung der Prandtlschicht###
 function prandltl(zi,xi)
-    xii=convert(Int64,floor(xi))
-    zii=convert(Int64,floor(zi))
     if zi < znull
         ubalken = 0
     else
@@ -90,10 +76,10 @@ function prandltl(zi,xi)
     end
 
     tl = ((k * ustern) / sigw ^ 2) * abs(zi)
-    if (0.1*tl)>((k * ustern) / sigw ^ 2) * abs(2) #falls dt kleiner als tl in 2 m Hoehe
-        dt = 0.1*tl
+    if (0.1*tl)>((k * ustern) / sigw ^ 2) * abs(2) 
+        dt = 0.1*tl                             # Normalfall
     else
-        dt = ((k * ustern) / sigw ^ 2) * abs(2)
+        dt = ((k * ustern) / sigw ^ 2) * abs(2) #falls dt kleiner als tl in 2 m Hoehe wird dt auf tl(2m) gesetzt
     end
     return tl,  dt, ui
 end  
@@ -101,10 +87,9 @@ end
 ### Exakte Gitterauswertung###
 function exaktgitter(xi, xold, zi, zold,dt)
     ti = []
-    tj = []
     toks = []
-    rangex = convert(Int64,floor(xi - xold))
-    rangez = convert(Int64,floor(zi - zold))
+    rangex = convert(Int64,floor(xi - xold))    # Bestimmung der Anazhl an Schnittpunkten mit der X-Achse
+    rangez = convert(Int64,floor(zi - zold))    # Bestimmung der Anazhl an Schnittpunkten mit der Z-Achse
     xsi = ceil(xold)
     zsi = ceil(zold)
     for i in 0:rangex
@@ -132,9 +117,9 @@ function exaktgitter(xi, xold, zi, zold,dt)
         ti = tku[i]
         told = tku[i - 1]
         t = mean([told, ti])
-        posx, posz = gg(xold, zold, xi, zi, t)
-        gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt)
-        konk[abs(posx), abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz)))
+        posx, posz = gg(xold, zold, xi, zi, t) # Aufrufen der Geradengleichung zur Berechnung der Positionen
+        gitter[posx, abs(posz)] += ((tku[i] - tku[i-1] )* dt) # Ein
+        konk[abs(posx), abs(posz)] += ((tku[i] - tku[i-1])* dt*((q * dt)/(n * dx * dz))) #Eintragen der Positionen an den Positionen
     end
 end
 
@@ -175,7 +160,6 @@ function monte()
         zi=zq
         ui=ubalken
         wi=wbalken
-        posi=[]
         dt=0
     
     
@@ -188,20 +172,11 @@ function monte()
                 tl, dt,ui = prandltl(zi,xi)
                 xi,wi,zi =positionen(xi, wi, zi,tl, ui, dt)
                 rangecheck(xi, xold, zi, zold,dt)
-                #xm = abs(convert(Int64,round(xi)))+1
-                #zm = abs(convert(Int64,round(zi)))+1
-                #gitter[xm,zm] = gitter[xm,zm] + 1
     
     
             else
                 tl, dt,ui = prandltl(zi,xi)
                 xi,wi,zi =positionen(xi, wi, zi,tl, ui, dt)
-                #xm = abs(convert(Int64,round(xi)))+1
-                #zm = abs(convert(Int64,round(zi)))+1
-                #if zm> zgrenz
-                 #   zm=zgrenz
-                #end
-                #gitter[xm,zm] = gitter[xm,zm] + 1
                 rangecheck(xi, xold, zi, zold,dt)
             end
         end
@@ -237,51 +212,38 @@ end
 ### Visualisierung ###
 
  function grafen(pg,pg_mod)
-    print("grafen geht los")
+savefig(plot([
 
-    savefig(plot([scatter(y=collect(1:zgrenz),x=pg,
+scatter(
+y=collect(1:zgrenz),
+x=pg,
 name="prairie_grass",
 showlegend=true ,),
 
-scatter(y=collect(1:zgrenz),x=pg_mod,name=" Montecarlo",
+scatter(
+y=collect(1:zgrenz),
+x=pg_mod,
+name=" Montecarlo",
 showlegend=true ,)],
+
 Layout(
     title="Vergleich Montecarlo Modell mit dem Prairie-Grass Experiment",
     xaxis_title="Konzentration (" * units * ")",
     yaxis_title="z(m)",
     xaxis_range=[-0.001, 0.05], 
     yaxis_range=[0, 25]
-)), "Bericht/Bilder/2.png")#,width=1920, height=1080)
+)), "Bericht/Bilder/2.png")
  end
 
-
-
-
-
-
- function expo(konzentrationen)
-    if  isfile("Bericht/monte.nc") == true
-        rm("Bericht/monte.nc",force=true)
-    end
-    cd=transpose(konzentrationen)
-    nccreate("Bericht/monte.nc", "c", "x", collect(0:nxx-1),  "z", collect(0:nzz-1))
-    ncwrite( konzentrationen,"Bericht/monte.nc", "c")
- end
 
 
 
 function main()
     konzentrationen=monte()
-    #expo(konzentrationen)
     pg,pg_mod=prairie_grass(konzentrationen)
     grafen(pg,pg_mod)
     
 end
+
+
 main()
-
-
-
-
-
-
-

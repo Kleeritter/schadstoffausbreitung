@@ -162,6 +162,8 @@
 \stepcounter{page}
 
 \newpage
+\tableofcontents
+\newpage
 \section{Einleitung }
 Dieser Bericht stellt als Abschlussbericht die Ergebnisse und Erkenntnisse des Programmierpraktikums Schadstoffausbreitung zusammen. Als Programmiersprache wurde über alle Aufgaben hinweg Julia verwendet und als Graphisches Backend PlotlyJS.
 \section{Aufgabe  1}
@@ -252,11 +254,26 @@ In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimier
 \end{figure}
 \section{Aufgabe  3}
 \subsection{Aufgabenteil a}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/3k_xq=60.5.png}
+	\caption{Konzentrationsverteilung am Erdboden}
+	\label{fig:my_label}
+\end{figure}
+
 \subsection{Aufgabenteil b}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{Bilder/3k_xq=15.5.png}
+	\caption{Konzentrationsverteilung am Erdboden}
+	\label{fig:my_label}
+\end{figure}
 \section{Aufgabe  4}
 
 \section{Quellcode}
 \subsection{Aufgabe 2}
 \lstinputlisting[language=Python]{Aufgabe2.jl}
 \subsection{Aufgabe 3}
+\lstinputlisting[language=Python]{Aufgabe3.jl}
 \end{document}

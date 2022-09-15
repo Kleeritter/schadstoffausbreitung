@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.17)  18 AUG 2022 19:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.17)  22 AUG 2022 19:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1068,6 +1068,9 @@ LaTeX Warning: Label `fig:my_label' multiply defined.
 
 LaTeX Warning: Label `fig:my_label' multiply defined.
 
+
+LaTeX Warning: Label `fig:my_label' multiply defined.
+
 )
 \openout1 = `Bericht.aux'.
 
@@ -1258,22 +1261,18 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<Bilder/1a.png, id=12, 702.625pt x 501.875pt>
-File: Bilder/1a.png Graphic file (type png)
-<use Bilder/1a.png>
-Package pdftex.def Info: Bilder/1a.png  used on input line 175.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 179
-.
+Package tocbasic Info: character protrusion at toc deactivated on input line 16
+5.
 
-(/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
+(./Bericht.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 179
-.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1283,59 +1282,80 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
-)
-<Bilder/1b.png, id=14, 702.625pt x 501.875pt>
+))
+\tf@toc=\write5
+\openout5 = `Bericht.toc'.
+
+ [3]
+<Bilder/1a.png, id=43, 702.625pt x 501.875pt>
+File: Bilder/1a.png Graphic file (type png)
+<use Bilder/1a.png>
+Package pdftex.def Info: Bilder/1a.png  used on input line 177.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+<Bilder/1b.png, id=45, 702.625pt x 501.875pt>
 File: Bilder/1b.png Graphic file (type png)
 <use Bilder/1b.png>
-Package pdftex.def Info: Bilder/1b.png  used on input line 182.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
- [3 <./Bilder/1a.png>]
-<Bilder/1b1k.png, id=27, 702.625pt x 501.875pt>
-File: Bilder/1b1k.png Graphic file (type png)
-<use Bilder/1b1k.png>
-Package pdftex.def Info: Bilder/1b1k.png  used on input line 195.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
- [4 <./Bilder/1b.png>]
-<Bilder/1b10k.png, id=37, 702.625pt x 501.875pt>
-File: Bilder/1b10k.png Graphic file (type png)
-<use Bilder/1b10k.png>
-Package pdftex.def Info: Bilder/1b10k.png  used on input line 207.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
- [5 <./Bilder/1b1k.png> <./Bilder/1b10k.png>]
-<Bilder/1b20k.png, id=47, 702.625pt x 501.875pt>
-File: Bilder/1b20k.png Graphic file (type png)
-<use Bilder/1b20k.png>
-Package pdftex.def Info: Bilder/1b20k.png  used on input line 219.
-(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
-<Bilder/1b50k.png, id=48, 702.625pt x 501.875pt>
-File: Bilder/1b50k.png Graphic file (type png)
-<use Bilder/1b50k.png>
-Package pdftex.def Info: Bilder/1b50k.png  used on input line 231.
+Package pdftex.def Info: Bilder/1b.png  used on input line 184.
 (pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
 
-[6 <./Bilder/1b20k.png>]
-<Bilder/2back.png, id=57, 702.625pt x 501.875pt>
+[4 <./Bilder/1a.png>]
+<Bilder/1b1k.png, id=53, 702.625pt x 501.875pt>
+File: Bilder/1b1k.png Graphic file (type png)
+<use Bilder/1b1k.png>
+Package pdftex.def Info: Bilder/1b1k.png  used on input line 197.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [5 <./Bilder/1b.png>]
+<Bilder/1b10k.png, id=62, 702.625pt x 501.875pt>
+File: Bilder/1b10k.png Graphic file (type png)
+<use Bilder/1b10k.png>
+Package pdftex.def Info: Bilder/1b10k.png  used on input line 209.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [6 <./Bilder/1b1k.png> <./Bilder/1b10k.png>]
+<Bilder/1b20k.png, id=72, 702.625pt x 501.875pt>
+File: Bilder/1b20k.png Graphic file (type png)
+<use Bilder/1b20k.png>
+Package pdftex.def Info: Bilder/1b20k.png  used on input line 221.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+<Bilder/1b50k.png, id=73, 702.625pt x 501.875pt>
+File: Bilder/1b50k.png Graphic file (type png)
+<use Bilder/1b50k.png>
+Package pdftex.def Info: Bilder/1b50k.png  used on input line 233.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [7 <./Bilder/1b20k.png>]
+<Bilder/2back.png, id=82, 702.625pt x 501.875pt>
 File: Bilder/2back.png Graphic file (type png)
 <use Bilder/2back.png>
-Package pdftex.def Info: Bilder/2back.png  used on input line 249.
+Package pdftex.def Info: Bilder/2back.png  used on input line 251.
 (pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
- [7 <./Bilder/1b50k.png>]
+ [8 <./Bilder/1b50k.png>]
+<Bilder/3k_xq=60.5.png, id=92, 702.625pt x 501.875pt>
+File: Bilder/3k_xq=60.5.png Graphic file (type png)
+<use Bilder/3k_xq=60.5.png>
+Package pdftex.def Info: Bilder/3k_xq=60.5.png  used on input line 259.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+<Bilder/3k_xq=15.5.png, id=93, 702.625pt x 501.875pt>
+File: Bilder/3k_xq=15.5.png Graphic file (type png)
+<use Bilder/3k_xq=15.5.png>
+Package pdftex.def Info: Bilder/3k_xq=15.5.png  used on input line 268.
+(pdftex.def)             Requested size: 351.31163pt x 250.93687pt.
+ [9 <./Bilder/2back.png> <./Bilder/3k_xq=60.5.png>]
 (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 260.
+nput line 276.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-(./Aufgabe2.jl [8 <./Bilder/2back.png>] [9] [10] [11] [12])
+(./Aufgabe2.jl [10 <./Bilder/3k_xq=15.5.png>] [11] [12] [13]) [14]
+(./Aufgabe3.jl [15] [16] [17] [18] [19] [20])
 
 Package caption Warning: Unused \captionsetup[table] on input line 93.
 See the caption package documentation for explanation.
 
-[13] (./Bericht.aux)
+[21] (./Bericht.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 15.12pt have occurred.
@@ -1350,26 +1370,38 @@ Package logreq Info: Writing requests to 'Bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34041 strings out of 478268
- 674501 string characters out of 5846347
- 1947881 words of memory out of 5000000
- 51464 multiletter control sequences out of 15000+600000
+ 34442 strings out of 478268
+ 680009 string characters out of 5846347
+ 2016918 words of memory out of 5000000
+ 51524 multiletter control sequences out of 15000+600000
  479738 words of font info for 89 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  108i,20n,106p,10602b,2599s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
-></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
-</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
-usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></us
-r/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/l
-ocal/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
-l/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local
-/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/loca
-l/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Bericht.pdf (12 pages, 444015 bytes).
+
+pdfTeX warning (dest): name{subsection.277} has been referenced but does not ex
+ist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{subsection.26} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{section.24} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></
+usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
+r/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
+local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loc
+al/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/local/t
+exlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/
+texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Bericht.pdf (20 pages, 710015 bytes).
 PDF statistics:
- 531 PDF objects out of 1000 (max. 8388607)
- 480 compressed objects within 5 object streams
- 319 named destinations out of 1000 (max. 500000)
- 27780 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 978 PDF objects out of 1000 (max. 8388607)
+ 910 compressed objects within 10 object streams
+ 652 named destinations out of 1000 (max. 500000)
+ 27790 words of extra memory for PDF output out of 29859 (max. 10000000)
 

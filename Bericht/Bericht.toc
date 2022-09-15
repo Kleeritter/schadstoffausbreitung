@@ -1,0 +1,14 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {section}{\numberline {1}Einleitung}{4}{section.2}%
+\contentsline {section}{\numberline {2}Aufgabe 1}{4}{section.3}%
+\contentsline {subsection}{\numberline {2.1}Aufgabenteil a}{4}{subsection.4}%
+\contentsline {subsection}{\numberline {2.2}Aufgabenteil b}{5}{subsection.8}%
+\contentsline {section}{\numberline {3}Aufgabe 2}{8}{section.18}%
+\contentsline {section}{\numberline {4}Aufgabe 3}{9}{section.20}%
+\contentsline {subsection}{\numberline {4.1}Aufgabenteil a}{9}{subsection.21}%
+\contentsline {subsection}{\numberline {4.2}Aufgabenteil b}{10}{subsection.23}%
+\contentsline {section}{\numberline {5}Aufgabe 4}{10}{section.25}%
+\contentsline {section}{\numberline {6}Quellcode}{10}{section.26}%
+\contentsline {subsection}{\numberline {6.1}Aufgabe 2}{10}{subsection.27}%
+\contentsline {subsection}{\numberline {6.2}Aufgabe 3}{15}{subsection.278}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
