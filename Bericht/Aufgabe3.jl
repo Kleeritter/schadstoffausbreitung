@@ -14,16 +14,12 @@ units = "g/m^3"     # Einheit fuer Graphen
 #r = symbols("r")
 xlist=[]
 zlist=[]
-
 dx = 1
 dy = 1
 dz = 1
 ges=[]
-#ustern = 0.35
 k = 0.38
 znull = 0.008
-#sigu = 2.5 * ustern  # m/s
-#sigw = 1.3 * ustern  # m/s
 q = 0.2
 gitter=zeros(xgrenz,zgrenz)
 konk=zeros(xgrenz,zgrenz)
@@ -152,40 +148,25 @@ izolder=floor(zolder )+1
 
     
     ukack= rl *ui  + sqrt((1 - rl ^ 2)) * sqrt(marongus[abs(convert(Int64,(ixi))),abs(convert(Int64,(izi)))])*rr +(1-rl)*tl*difqu
-    #println(ukack, " mit ", ixi, " und ", izi, " und ", tl)
     ui= marongu[abs(convert(Int64,(ixold))),abs(convert(Int64,(izold)))] +ukack
     xi = xi + ui * dt
-    #print(xi)
     wkack = rl * wi + sqrt((1 - rl ^ 2)) *sqrt(marongws[abs(convert(Int64,(ixi))),abs(convert(Int64,(izi)))])*rr +(1-rl)*tl*difqw
     wi=marongw[abs(convert(Int64,(ixold))),abs(convert(Int64,(izold)))] +wkack
     zi = zi + wi * dt
-
-    #print(marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))], " mit ",xold," zold: ",zold)
-    #println(dt," alla ",tl," neues Glueck ", xi ," ", zi)
-    #println(xi, " ", zi)
     while ((xi<=31 && zi<=61)||(xi>=90 && zi <=61)||(30<=xi<=90 && zi<=1)||zi<1)
-        #print("irgendwas")
         if (xi>=90 && zi<=61) # rechte Wand
-            #println("alarm rechte Wand")
-            #ui,wi, br= eckendreck(xi,zi,xold,zold,ui,wi)
             br=1
-            #println(br)
             if br==1
                 xi=xi-2*(abs(90-xi))
                 ui=-ui
             end
         elseif (xi<=31 && zi<=61) && zi>1 #linke Wand
-            #println("alarm linke Wand")
-            #ui,wi,br= eckendreck(xi,zi,xold,zold,ui,wi)
             br=1
             if br==1
             xi=xi+2*(abs(31-xi))
             ui=-ui
             end
-        #elseif abs(zi-60) < abs(zi-1)  #Decke
-         #   #println("alarm Decke")
-          #  wi=-wi
-           # zi=zi+2*(abs(61-zi))
+
         else  #Boden
             #println("Boden ist aus Lava")
             wi=-wi
@@ -253,35 +234,24 @@ for i in ProgressBar(1:n)
     wi=0
     xold=xq
     zold=zq
-    while (ceil(xi+ui*dt) < xgrenz) #& (ceil(zi) < zgrenz)
+    while (ceil(xi+ui*dt) < xgrenz) 
         xolder=xold
         zolder=zold
         xold = xi
         zold = zi
-        #wi = marongw[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))]
-        #ui= marongu[abs(convert(Int64,floor(xold))),abs(convert(Int64,floor(zold)))]
-        #print(xi)
             tl, dt = prandltl(zi,xi)
             xi, wi, zi,ui = positionen(xi, wi, zi, tl, ui, dt,xold,zold,xolder,zolder)
 
             rangecheck(xi, xold, zi, zold,dt,n)
-            #println(zi)
             push!(xlist, xi)
             push!(zlist, zi)
     end
 
 end
-return  konk #xlist, zlist,
+return  konk 
 end
 
-#if  isfile("test.nc") == true
- #   rm("test.nc",force=true)
-#end
 
-#nccreate("test.nc", "c", "x", collect(0:xgrenz), "z", collect(0:zgrenz))
-#ncwrite(konk, "test.nc", "c")
-
-#plot(xlist,zlist, xlims=(0, 120), ylims=(0,120))
 
 function einzelgrafen(konk,xq)
     quellenstring=string(xq)
@@ -440,30 +410,38 @@ contour(fig[2, 2],xs, ys, monte(xq,zq,nd),levels=levels,title= "N = " *string(nd
 
 Label(fig[0, :], text = "Partikelanzahlen im Vergleich für x = " *string(xq)*"m z = " *string(zq)*"m", textsize = 30)
 save(
-"Bericht/Bilder/3_vergleich x = "*string(xq)*".png", fig)
+"Bericht/Bilder/3_vergleich_x = "*string(xq)*".png", fig)
 end
 
+function einzelmakie(xq,zq)
+n=1000
+levels= [0.001,0.005,0.01,0.05,0.1,0.5,0.75,1,2,5]#-1:0.1:1
+fig = Figure(resolution=(1080,1080))
+xs=LinRange(0, xgrenz,xgrenz)
+ys=LinRange(0, zgrenz, zgrenz)
+
+
+contour(fig[1, 1],ys, xs, monte(xq,zq,n),levels=levels)
+
+
+#Label(fig[0, :], text = "Montecarlo-Modell für x = " *string(xq)*"m z = " *string(zq)*"m", textsize = 30)
+save(
+"Bericht/Bilder/3_single_x = "*string(xq)*".png", fig)
+end 
 
     
     function main()
+        ### Aufgbabe a
         xq = 60.5  # !m
         zq = 0.5 # !m
         vergleichmakie(xq,zq)
-
-        #konkl=monte(xq,zq,nl)
-        #print(konkc)
-
-        #einzelgrafen(konkm,xq)
-        #vergleichsgrafen(konkc,konkm,konkx,konkl,xq)
+        einzelmakie(xq,zq)
+        ### Aufgbabe b
         xq = 15.5  # !m
         zq =  65.5 # !m
-        #konkc=monte(xq,zq,nc)
-        #konkm=monte(xq,zq,nm)
-        #konkx=monte(xq,zq,nx)
-        #konkl=monte(xq,zq,nl)
-        #einzelgrafen(konkm,xq)
-        #vergleichsgrafen(konkc,konkm,konkx,konkl,xq)
         vergleichmakie(xq,zq)
+        einzelmakie(xq,zq)
+        
     end
     main()
     
