@@ -253,178 +253,42 @@ end
 
 
 
-function einzelgrafen(konk,xq)
-    quellenstring=string(xq)
-    """
-    savefig(plot(
-    
-    scatter(
-    y= zlist,#collect(1:zgrenz),
-    x=xlist,
-    name="prairie_grass",
-    ),
-    
-    
-    Layout(
-        title="Montecarlo in der Haeuserschlucht",
-        xaxis_title="x(m)",
-        yaxis_title="z(m)",
-        xaxis_range=[0, 120], 
-        yaxis_range=[0, 120]
-    )), "Bericht/Bilder/3_xq="*quellenstring*".png")
-
-"""
-    savefig(plot(contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konk),
-    contours_coloring="lines",
-    #showlabels=true,
-    #labelfont = attr( # label font properties
-     #       size = 12,
-      #      color = "white",
-       # ),
-    #line_width=2,
-    #colorscale="Hot",
-    contours_start=0.0001,
-    contours_end=5,
-    contours_size=0.01,
-    name="Gauss",),
-    
-
-    Layout(
-        title="Konzentration (" *units * ") im Vergleich fuer N=50000",
-        xaxis_title="x (m)",
-        yaxis_title="z (m)",
-        legend=attr(
-            x=1,
-            y=1,
-            yanchor="bottom",
-            xanchor="right",
-            orientation="h"
-        )
-    )), "Bericht/Bilder/3k_xq="*quellenstring*".png")
-     end
-    
-    
-    function vergleichsgrafen(konkc,konkm,konkx,konkl,xq)
-        quellenstring=string(xq)
-        """
-        make_plot(teilchen) = plot(contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(teilchen),
-        contours_coloring="lines",
-        contours_start=0.005,
-        contours_end=1,
-        contours_size=0.01,),
-        )
-        savefig([
-            make_plot(konkc) make_plot(konkm)
-            make_plot(konkx) make_plot(konkl)
-        ],   
- "Bericht/Bilder/3_vergleich="*quellenstring*".png")
- """
-
-
- p = make_subplots(
-    rows=2, cols=2, column_titles=["Without Smoothing"; "With Smoothing"]
-)
-#add_trace!(p, contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkc),#contours_coloring="lines",
-#contours_start=0.005,
-#contours_end=1,
-#contours_size=0.01, ), row=1, col=1)
-#add_trace!(p, contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkm),#contours_coloring="lines",
-#contours_start=0.005,
-#contours_end=1,
-#contours_size=0.01, ), row=1, col=2)   
-
-#add_trace!(p, contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkx), #contours_coloring="lines",
-#contours_start=0.005,
-#contours_end=1,
-#contours_size=0.01,), row=2, col=1)
-
-pa= plot(contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkc),contours_coloring="lines",
-contours_start=0.005,
-contours_end=1,
-contours_size=0.01, ))
-
-pb= plot(contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkm),contours_coloring="lines",
-contours_start=0.005,
-contours_end=1,
-contours_size=0.01, ))
-
-pups=[pa pb]
-relayout!(pups, title_text="Side by side layout (1 x 2)")
-pups
-savefig(
-pups
-
-,"Bericht/Bilder/tester.png")
-
-#add_trace!(p, contour(x=collect(0:zgrenz),y=collect(0:xgrenz),z=transpose(konkl),contours_coloring="lines",
-#contours_start=0.005,
-#contours_end=1,
-#contours_size=0.01,), row=2, col=2)
-#add_trace!(p, scatter(x=[1, 2], y=[1, 2]), row=2, col=2)
-#relayout!(p, title_text="Side by side layout (1 x 2)")
-#savefig(p, "Bericht/Bilder/3_vergleich="*quellenstring*".png")
-
-
-"""
-p = make_subplots(
-    rows=2, cols=2,
-    specs=[Spec() Spec(); Spec(colspan=2) missing],
-    subplot_titles=["First Subplot" "Second Subplot"; "Third Subplot" missing]
-)
-
-add_trace!(p, scatter(x=[1, 2], y=[1, 2]), row=1, col=1)
-add_trace!(p, scatter(x=[1, 2], y=[1, 2]), row=1, col=2)
-add_trace!(p, scatter(x=[1, 2, 3], y=[2, 1, 2]), row=2, col=1)
-
-relayout!(p, showlegend=false, title_text="Specs with Subplot Title")
-savefig(p, "Bericht/Bilder/3_vergleich="*quellenstring*".png")
-
-"""
-end
-
-function maggus(konk)
-    levels= [0.01,0.05,0.75,1,5]#-1:0.1:1
-    xs=LinRange(0, xgrenz,xgrenz)
-    ys=LinRange(0, zgrenz, zgrenz)
-     a=contour(xs, ys, konk,levels=levels)
-    return a
-end 
 function vergleichmakie(xq,zq)
-na= 100
-nb= 1000
-nc =5000
-nd= 10000
+na= 10
+nb= 100
+nc =500
+nd= 1000
 
 
- levels= [0.001,0.005,0.01,0.05,0.1,0.5,0.75,1,2,5]#-1:0.1:1
+ levels= [0,0.01,0.025,0.05,0.5,0.75,1.0,1.25,1.5,2]#[0.001,0.005,0.01,0.05,0.1,0.5,0.75,1,2,5]#-1:0.1:1
  fig = Figure(resolution=(1080,1080))
  xs=LinRange(0, xgrenz,xgrenz)
  ys=LinRange(0, zgrenz, zgrenz)
 
 
-contour(fig[1, 1],ys, xs, monte(xq,zq,na),levels=levels)
+contour(fig[1, 1],ys, xs, monte(xq,zq,na),levels=levels,label = "Red Dots")
 contour(fig[1, 2],xs, ys, monte(xq,zq,nb),levels=levels,title= "N = " *string(nb))
 contour(fig[2, 1],xs, ys, monte(xq,zq,nc),levels=levels,title= "N = " *string(nc))
 contour(fig[2, 2],xs, ys, monte(xq,zq,nd),levels=levels,title= "N = " *string(nd))
-
-
-Label(fig[0, :], text = "Partikelanzahlen im Vergleich für x = " *string(xq)*"m z = " *string(zq)*"m", textsize = 30)
+Colorbar(fig[1:2,3], limits = (0.1, 2), colormap = :viridis,
+    flipaxis = false)
+axislegend()
+Label(fig[0, :], text = "Partikelanzahlen im Vergleich fuer x = " *string(xq)*"m z = " *string(zq)*"m", textsize = 30)
 save(
 "Bericht/Bilder/3_vergleich_x = "*string(xq)*".png", fig)
 end
 
 function einzelmakie(xq,zq)
 n=1000
-levels= [0.001,0.005,0.01,0.05,0.1,0.5,0.75,1,2,5]#-1:0.1:1
+levels= [0,0.01,0.025,0.05,0.5,0.75,1.0,1.25,1.5,2]#-1:0.1:1
 fig = Figure(resolution=(1080,1080))
 xs=LinRange(0, xgrenz,xgrenz)
 ys=LinRange(0, zgrenz, zgrenz)
 
 
 contour(fig[1, 1],ys, xs, monte(xq,zq,n),levels=levels)
-
-
-#Label(fig[0, :], text = "Montecarlo-Modell für x = " *string(xq)*"m z = " *string(zq)*"m", textsize = 30)
+Colorbar(fig[1, 2], limits = (0.1, 2), colormap = :viridis,
+    flipaxis = false)
 save(
 "Bericht/Bilder/3_single_x = "*string(xq)*".png", fig)
 end 
@@ -439,8 +303,8 @@ end
         ### Aufgbabe b
         xq = 15.5  # !m
         zq =  65.5 # !m
-        vergleichmakie(xq,zq)
-        einzelmakie(xq,zq)
+        #vergleichmakie(xq,zq)
+        #einzelmakie(xq,zq)
         
     end
     main()
