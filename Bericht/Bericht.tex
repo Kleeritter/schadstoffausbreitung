@@ -253,24 +253,71 @@ In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimier
 	\label{fig:my_label}
 \end{figure}
 \section{Aufgabe  3}
+Ziel dieser Aufgabe ist die Anwendung der bisher verwendeten Monte-Carlo-Methode in einem praxisnahen Beispiels. Dabei wurden die für eine Straßenschlucht gemessenen Windgeschwindigkeiten sowie deren Standartabweichung importiert und ein Contourprofil aus der berechneten Konzentration gebildet. Aufgrund der besseren Optimierung wurde für die komplexeren Berechnungen statt PlotlyJS  Makie verwendet.
 \subsection{Aufgabenteil a}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{Bilder/3k_xq=60.5.png}
+	\includegraphics[scale=0.3]{Bilder/3_single_x = 60.5_5.png}
 	\caption{Konzentrationsverteilung am Erdboden}
 	\label{fig:my_label}
 \end{figure}
 
+\subsubsection{Vergleich der Teilchenanzahl}
 \subsection{Aufgabenteil b}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{Bilder/3k_xq=15.5.png}
+	\includegraphics[scale=0.3]{Bilder/3_single_x = 15.5_5.png}
+	\caption{Konzentrationsverteilung am Erdboden}
+	\label{fig:my_label}
+\end{figure}
+
+\subsection{Einfluss der Teilchenanzahl}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{Bilder/3_vergleich_x = 60.5.png}
+	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$}
+	\label{fig:my_label}
+\end{figure}
+Für die Situation a) bringt eine Erhöhung der Teilchenzhahl von $ N=100$ dargestellt in Abblidung 10 linksoben auf  $ N=1000$ einen enormen Sprung in der Qualität der Konzentration. Dadurch können so zum Beispiel auch die feineren Wirbelstrukturen im Zentrum der Häuserschlucht erfasst werden. Eine weitere erhöhung auf $N=5000$ ermnöglicht  noch eine gering höhere Auflösung; $N=10000$ führen trotz höherer Rechenzeit nur zu einer marginalen Verbesserung. Aus ökonomischen Gesichtspunkten ist eine Teilchenanzuahl zwischen 1000 und 5000 optimal.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{Bilder/3_vergleich_x = 15.5.png}
+	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$}
+	\label{fig:my_label}
+\end{figure}
+Für die in Aufgabenteil b) geschilderte Situation zeichnet sich ein ähnlicher Verlauf ab. Zwischen $N=100$ und $N=1000$ ist auch hier der Qualitätssprung gut zu erkennen. Im unterschied zur vorausgegangenen Simulation führt eine Steigerung der Partikelanzahl jenseits von $N=1000$ zu keiner visuellen Verbesserung.
+
+
+\subsection{Einfluss von $\lambda$ }
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{Bilder/3_lambda_x = 60.5.png}
+	\caption{Verschiedene \lambda im Vergleich. $\lambda \in[10,5 ,2,1]$}
+	\label{fig:my_label}
+\end{figure}
+\begin{figure}[H]
+	\centering
+\includegraphics[scale=0.3]{Bilder/3_lambda_x = 15.5_5.png}
+\caption{Verschiedene \lambda im Vergleich. $\lambda \in[10,5 ,2,1]$}
+\label{fig:my_label}
+\end{figure}
+\subsection{Einfluss von $\sigma$ }
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{Bilder/3_sigma_x = 60.5.png}
+	\caption{Konzentrationsverteilung am Erdboden}
+	\label{fig:my_label}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{Bilder/3_sigma_x = 15.5_5.png}
 	\caption{Konzentrationsverteilung am Erdboden}
 	\label{fig:my_label}
 \end{figure}
 \section{Aufgabe  4}
-
+Ideen helfen einen weiter
 \section{Quellcode}
 \subsection{Aufgabe 2}
 \lstinputlisting[language=Python]{Aufgabe2.jl}
