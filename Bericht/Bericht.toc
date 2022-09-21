@@ -2,17 +2,14 @@
 \contentsline {section}{\numberline {1}Einleitung}{4}{section.2}%
 \contentsline {section}{\numberline {2}Aufgabe 1}{4}{section.3}%
 \contentsline {subsection}{\numberline {2.1}Aufgabenteil a}{4}{subsection.4}%
-\contentsline {subsection}{\numberline {2.2}Aufgabenteil b}{5}{subsection.8}%
-\contentsline {section}{\numberline {3}Aufgabe 2}{8}{section.18}%
-\contentsline {section}{\numberline {4}Aufgabe 3}{9}{section.20}%
-\contentsline {subsection}{\numberline {4.1}Aufgabenteil a}{10}{subsection.21}%
-\contentsline {subsubsection}{\numberline {4.1.1}Vergleich der Teilchenanzahl}{11}{subsubsection.23}%
-\contentsline {subsection}{\numberline {4.2}Aufgabenteil b}{11}{subsection.24}%
-\contentsline {subsection}{\numberline {4.3}Einfluss der Teilchenanzahl}{12}{subsection.26}%
-\contentsline {subsection}{\numberline {4.4}Einfluss von $\lambda $}{14}{subsection.29}%
-\contentsline {subsection}{\numberline {4.5}Einfluss von $\sigma $}{14}{subsection.32}%
-\contentsline {section}{\numberline {5}Aufgabe 4}{14}{section.35}%
-\contentsline {section}{\numberline {6}Quellcode}{15}{section.36}%
-\contentsline {subsection}{\numberline {6.1}Aufgabe 2}{15}{subsection.37}%
-\contentsline {subsection}{\numberline {6.2}Aufgabe 3}{19}{subsection.288}%
+\contentsline {subsection}{\numberline {2.2}Aufgabenteil b}{6}{subsection.14}%
+\contentsline {section}{\numberline {3}Aufgabe 2}{8}{section.24}%
+\contentsline {section}{\numberline {4}Aufgabe 3}{9}{section.31}%
+\contentsline {subsection}{\numberline {4.1}Einfluss der Teilchenanzahl}{11}{subsection.38}%
+\contentsline {subsection}{\numberline {4.2}Einfluss von $\lambda $}{13}{subsection.41}%
+\contentsline {subsection}{\numberline {4.3}Einfluss von $\sigma $}{14}{subsection.43}%
+\contentsline {section}{\numberline {5}Aufgabe 4}{15}{section.45}%
+\contentsline {section}{\numberline {6}Quellcode}{16}{section.46}%
+\contentsline {subsection}{\numberline {6.1}Aufgabe 2}{16}{subsection.47}%
+\contentsline {subsection}{\numberline {6.2}Aufgabe 3}{20}{subsection.264}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

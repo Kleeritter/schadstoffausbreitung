@@ -39,9 +39,9 @@
 \clearscrheadings
 \setlength{\headheight}{2.5\baselineskip}
 \setlength{\footheight}{1\baselineskip}
-\chead[]{ \\  Abschlussbericht}
 \ihead[]{\\ \authA}
-\ohead[]{Datum: \today }
+\chead[]{ \\  Abschlussbericht}
+\ohead[]{ \\  \today }
 \ofoot[]{\pagemark}
 
 %---Language and umlauts
@@ -153,7 +153,8 @@
 \begin{titlepage}
 \begin{center}
 \vspace{3cm}
-{\fontsize{40}{49} \selectfont \textbf{Programierpraktikum Übung 4}}\\[2cm]
+{\fontsize{40}{49} \selectfont \textbf{Programmierpraktikum}}\\[2cm]
+{\fontsize{40}{49} \selectfont \textbf{Der Bericht}}\\[2cm]
 \Large{\authA }\\
 \Large{10028034 }\\
 \large{Gottfried Wilhelm Leibniz Universität\\{\today}}
@@ -165,24 +166,36 @@
 \tableofcontents
 \newpage
 \section{Einleitung }
-Dieser Bericht stellt als Abschlussbericht die Ergebnisse und Erkenntnisse des Programmierpraktikums Schadstoffausbreitung zusammen. Als Programmiersprache wurde über alle Aufgaben hinweg Julia verwendet und als Graphisches Backend PlotlyJS.
+Dieser Bericht stellt als Abschlussbericht die Ergebnisse und Erkenntnisse des Programmierpraktikums Schadstoffausbreitung zusammen. Angefangen mit dem Vergleich zwischen Gauß-Modell und Monte-Carlo-Modell, weiter über die Validierung des Monte-Carlo-Modells und schließlich zur Anwendung des Modells in einer Straßenschlucht. Abschließend werden Gedanken über die dreidimensionale Schadstoffausbreitung  in Stadtgebieten geteilt. Als Programmiersprache wurde über alle Aufgaben hinweg Julia verwendet und als Graphisches Backend PlotlyJS sowie GlMakie.
 \section{Aufgabe  1}
 Ziel dieser Aufgabe ist es ein Gauß-Modell für eine kontinuierliche Linienquelle zu Programmieren und anschließend die Maximalkonzentration am Erdboden zu bestimmen.
 
 In Aufgabenteil b wird ein Monte-Carlo-Modell für eine kontinuirliche Linienquelle programmiert und mit dem Gauß-Modell aus Aufgabenteil a verglichen.
 \subsection{Aufgabenteil a}
+In Aufgabenteil a wird zunächst ein Gauß-Modell für die Ausbreitung einer kontinuirliche Linienquelle programmier mit Vernachlässigung der Prandtlschicht. 
+Hier gilt:
+\begin{align}
+x= 51 \si{m} \\
+z= 45 \si{m} \\
+q= 540 \frac{\si{kg}}{\si{h}}\\
+\tau_{l} =100 \si{s}\\
+\sigma_{w}=0.39 \frac{\si{m}}{\si{s}}\\
+\end{align}
+
+
 In Abbildung 1. ist die zu erwartende Konzentrationsverteilung des Gauß-Modells als X-Z-Schnitt visualisiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1a.png}
-	\caption{Konzentrationsverteilung}
+	\caption{Konzentrationsverteilung als Contour-Plot. Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt. }
 	\label{fig:my_label}
 \end{figure}
+
 Für eine feinere grapische Analyse wurde in Abbildung 2. die Konzentrationsverteilung am Erdboden, also für $z=\si{m}$, visualisiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b.png}
-	\caption{Konzentrationsverteilung am Erdboden}
+	\caption{Konzentrationsverteilung am Erdboden.  Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
 
@@ -190,12 +203,17 @@ Die maximale Konzentration wurde final rechnerisch mittels Julia bestimmt als
 \begin{equation}
 	c[0,711] = 0,32263  \frac{g}{m^3}
 \end{equation}
+.
+
 \subsection{Aufgabenteil b}
-Für den Vergleich zwischen Monte-Carlo-Modell und Gauß-Modell wurden beide Modelle in einem Contour-Plot visualisiert.  Für die optimale Visualisierung wurden verschiedene Partikelanzahlen visualisiert.
+In Aufgabenteil b wird nun das Monte-Carlo-Modell mit einer genährten Gitterauswertung.
+Für den Vergleich zwischen Monte-Carlo-Modell und Gauß-Modell wurden beide Modelle in einem Contour-Plot visualisiert.  Für die optimale Visualisierung wurden verschiedene Partikelanzahlen simuliert.
+
+Zunächst für $N=1000$
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b1k.png}
-	\caption{Vergleich für N=1000}
+	\caption{Vergleich für N=1000. Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
 In Abb. 4 ist leider keine gute Annäherung des Montecarlo Modells an das Gaußmodell zu erkennen. Die Anzahl der Teilchen hat beim Montecarlo Modell einen hohen Einfluss auf die Güte des Modells. Bei einer geringeren Anzahl wie 
@@ -203,11 +221,11 @@ In Abb. 4 ist leider keine gute Annäherung des Montecarlo Modells an das Gaußm
 \begin{equation}
 	N=1000
 \end{equation}
-sind extrem große Abweichungen zum Gaußmodell zu erkennen.
+sind extrem große Abweichungen zum Gaußmodell zu erkennen, obwohl auch hier bereits die Grundstruktur erkennbar ist.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b10k.png}
-	\caption{Vergleich für N=10000}
+	\caption{Vergleich für N=10000. Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
 Bei einer mittleren Anzahl wie 
@@ -219,7 +237,7 @@ gleicht sich das MC Modell bedeutend besser an das Gaußmodell an.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b20k.png}
-	\caption{Vergleich für N=20000}
+	\caption{Vergleich für N=20000. Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
 Bei einer hohen Anzahl wie 
@@ -231,10 +249,10 @@ gleicht sich das MC Modell sehr gut an das Gaußmodell an.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b50k.png}
-	\caption{Vergleich für N=50000}
+	\caption{Vergleich für N=50000.  Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
-Abbildung 5  zeigt das mit meiner Hardware maximal mögliche Ergebnis. Jenseits von dieser Anzahl sind zwar noch leichte Verbesserungen zu erwarten, nichts destotrotz zeigt sich bei 
+Abbildung 6  zeigt das mit meiner Hardware maximal mögliche Ergebnis. Jenseits von dieser Anzahl sind zwar noch leichte Verbesserungen zu erwarten, nichts destotrotz zeigt sich bei 
 
 \begin{equation}
 	N=50000
@@ -244,80 +262,99 @@ eine extrem gute Annäherung an das Gauß-Modell. Für eine Ausreichende Statist
 \begin{equation}
 	N=20000
 \end{equation}.
+
+Die größten Unterschiede zwischen dem Monte-Carlo-Modell und dem Gauß-Modell enstehen bei zunehmender Entfernung von der Quelle, sowie in der nähe des Quellortes selbst. Auch im Bereich bis 500 m  in X Richtung ist die Konzentration beim Monte-Carlo-Modell niedrieger als beim Gaußmodell, allen voran aber fehlt hier die Variation der Konzentration, die mit dem Gaußmodell aufgelöst werden kann. 
 \section{Aufgabe 2}
-In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimiert und die Ergebnisse durch das Prairie-Grass-Experiment validiert werden.
+In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimiert und die Ergebnisse durch das Prairie-Grass-Experiment validiert werden. Für die Valiedierung wurde ein grafischer Vergleich gewählt. Dazu wurde jeweils die Z-Achse vom Prairie-Grass-Experiment sowie des Monte-Carlo-Modells mit der entsprechenden Konzentration in einem Plot dargestellt. Als Randbedingungen sollen hier gelten:
+
+\begin{align}
+	x=0 \si{m} \\
+	z= 0.5 \si{m} \\
+	z_0 = 0.008 \si{m} \\
+	u_{*}=0.35 \frac{\si{m}}{\si{s}}\\
+	\kappa =0.38
+\end{align}
+Im folgenden ist die Konzentrationsverteilung bei $x=100\si{m}$ dargestellt.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{Bilder/2back.png}
-	\caption{Vergleich Prairie-Grass}
+	\includegraphics[scale=0.5]{Bilder/2.png}
+	\caption{Vergleich Prairie-Grass, Monte-Carlo.  Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
+Rein Qualitativ betrachtet ist der Verlauf des Monte-Carlo-Modells dem des Prairie-Grass-Experimentes extrem ähnlich. Insbesondere für $z>15 \si{m}$ ist der Unterschied fast verschwindend gering. Die Größte Abweichung bei einer rein qualitativen Betrachtung liegt in Bodennähe bei $z<2 \si{m}$ zu finden.  Trotzdem ist über den gesammten Verlauf der Höhe eine Abweichung von etwa $\delta c=0.0025 \frac{\si{g}}{\si{m^3}} $
+zu beobachten. Zum Erdboden direkt hin konvergieren die beiden Konzentrationen erneut gegeneinader so dass die Unterschiede an dieser Stelle nahezu verschwinden. 
+
 \section{Aufgabe  3}
-Ziel dieser Aufgabe ist die Anwendung der bisher verwendeten Monte-Carlo-Methode in einem praxisnahen Beispiels. Dabei wurden die für eine Straßenschlucht gemessenen Windgeschwindigkeiten sowie deren Standartabweichung importiert und ein Contourprofil aus der berechneten Konzentration gebildet. Aufgrund der besseren Optimierung wurde für die komplexeren Berechnungen statt PlotlyJS  Makie verwendet.
-\subsection{Aufgabenteil a}
+Ziel dieser Aufgabe ist die Anwendung der bisher verwendeten Monte-Carlo-Methode in einem praxisnahen Beispiels. Dabei wurden die für eine Straßenschlucht mit dem Modell PALM simulierten Windgeschwindigkeiten sowie deren Standartabweichung importiert und ein Contourprofil aus der berechneten Konzentration gebildet. Für die Berechnung von $\tau_l$ wurde der Prandtl-Kolmorov-Ansatz verwendet. Aufgrund der besseren Optimierung wurde für die komplexeren Berechnungen in dieser Aufgabe statt PlotlyJS  GlMakie als Visualiesierungs-Backend verwendet.
+Im ersten Szenario wurde ein Schadstoffquelle im Straßenverkehr mit Quellort 
+\begin{align}
+	x=60.5 \si{m} \\
+	z= 0.5 \si{m} 
+\end{align}
+simuliert.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_single_x = 60.5_5.png}
-	\caption{Konzentrationsverteilung am Erdboden}
+	\includegraphics[scale=0.25]{Bilder/3_single_x = 60.5.png}
+	\caption{Konzentrationsverteilung am Erdboden. Die Konzentration ist in $\frac{\si{kg}}{\si{s}}$ dargestellt. N=1000, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
+In der Straßenschlucht bildet sich durch den Wind über der Schlucht ein Wirbel aus. In diesem sinkt die Konzentration mit abnehmendem Abstand zum Zentrum,sowie tendenziel mit der Höhe. Besonders am Boden der Lee-Seite der Straßenschlucht kommt es zu einer extrem starken Ansammlung der Schadstoffe. Teilweise sind dort um den Faktor 500 höhere Konzentrationen simuliert worden als im Zentrum des Wirbels. Dies kann zu je nach Schadtstoff zu negativen Gesundheitlichen Folgen für Fußgänger*innen, Radfahrer*innen, Anwohner*innen, welche sich in der Nähe aufhalten
 
-\subsubsection{Vergleich der Teilchenanzahl}
-\subsection{Aufgabenteil b}
 
+Im zweiten Szenario wurde als  Schadstoffquelle ein Hausbrand mit Quellort
+\begin{align}
+	x=15.5 \si{m} \\
+	z= 65.5 \si{m} 
+\end{align}
+simuliert.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_single_x = 15.5_5.png}
-	\caption{Konzentrationsverteilung am Erdboden}
+	\includegraphics[scale=0.3]{Bilder/3_single_x = 15.5.png}
+	\caption{Konzentrationsverteilung am Erdboden. Die Konzentration ist in $\frac{\si{kg}}{\si{s}}$ dargestellt.N=1000, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-
+Abseits der offensichtlichen Änderung durch den neuen Quellort über den Häusern, zeigt sich ein nahezu ähnliches Bild wie im ersten Szenario. Erneut befindet sich der Ort der größten Konzentration an Schadstoffen in Bodennähe. Ein signifikanter Unterschied ist jedoch die quantitative  Konzentrationshöhe am Erdboden. Diese liegt mit $c= 2,5 \frac{\si{kg}}{\si{s}}$ nur noch halb so hoch wie im vorherigen Fall. Die allgemein geringere Konzentration lässt sich auf die Quellpostiion über der Häuserschlucht zurückführen, wodruch nur noch ein Teil der Partikel in den Wirbel gelangen kann.
 \subsection{Einfluss der Teilchenanzahl}
+Desweiteren soll nun der Einfluss der Teilchenanzahl analysiert werden. Dazu wurde für jedes Szenario ein Plot, welcher vier Contourplots für unterschiedliche Partikelanzahlen im direkten Vergleich visualisiert gewählt.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_vergleich_x = 60.5.png}
-	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$}
+	\includegraphics[scale=0.25]{Bilder/3_vergleich_x = 60.5.png}
+	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$ v.L.n.R.  $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
 Für die Situation a) bringt eine Erhöhung der Teilchenzhahl von $ N=100$ dargestellt in Abblidung 10 linksoben auf  $ N=1000$ einen enormen Sprung in der Qualität der Konzentration. Dadurch können so zum Beispiel auch die feineren Wirbelstrukturen im Zentrum der Häuserschlucht erfasst werden. Eine weitere erhöhung auf $N=5000$ ermnöglicht  noch eine gering höhere Auflösung; $N=10000$ führen trotz höherer Rechenzeit nur zu einer marginalen Verbesserung. Aus ökonomischen Gesichtspunkten ist eine Teilchenanzuahl zwischen 1000 und 5000 optimal.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_vergleich_x = 15.5.png}
-	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$}
+	\includegraphics[scale=0.25]{Bilder/3_vergleich_x = 15.5.png}
+	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$v.L.n.R, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-Für die in Aufgabenteil b) geschilderte Situation zeichnet sich ein ähnlicher Verlauf ab. Zwischen $N=100$ und $N=1000$ ist auch hier der Qualitätssprung gut zu erkennen. Im unterschied zur vorausgegangenen Simulation führt eine Steigerung der Partikelanzahl jenseits von $N=1000$ zu keiner visuellen Verbesserung.
+Für die in Aufgabenteil b) geschilderte Situation zeichnet sich ein leicht anderer Verlauf ab. Zwischen $N=100$ und $N=1000$ ist auch hier der Qualitätssprung gut zu erkennen. Im Unterschied zur vorausgegangenen Simulation führt eine Steigerung der Partikelanzahl jenseits von $N=1000$ weiterhin zu einer deutlichen Verbesserung. Da aufgrund der Quellposition bei diesem Szenario weniger Partikel in den Wirbel gelangen, muss für eine repräsentative Darstellung eine höhere Teilchenzahl als bei Situtation a) verwendet werden.
 
 
 \subsection{Einfluss von $\lambda$ }
+Auch der Einfluss von $\lambda$ aus dem Prandt-Kolmogorov-Ansatz soll nun analog betrachtet werden. 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_lambda_x = 60.5.png}
-	\caption{Verschiedene \lambda im Vergleich. $\lambda \in[10,5 ,2,1]$}
+	\includegraphics[scale=0.25]{Bilder/3_lambda_x = 60.5.png}
+	\caption{Verschiedene $\lambda$ im Vergleich. $\lambda \in[10,5 ,2,1]$ v.L.n.R, N=1000}
 	\label{fig:my_label}
 \end{figure}
-\begin{figure}[H]
-	\centering
-\includegraphics[scale=0.3]{Bilder/3_lambda_x = 15.5_5.png}
-\caption{Verschiedene \lambda im Vergleich. $\lambda \in[10,5 ,2,1]$}
-\label{fig:my_label}
-\end{figure}
+
+Da es sich bei $\lambda$ um eiine Komponente des Mischungsweg handelt, führt eine Vergrößerung dieses zu einer Vergößerung des Wirbels, et vicae versa. Bei kleinem Mischungsweg kommt es daher in einem deutlich erhöhtem Bereich zu einer Ansammlung gefährlicher Konzentrationen, bei einem großen Mischungsweg zu einer örtlich beschränkteren Ausbreitung.
 \subsection{Einfluss von $\sigma$ }
+Als letztes soll nun der Einfluss von $\sigma_u$ und $\sigma_w$analog betrachtet werden. Es wurden jeweils beide Standartabweichungen simultan verändert.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.3]{Bilder/3_sigma_x = 60.5.png}
-	\caption{Konzentrationsverteilung am Erdboden}
+	\includegraphics[scale=0.25]{Bilder/3_sigma_x = 60.5.png}
+	\caption{Verschiedene $\sigma$ im Vergleich. $\sigma \in[1,2 ,5,10]$ v.L.n.R N=1000, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.3]{Bilder/3_sigma_x = 15.5_5.png}
-	\caption{Konzentrationsverteilung am Erdboden}
-	\label{fig:my_label}
-\end{figure}
+Eine Veränderung der Standartabweichung hat in diesem Simulations-Modell direkten Einfluss auf den turbolenten Anteil der Geschwindigkeitskomponente. Eine Zunahme der Standartabweichung führt folglich zu einem stärker ausgeprägtem Wirbel, eine Reduzierung zu einem schwächerem. Analog dazu verhällt sich aufgrund der varierenden Diffusionsstärke jeweils die Konzentration. Wodurch bei einem hohen $\sigma$ eine erhöhte Konzentration auch an den Häuserwänden zu beobachten ist.
 \section{Aufgabe  4}
-Ideen helfen einen weiter
+Bei einer Ausbreitung in einem dreidmensionalem Stadtgebiet müssten neben der zusätlichen räumlichen Ausbreitungskoordinate, auch die neue Gitterdimension, sowie die Windkomponenten angepasst und erweitert werden. Auch muss überlegt werden ob statt dem Mischungsweg  der turbolente Diffusionskoeffitient als multidimensionale Größe verwendet werden kann. Dieser könnte möglicherweise aus dem Strömungsmodell stammen.
+\newpage
 \section{Quellcode}
 \subsection{Aufgabe 2}
 \lstinputlisting[language=Python]{Aufgabe2.jl}

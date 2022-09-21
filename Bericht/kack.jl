@@ -4,10 +4,7 @@ using ProgressBars
 using PlotlyJS
 
 # Definition der globalen Variablen
-global n,ubalken,wbalken,zq,xq,xgrenz,zgrenz,tl,nx,ny,nz,dx,dy,dz::Int 
-global dt,sigu,sigw,ustern,k,znull,q::Float64
-global units::String
-global gitter,cd,x,cdground::Array
+
 
 n= 10^3             # Anzahl Partikel
 zq = 0              # Quellort z Komponente in m
@@ -22,9 +19,9 @@ znull = 0.008       # Rauhigkeitslaenge
 sigu = 2.5 * ustern # Standartabweichung u m/sm/s
 sigw = 1.3 * ustern # Standartabweichung w m/s m/s
 q= 0.7              # Konzentration fuer das Montecarlo Modell in m/s
-rl= exp(- dt/tl)    # Berechnung von rl
+#rl= exp(- dt/tl)    # Berechnung von rl
 units = "g/m^3"     # Einheit fuer Graphen
-
+ubalken=5
 ## Arrays Initialisieren
 
 
@@ -54,7 +51,7 @@ function prandltl(zi,xi)
     else
         dt = ((k * ustern) / sigw ^ 2) * abs(2) #falls dt kleiner als tl in 2 m Hoehe wird dt auf tl(2m) gesetzt
     end
-    return tl,  dt, ubalken
+    return tl,  dt, ui
 end  
 
 
