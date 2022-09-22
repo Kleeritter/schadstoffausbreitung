@@ -172,7 +172,7 @@ Ziel dieser Aufgabe ist es ein Gauß-Modell für eine kontinuierliche Linienquel
 
 In Aufgabenteil b wird ein Monte-Carlo-Modell für eine kontinuirliche Linienquelle programmiert und mit dem Gauß-Modell aus Aufgabenteil a verglichen.
 \subsection{Aufgabenteil a}
-In Aufgabenteil a wird zunächst ein Gauß-Modell für die Ausbreitung einer kontinuirliche Linienquelle programmier mit Vernachlässigung der Prandtlschicht. 
+In Aufgabenteil a wird zunächst ein Gauß-Modell für die Ausbreitung einer kontinuirliche Linienquelle programmiert mit Vernachlässigung der Prandtlschicht. 
 Hier gilt:
 \begin{align}
 x= 51 \si{m} \\
@@ -191,7 +191,7 @@ In Abbildung 1. ist die zu erwartende Konzentrationsverteilung des Gauß-Modells
 	\label{fig:my_label}
 \end{figure}
 
-Für eine feinere grapische Analyse wurde in Abbildung 2. die Konzentrationsverteilung am Erdboden, also für $z=\si{m}$, visualisiert.
+Für eine feinere grapische Analyse wurde in Abbildung 2. die Konzentrationsverteilung am Erdboden, also für $z=0\si{m}$, visualisiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b.png}
@@ -206,7 +206,7 @@ Die maximale Konzentration wurde final rechnerisch mittels Julia bestimmt als
 .
 
 \subsection{Aufgabenteil b}
-In Aufgabenteil b wird nun das Monte-Carlo-Modell mit einer genährten Gitterauswertung.
+In Aufgabenteil b wird nun das Monte-Carlo-Modell mit einer genährten Gitterauswertung verwendet.
 Für den Vergleich zwischen Monte-Carlo-Modell und Gauß-Modell wurden beide Modelle in einem Contour-Plot visualisiert.  Für die optimale Visualisierung wurden verschiedene Partikelanzahlen simuliert.
 
 Zunächst für $N=1000$
@@ -216,12 +216,12 @@ Zunächst für $N=1000$
 	\caption{Vergleich für N=1000. Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
-In Abb. 4 ist leider keine gute Annäherung des Montecarlo Modells an das Gaußmodell zu erkennen. Die Anzahl der Teilchen hat beim Montecarlo Modell einen hohen Einfluss auf die Güte des Modells. Bei einer geringeren Anzahl wie 
+In Abb. 4 ist leider keine gute Annäherung des Monte-Carlo-Modells an das Gauß-Modell zu erkennen. Die Anzahl der Teilchen hat beim Monte-Carlo-Modell einen hohen Einfluss auf die Güte des Modells. Bei einer geringeren Anzahl wie 
 
 \begin{equation}
 	N=1000
 \end{equation}
-sind extrem große Abweichungen zum Gaußmodell zu erkennen, obwohl auch hier bereits die Grundstruktur erkennbar ist.
+sind extrem große Abweichungen zum Gauß-Modell zu erkennen, obwohl auch hier bereits die Grundstruktur erkennbar ist.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b10k.png}
@@ -233,7 +233,7 @@ Bei einer mittleren Anzahl wie
 \begin{equation}
 	N=10000
 \end{equation}
-gleicht sich das MC Modell bedeutend besser an das Gaußmodell an.
+gleicht sich das Monte-Carlo-Modell bedeutend besser an das Gauß-Modell an.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b20k.png}
@@ -245,7 +245,7 @@ Bei einer hohen Anzahl wie
 \begin{equation}
 	N=20000
 \end{equation}
-gleicht sich das MC Modell sehr gut an das Gaußmodell an.
+gleicht sich das MC Modell sehr gut an das Gauß-Modell an.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Bilder/1b50k.png}
@@ -263,7 +263,7 @@ eine extrem gute Annäherung an das Gauß-Modell. Für eine Ausreichende Statist
 	N=20000
 \end{equation}.
 
-Die größten Unterschiede zwischen dem Monte-Carlo-Modell und dem Gauß-Modell enstehen bei zunehmender Entfernung von der Quelle, sowie in der nähe des Quellortes selbst. Auch im Bereich bis 500 m  in X Richtung ist die Konzentration beim Monte-Carlo-Modell niedrieger als beim Gaußmodell, allen voran aber fehlt hier die Variation der Konzentration, die mit dem Gaußmodell aufgelöst werden kann. 
+Die größten Unterschiede zwischen dem Monte-Carlo-Modell und dem Gauß-Modell enstehen bei zunehmender Entfernung von der Quelle, sowie in der Nähe des Quellortes selbst. Auch im Bereich bis 500 m  in X Richtung ist die Konzentration beim Monte-Carlo-Modell niedrieger als beim Gauß-Modell, allen voran aber fehlt hier die Variation der Konzentration, die mit dem Gauß-Modell aufgelöst werden kann. 
 \section{Aufgabe 2}
 In dieser Aufgabe sollte das Monte-Carlo-Modell mit der Prandtl-Schicht optimiert und die Ergebnisse durch das Prairie-Grass-Experiment validiert werden. Für die Valiedierung wurde ein grafischer Vergleich gewählt. Dazu wurde jeweils die Z-Achse vom Prairie-Grass-Experiment sowie des Monte-Carlo-Modells mit der entsprechenden Konzentration in einem Plot dargestellt. Als Randbedingungen sollen hier gelten:
 
@@ -281,7 +281,7 @@ Im folgenden ist die Konzentrationsverteilung bei $x=100\si{m}$ dargestellt.
 	\caption{Vergleich Prairie-Grass, Monte-Carlo.  Die Konzentration ist in $\frac{\si{g}}{\si{m^3}}$ dargestellt.}
 	\label{fig:my_label}
 \end{figure}
-Rein Qualitativ betrachtet ist der Verlauf des Monte-Carlo-Modells dem des Prairie-Grass-Experimentes extrem ähnlich. Insbesondere für $z>15 \si{m}$ ist der Unterschied fast verschwindend gering. Die Größte Abweichung bei einer rein qualitativen Betrachtung liegt in Bodennähe bei $z<2 \si{m}$ zu finden.  Trotzdem ist über den gesammten Verlauf der Höhe eine Abweichung von etwa $\delta c=0.0025 \frac{\si{g}}{\si{m^3}} $
+Rein Qualitativ betrachtet ist der Verlauf des Monte-Carlo-Modells dem des Prairie-Grass-Experimentes extrem ähnlich. Insbesondere für $z>15 \si{m}$ ist der Unterschied fast verschwindend gering. Die Größte Abweichung bei einer rein qualitativen Betrachtung liegt in Bodennähe bei $z<2 \si{m}$ zu finden.  Trotzdem ist über den gesammten Verlauf der Höhe eine Abweichung von etwa $\Delta c=0.0025 \frac{\si{g}}{\si{m^3}} $
 zu beobachten. Zum Erdboden direkt hin konvergieren die beiden Konzentrationen erneut gegeneinader so dass die Unterschiede an dieser Stelle nahezu verschwinden. 
 
 \section{Aufgabe  3}
@@ -298,7 +298,7 @@ simuliert.
 	\caption{Konzentrationsverteilung am Erdboden. Die Konzentration ist in $\frac{\si{kg}}{\si{s}}$ dargestellt. N=1000, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-In der Straßenschlucht bildet sich durch den Wind über der Schlucht ein Wirbel aus. In diesem sinkt die Konzentration mit abnehmendem Abstand zum Zentrum,sowie tendenziel mit der Höhe. Besonders am Boden der Lee-Seite der Straßenschlucht kommt es zu einer extrem starken Ansammlung der Schadstoffe. Teilweise sind dort um den Faktor 500 höhere Konzentrationen simuliert worden als im Zentrum des Wirbels. Dies kann zu je nach Schadtstoff zu negativen Gesundheitlichen Folgen für Fußgänger*innen, Radfahrer*innen, Anwohner*innen, welche sich in der Nähe aufhalten
+In der Straßenschlucht bildet sich durch den Wind über der Schlucht ein Wirbel aus. In diesem sinkt die Konzentration mit abnehmendem Abstand zum Zentrum, sowie tendenziel mit der Höhe. Besonders am Boden der Lee-Seite der Straßenschlucht kommt es zu einer extrem starken Ansammlung der Schadstoffe. Teilweise sind dort um den Faktor 500 höhere Konzentrationen simuliert worden als im Zentrum des Wirbels. Dies kann zu je nach Schadtstoff zu negativen gesundheitlichen Folgen für Fußgänger*innen, Radfahrer*innen, Anwohner*innen, welche sich in der Nähe aufhalten führen.
 
 
 Im zweiten Szenario wurde als  Schadstoffquelle ein Hausbrand mit Quellort
@@ -313,7 +313,7 @@ simuliert.
 	\caption{Konzentrationsverteilung am Erdboden. Die Konzentration ist in $\frac{\si{kg}}{\si{s}}$ dargestellt.N=1000, $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-Abseits der offensichtlichen Änderung durch den neuen Quellort über den Häusern, zeigt sich ein nahezu ähnliches Bild wie im ersten Szenario. Erneut befindet sich der Ort der größten Konzentration an Schadstoffen in Bodennähe. Ein signifikanter Unterschied ist jedoch die quantitative  Konzentrationshöhe am Erdboden. Diese liegt mit $c= 2,5 \frac{\si{kg}}{\si{s}}$ nur noch halb so hoch wie im vorherigen Fall. Die allgemein geringere Konzentration lässt sich auf die Quellpostiion über der Häuserschlucht zurückführen, wodruch nur noch ein Teil der Partikel in den Wirbel gelangen kann.
+Abseits der offensichtlichen Änderung durch den neuen Quellort über den Häusern, zeigt sich ein nahezu ähnliches Bild wie im ersten Szenario. Erneut befindet sich der Ort der größten Konzentration an Schadstoffen in Bodennähe. Ein signifikanter Unterschied ist jedoch die quantitative  Konzentrationshöhe am Erdboden. Diese liegt mit $c= 2,5 \frac{\si{kg}}{\si{s}}$ nur noch halb so hoch wie im vorherigen Fall. Die allgemein geringere Konzentration lässt sich auf die Quellposition über der Häuserschlucht zurückführen, wodruch nur noch ein Teil der Partikel in den Wirbel gelangen kann.
 \subsection{Einfluss der Teilchenanzahl}
 Desweiteren soll nun der Einfluss der Teilchenanzahl analysiert werden. Dazu wurde für jedes Szenario ein Plot, welcher vier Contourplots für unterschiedliche Partikelanzahlen im direkten Vergleich visualisiert gewählt.
 \begin{figure}[H]
@@ -322,7 +322,7 @@ Desweiteren soll nun der Einfluss der Teilchenanzahl analysiert werden. Dazu wur
 	\caption{ Verschiedene Konzentrationsverteilung im Vergleich. $N \in[10^2,10^3,5 *10^3,10^4]$ v.L.n.R.  $\lambda =5$}
 	\label{fig:my_label}
 \end{figure}
-Für die Situation a) bringt eine Erhöhung der Teilchenzhahl von $ N=100$ dargestellt in Abblidung 10 linksoben auf  $ N=1000$ einen enormen Sprung in der Qualität der Konzentration. Dadurch können so zum Beispiel auch die feineren Wirbelstrukturen im Zentrum der Häuserschlucht erfasst werden. Eine weitere erhöhung auf $N=5000$ ermnöglicht  noch eine gering höhere Auflösung; $N=10000$ führen trotz höherer Rechenzeit nur zu einer marginalen Verbesserung. Aus ökonomischen Gesichtspunkten ist eine Teilchenanzuahl zwischen 1000 und 5000 optimal.
+Für die Situation a) bringt eine Erhöhung der Teilchenzhahl von $ N=100$ dargestellt in Abblidung 10 linksoben auf  $ N=1000$ einen enormen Sprung in der Qualität der Konzentration. Dadurch können so zum Beispiel auch die feineren Wirbelstrukturen im Zentrum der Häuserschlucht erfasst werden. Eine weitere Erhöhung auf $N=5000$ ermnöglicht  noch eine gering höhere Auflösung; $N=10000$ führen trotz höherer Rechenzeit nur zu einer marginalen Verbesserung. Aus ökonomischen Gesichtspunkten ist eine Teilchenanzuahl zwischen 1000 und 5000 optimal.
 
 \begin{figure}[H]
 	\centering

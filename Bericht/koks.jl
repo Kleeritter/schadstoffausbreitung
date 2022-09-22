@@ -3,7 +3,6 @@ using Random, Distributions
 using ProgressBars
 using LinearAlgebra
 using GLMakie
-using SymPy
 using FileIO
 
 # Globale Variablen
@@ -41,7 +40,7 @@ function prandltl(zi,xi,lambda,us,ws,k)
 end  
 
 ### Gitterauswertung ###
-function exaktgitter(xi, xold, zi, zold,dt)
+function exaktgitter(xi, xold, zi, zold,dt,n)
     #Initialisierung
     ti = [] 
     toks = []

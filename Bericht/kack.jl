@@ -6,7 +6,7 @@ using PlotlyJS
 # Definition der globalen Variablen
 
 
-n= 10^3             # Anzahl Partikel
+n= 10^6            # Anzahl Partikel
 zq = 0              # Quellort z Komponente in m
 xq = 0.5            # Quellort x Komponente in m
 xgrenz= 110         # Grenze in x Richtung in m
@@ -22,6 +22,7 @@ q= 0.7              # Konzentration fuer das Montecarlo Modell in m/s
 #rl= exp(- dt/tl)    # Berechnung von rl
 units = "g/m^3"     # Einheit fuer Graphen
 ubalken=5
+wbalken=0
 ## Arrays Initialisieren
 
 
@@ -51,7 +52,7 @@ function prandltl(zi,xi)
     else
         dt = ((k * ustern) / sigw ^ 2) * abs(2) #falls dt kleiner als tl in 2 m Hoehe wird dt auf tl(2m) gesetzt
     end
-    return tl,  dt, ui
+    return tl,  dt, ubalken
 end  
 
 
@@ -111,6 +112,16 @@ function exaktgitter(xi, xold, zi, zold,dt)
         end
 else
     #Gitterauswertung falls Partikel in dem Giterpunkt verbleibt
+
+    if zi<=0
+        zi=1
+    end
+    if xi>xgrenz
+        xi=xgrenz
+    end
+    if zi>zgrenz
+        zi=zgrenz
+    end
     konk[convert(Int64,ceil(xi) ),convert(Int64,ceil(zi))] +=  ((q * dt)/(n * dx * dz)) #Erhöhung um die gesammte Konzentration
 end
 end
